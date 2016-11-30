@@ -1,0 +1,14 @@
+{% extends base_template %}
+
+{% load i18n %}
+{% load floppyforms %}
+
+{% block main %}
+<form class="form-horizontal" method="post" action=""{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+  {% csrf_token %}
+  {% form form using "bootstrap/horizontal.html" %}
+  <button type="submit" class="btn btn-primary btn-lg pull-right">
+    {% blocktrans %}Submit{% endblocktrans %}
+  </button>
+</form>
+{% endblock %}
