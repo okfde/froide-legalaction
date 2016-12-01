@@ -6,7 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
-from django_fsm import FSMField, transition
+from django_fsm import FSMField
 
 from froide.publicbody.models import PublicBody
 from froide.foirequest.models import FoiRequest, FoiMessage
@@ -46,7 +46,6 @@ def proposal_document_upload_path(instance, filename):
     return 'legalaction/{0}/{1}/{2}/{3}.pdf'.format(
         uid_1, uid_2, uid, instance.kind
     )
-
 
 
 @python_2_unicode_compatible
@@ -95,8 +94,8 @@ class ProposalDocument(models.Model):
                                 upload_to=proposal_document_upload_path)
 
     class Meta:
-        verbose_name = _('legalaction')
-        verbose_name_plural = _('legalactions')
+        verbose_name = _('legalaction document')
+        verbose_name_plural = _('legalaction documents')
 
     def __str__(self):
         return self.kind
