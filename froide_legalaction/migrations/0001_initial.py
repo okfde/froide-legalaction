@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('foirequest', '0005_auto_20160902_1845'),
-        ('publicbody', '0004_auto_20161130_0128'),
+        ('foirequest', '0001_initial'),
+        ('publicbody', '0001_initial'),
     ]
 
     operations = [
