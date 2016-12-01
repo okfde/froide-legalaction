@@ -10,6 +10,7 @@ from froide.publicbody.models import PublicBody
 from froide.publicbody.widgets import PublicBodySelect
 from froide.helper.widgets import AgreeCheckboxInput
 from froide.helper.date_utils import calculate_month_range_de
+from froide.foirequest.validators import validate_upload_document
 
 from .models import Proposal, ProposalDocument
 
@@ -130,16 +131,17 @@ class LegalActionRequestForm(LegalActionUserForm):
     def add_document_fields(self, kind, kind_detail):
         self.fields['date_%s' % kind] = forms.DateField(
             label=_('Date of {}').format(kind_detail['label']),
+            validators=[validators.MaxValueValidator(timezone.now().date())],
             widget=forms.DateInput(
                 attrs={
                         'class': 'form-control'
                 }
-            ),
-            validators=[validators.MaxValueValidator(timezone.now().date())]
+            )
         )
         self.fields['document_%s' % kind] = forms.FileField(
             label=_('Upload document for {}').format(kind_detail['label']),
             help_text=kind_detail['help_text_upload'],
+            validators=[validate_upload_document],
             widget=forms.FileInput(
                 attrs={
                         'class': 'form-control'
