@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-01 17:10+0100\n"
-"PO-Revision-Date: 2016-12-01 16:58+0100\n"
+"POT-Creation-Date: 2016-12-01 19:28+0100\n"
+"PO-Revision-Date: 2016-12-01 19:35+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.org>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.7.5\n"
 
-#: apps.py:8
+#: apps.py:9
 msgid "Froide Legal Action App"
 msgstr "Froide VerklageDenStaat-App"
 
@@ -61,7 +61,7 @@ msgstr "E-Mail-Adresse"
 
 #: forms.py:56
 msgid "Required"
-msgstr "Verpflichtend"
+msgstr "Pflichtfeld"
 
 #: forms.py:58
 msgid "mail@ddress.net"
@@ -93,10 +93,9 @@ msgid ""
 "<a href=\"https://transparenzklagen.de/datenschutzerklaerung/\" target="
 "\"_blank\">Privacy Terms</a>"
 msgstr ""
-"Sie stimmen der Weitergabe Ihrer Daten an die Gesellschaft für "
-"Freiheitsrechte und weitere Dritte (wie Rechtsanwälte) gemäß der <a href="
-"\"https://transparenzklagen.de/datenschutzerklaerung/\" target=\"_blank"
-"\">Datenschutzerklärung von transparenzklagen.de</a> zu."
+"Sie stimmen der Weitergabe Ihrer Daten gemäß der <a href=\"https://"
+"transparenzklagen.de/datenschutzerklaerung/\" target=\"_blank"
+"\">Datenschutzerklärung von Transparenzklagen.de</a> zu."
 
 #: forms.py:128
 msgid "Document for {}"
@@ -140,7 +139,7 @@ msgstr "Ablehnung"
 
 #: models.py:64
 msgid "Please upload your first rejection letter."
-msgstr "Bitte laden Sie den Ablehnungsbrief hoch."
+msgstr "Bitte laden Sie den Ablehnungsbescheid hoch."
 
 #: models.py:65
 msgid "Please select the rejection response."
@@ -180,24 +179,28 @@ msgstr "VerklagDenStaat-Dokument"
 msgid "legalaction documents"
 msgstr "VerklagDenStaat-Dokumente"
 
-#: templates/froide_legalaction/base.html:5
-#: templates/froide_legalaction/base.html:10
-msgid "Propose a FOI law suit"
-msgstr "Schlagen Sie eine IFG-Klage vor"
+#: signals.py:11
+msgid "New legal action proposal submitted"
+msgstr "Neuer Klagevorschlag wurde eingereicht"
 
-#: templates/froide_legalaction/base.html:12
+#: templates/froide_legalaction/base.html:5
+#: templates/froide_legalaction/form.html:7
+msgid "Propose a FOI law suit"
+msgstr "Jetzt klagen"
+
+#: templates/froide_legalaction/form.html:9
 msgid ""
 "\n"
-"        Please fill out the form below to propose a law suit for your FOI "
+"    Please fill out the form below to propose a law suit for your FOI "
 "request.\n"
-"      "
+"  "
 msgstr ""
 "\n"
-"        Bitte füllen Sie diese Formular aus, um einen Klagevorschlag "
+"        Bitte füllen Sie dieses Formular aus, um einen Klagevorschlag "
 "einzureichen.\n"
 "      "
 
-#: templates/froide_legalaction/form.html:11
+#: templates/froide_legalaction/form.html:17
 msgid "Submit"
 msgstr "Abschicken"
 
