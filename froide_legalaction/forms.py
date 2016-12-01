@@ -79,9 +79,11 @@ class LegalActionRequestForm(LegalActionUserForm):
             widget=forms.Textarea(attrs={
                 'class': 'form-control'
             }))
-    terms = forms.BooleanField(required=True, widget=AgreeCheckboxInput(
-            agree_to=_(u'You agree to our <a href="%(url_terms)s" class="target-new">Terms and Conditions</a>'),
-            url_names={"url_terms": "help-terms", "url_privacy": "help-privacy"}))
+    terms = forms.BooleanField(
+            label=_('Usage of this data'),
+            required=True, widget=AgreeCheckboxInput(
+                agree_to=_(u'You agree that we will share this data with third-parties according to our <a href="https://transparenzklagen.de/datenschutzerklaerung/" target="_blank">Privacy Terms</a>'),
+                url_names={}))
 
     def __init__(self, *args, **kwargs):
         self.foirequest = kwargs.pop('foirequest', None)
