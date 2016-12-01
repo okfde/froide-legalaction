@@ -4,6 +4,12 @@
 {% load floppyforms %}
 
 {% block main %}
+<h3>{% trans "Propose a FOI law suit" %}</h3>
+<p>
+  {% blocktrans %}
+    Please fill out the form below to propose a law suit for your FOI request.
+  {% endblocktrans %}
+</p>
 <form class="form-horizontal" method="post" action=""{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
   {% csrf_token %}
   {% form form using "bootstrap/horizontal.html" %}
