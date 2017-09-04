@@ -2,8 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import formats, timezone
 from django.db import transaction
 from django.core import validators
-
-import floppyforms as forms
+from django import forms
 
 from froide.foirequest.models import FoiMessage
 from froide.publicbody.models import PublicBody
@@ -13,6 +12,10 @@ from froide.helper.date_utils import calculate_month_range_de
 from froide.foirequest.validators import validate_upload_document
 
 from .models import Proposal, ProposalDocument
+
+
+class PhoneNumberInput(forms.widgets.Input):
+    input_type = 'tel'
 
 
 class FoiMessageChoiceField(forms.ModelChoiceField):
@@ -61,7 +64,7 @@ class LegalActionUserForm(forms.Form):
     phone = forms.CharField(label=_('Phone number'),
             max_length=75,
             help_text=_('Required. We will need to talk you.'),
-            widget=forms.PhoneNumberInput(attrs={
+            widget=PhoneNumberInput(attrs={
                     'class': 'form-control'
             }))
 

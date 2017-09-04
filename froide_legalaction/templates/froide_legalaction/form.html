@@ -1,7 +1,7 @@
 {% extends base_template %}
 
 {% load i18n %}
-{% load floppyforms %}
+{% load form_helper %}
 
 {% block main %}
 <h3>{% trans "Propose a FOI law suit" %}</h3>
@@ -14,7 +14,7 @@
 {% block content %}
 <form class="form-horizontal" method="post" action=""{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
   {% csrf_token %}
-  {% form form using "bootstrap/horizontal.html" %}
+  {% render_form form %}
   <button type="submit" class="btn btn-primary btn-lg pull-right">
     {% blocktrans %}Submit{% endblocktrans %}
   </button>
