@@ -25,8 +25,10 @@ class Proposal(models.Model):
     email = models.EmailField(max_length=255, blank=True)
     phone = models.CharField(max_length=255, blank=True)
 
-    foirequest = models.ForeignKey(FoiRequest, null=True, blank=True)
-    publicbody = models.ForeignKey(PublicBody, null=True, blank=True)
+    foirequest = models.ForeignKey(FoiRequest, null=True, blank=True,
+                                   on_delete=models.SET_NULL)
+    publicbody = models.ForeignKey(PublicBody, null=True, blank=True,
+                                   on_delete=models.SET_NULL)
     legal_date = models.DateField(blank=True, null=True)
 
     description = models.TextField(blank=True)
@@ -85,10 +87,11 @@ class ProposalDocument(models.Model):
     DOCUMENT_KINDS_CHOICES = [
         (x[0], x[1]['label']) for x in DOCUMENT_KINDS
     ]
-    proposal = models.ForeignKey(Proposal)
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
     kind = models.CharField(max_length=25, choices=DOCUMENT_KINDS_CHOICES)
 
-    foimessage = models.ForeignKey(FoiMessage, null=True, blank=True)
+    foimessage = models.ForeignKey(FoiMessage, null=True, blank=True,
+                                   on_delete=models.SET_NULL)
     date = models.DateField()
     document = models.FileField(blank=True, null=True,
                                 upload_to=proposal_document_upload_path)
