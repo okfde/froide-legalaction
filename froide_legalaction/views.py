@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, Http404, redirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 
