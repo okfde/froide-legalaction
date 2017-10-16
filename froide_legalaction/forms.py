@@ -1,13 +1,14 @@
 from django.utils.translation import ugettext_lazy as _
 from django.utils import formats, timezone
 from django.db import transaction
+from django.utils.safestring import mark_safe
 from django.core import validators
 from django import forms
 
 from froide.foirequest.models import FoiMessage
 from froide.publicbody.models import PublicBody
 from froide.publicbody.widgets import PublicBodySelect
-from froide.helper.widgets import AgreeCheckboxInput
+from froide.helper.widgets import BootstrapCheckboxInput
 from froide.helper.date_utils import calculate_month_range_de
 from froide.foirequest.validators import validate_upload_document
 
@@ -83,10 +84,12 @@ class LegalActionRequestForm(LegalActionUserForm):
                 'class': 'form-control'
             }))
     terms = forms.BooleanField(
-            label=_('Usage of this data'),
-            required=True, widget=AgreeCheckboxInput(
-                agree_to=_(u'You agree that we will share this data with third-parties according to our <a href="https://transparenzklagen.de/datenschutzerklaerung/" target="_blank">Privacy Terms</a>'),
-                url_names={}))
+            label=mark_safe(_('You agree that we will share this data with third-parties '
+                'according to our <a href="https://transparenzklagen.de/datenschutzerklaerung/"'
+                ' target="_blank">Privacy Terms</a>')),
+            required=True,
+            widget=BootstrapCheckboxInput
+    )
 
     def __init__(self, *args, **kwargs):
         self.foirequest = kwargs.pop('foirequest', None)
