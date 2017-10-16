@@ -30,11 +30,11 @@ class FoiMessageChoiceField(forms.ModelChoiceField):
         if obj.is_postal:
             date = formats.date_format(obj.timestamp, 'SHORT_DATE_FORMAT')
         if obj.is_response:
-            return _(u'{date} from {publicbody}: {subject}').format(
+            return _('{date} from {publicbody}: {subject}').format(
                 date=date, subject=obj.subject,
                 publicbody=obj.sender_public_body
             )
-        return u'{date}: {subject}'.format(date=date, subject=obj.subject)
+        return '{date}: {subject}'.format(date=date, subject=obj.subject)
 
 
 class LegalActionUserForm(forms.Form):
