@@ -11,7 +11,8 @@ class ProposalDocumentInline(admin.StackedInline):
 class ProposalAdmin(admin.ModelAdmin):
     inlines = [ProposalDocumentInline]
     raw_id_fields = ('foirequest', 'publicbody')
-    list_display = ('email', 'timestamp', 'publicbody', 'foirequest', 'legal_date')
+    list_display = ('email', 'timestamp', 'publicbody', 'foirequest',
+                    'legal_date')
 
 
 admin.site.register(Proposal, ProposalAdmin)
