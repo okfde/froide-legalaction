@@ -142,7 +142,8 @@ class LegalActionRequestForm(LegalActionUserForm):
             validators=[validators.MaxValueValidator(timezone.now().date())],
             widget=forms.DateInput(
                 attrs={
-                        'class': 'form-control'
+                    'type': 'date',
+                    'class': 'form-control'
                 }
             )
         )
