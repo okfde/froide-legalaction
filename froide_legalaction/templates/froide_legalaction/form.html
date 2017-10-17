@@ -22,6 +22,9 @@
   </button>
 </form>
 {% addtoblock "js" %}
+  <script src="{% static 'js/common.js' %}"></script>
+{% endaddtoblock %}
+{% addtoblock "js" %}
   <script src="{% static 'js/publicbody.js' %}" charset="utf-8"></script>
 {% endaddtoblock %}
 {% endblock %}
