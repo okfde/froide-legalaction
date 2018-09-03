@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-01 19:28+0100\n"
-"PO-Revision-Date: 2016-12-01 19:35+0100\n"
+"POT-Creation-Date: 2018-09-03 14:22+0200\n"
+"PO-Revision-Date: 2018-09-03 14:25+0100\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.org>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -22,72 +22,68 @@ msgstr ""
 msgid "Froide Legal Action App"
 msgstr "Froide VerklageDenStaat-App"
 
-#: forms.py:29
+#: forms.py:34
 #, python-brace-format
 msgid "{date} from {publicbody}: {subject}"
 msgstr "{date} von {publicbody}: {subject}"
 
-#: forms.py:38
+#: forms.py:44
 msgid "First name"
 msgstr "Vorname"
 
-#: forms.py:39
+#: forms.py:46
 msgid "First Name"
 msgstr "Vorname"
 
-#: forms.py:42
+#: forms.py:50
 msgid "Last name"
 msgstr "Nachname"
 
-#: forms.py:43
+#: forms.py:52
 msgid "Last Name"
 msgstr "Nachname"
 
-#: forms.py:47
+#: forms.py:57
 msgid "Mailing Address"
 msgstr "Postadresse"
 
-#: forms.py:48
+#: forms.py:58
 msgid "Your real address is required."
 msgstr "Wir benötigen Ihre echte Adresse."
 
-#: forms.py:52
+#: forms.py:62
 msgid "Street, Post Code, City"
 msgstr "Straße, Postleitzahl, Stadt"
 
-#: forms.py:54
+#: forms.py:65
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: forms.py:56
+#: forms.py:67
 msgid "Required"
 msgstr "Pflichtfeld"
 
-#: forms.py:58
+#: forms.py:69
 msgid "mail@ddress.net"
 msgstr "email@dresse.net"
 
-#: forms.py:61
+#: forms.py:73
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: forms.py:63
+#: forms.py:75
 msgid "Required. We will need to talk you."
 msgstr "Wird für Rücksprachen benötigt."
 
-#: forms.py:69
+#: forms.py:81
 msgid "Public body"
 msgstr "Behörde"
 
-#: forms.py:77
+#: forms.py:89
 msgid "Anything we should know?"
 msgstr "Noch etwas, was wir wissen sollten?"
 
-#: forms.py:83
-msgid "Usage of this data"
-msgstr "Datenschutzerklärung"
-
-#: forms.py:85
+#: forms.py:96
 msgid ""
 "You agree that we will share this data with third-parties according to our "
 "<a href=\"https://transparenzklagen.de/datenschutzerklaerung/\" target="
@@ -97,98 +93,104 @@ msgstr ""
 "transparenzklagen.de/datenschutzerklaerung/\" target=\"_blank"
 "\">Datenschutzerklärung von Transparenzklagen.de</a> zu."
 
-#: forms.py:128
+#: forms.py:147
 msgid "Document for {}"
 msgstr "Dokument für {}"
 
-#: forms.py:135
+#: forms.py:157
 msgid "Date of {}"
 msgstr "Datum von {}"
 
-#: forms.py:144
+#: forms.py:167
 msgid "Upload document for {}"
 msgstr "Dokument für {} hochladen"
 
-#: forms.py:158
+#: forms.py:185
 msgid "You already submitted a suit proposal for this request."
 msgstr "Du hast schon einen Klagevorschlag für diese Anfrage eingereicht."
 
-#: models.py:35
+#: forms.py:195
+msgid "You have submitted the same message for different document kinds."
+msgstr ""
+"Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
+"eingereicht."
+
+#: models.py:37
 msgid "proposal for legal action"
 msgstr "Vorschlag für VerklagDenStaat"
 
-#: models.py:36
+#: models.py:38
 msgid "proposals for legal action"
 msgstr "Vorschläge für VerklagDenStaat"
 
-#: models.py:55
+#: models.py:57
 msgid "FOI request"
 msgstr "IFG-Anfrage"
 
-#: models.py:56
+#: models.py:58
 msgid "Please upload your original FOI request."
 msgstr "Bitte laden Sie Ihre ursprüngliche IFG-Anfrage hoch."
 
-#: models.py:57
+#: models.py:59
 msgid "The original FOI request you made."
 msgstr "Ihre ursprüngliche IFG-Anfrage."
 
-#: models.py:63
+#: models.py:65
 msgid "Rejection"
 msgstr "Ablehnung"
 
-#: models.py:64
+#: models.py:66
 msgid "Please upload your first rejection letter."
 msgstr "Bitte laden Sie den Ablehnungsbescheid hoch."
 
-#: models.py:65
+#: models.py:68
 msgid "Please select the rejection response."
 msgstr "Bitte wählen Sie die Ablehnungsantwort aus."
 
-#: models.py:70
+#: models.py:73
 msgid "Appeal"
 msgstr "Widerspruch"
 
-#: models.py:71
+#: models.py:74
 msgid "Please choose the message representing your appeal."
 msgstr "Bitte wählen Sie Ihren Widerspruch aus."
 
-#: models.py:72
+#: models.py:76
 msgid "Please upload your appeal to the rejection of your FOI request."
 msgstr ""
 "Bitte laden Sie Ihren Widerspruch zur Ablehnung Ihrer IFG-Anfrage hoch."
 
-#: models.py:78
+#: models.py:84
 msgid "Final rejection"
 msgstr "Ablehnung des Widerspruchs"
 
-#: models.py:79
+#: models.py:85
 msgid ""
 "Please choose the message representing the final rejection of your appeal."
 msgstr "Bitte wählen Sie die finale Ablehnung auf Ihren Widerspruch aus."
 
-#: models.py:80
+#: models.py:87
 msgid "Please upload the final rejection of your appeal."
 msgstr "Bitte laden Sie die Ablehnung auf Ihren Widerspruch hoch."
 
-#: models.py:97
+#: models.py:106
 msgid "legalaction document"
 msgstr "VerklagDenStaat-Dokument"
 
-#: models.py:98
+#: models.py:107
 msgid "legalaction documents"
 msgstr "VerklagDenStaat-Dokumente"
 
-#: signals.py:11
+#: signals.py:13
 msgid "New legal action proposal submitted"
 msgstr "Neuer Klagevorschlag wurde eingereicht"
 
 #: templates/froide_legalaction/base.html:5
-#: templates/froide_legalaction/form.html:7
+#: templates/froide_legalaction/form.html:9
 msgid "Propose a FOI law suit"
 msgstr "Jetzt klagen"
 
-#: templates/froide_legalaction/form.html:9
+#: templates/froide_legalaction/form.html:11
 msgid ""
 "\n"
 "    Please fill out the form below to propose a law suit for your FOI "
@@ -200,9 +202,30 @@ msgstr ""
 "einzureichen.\n"
 "      "
 
-#: templates/froide_legalaction/form.html:17
+#: templates/froide_legalaction/form.html:21
 msgid "Submit"
 msgstr "Abschicken"
+
+#: templates/froide_legalaction/includes/request_pane.html:6
+msgid "File a law suit"
+msgstr "Jetzt klagen"
+
+#: templates/froide_legalaction/includes/request_pane.html:11
+#, python-format
+msgid ""
+"\n"
+"        We received your legal action proposal on %(date)s and we are "
+"currently reviewing it.\n"
+"      "
+msgstr ""
+"\n"
+"        Wir haben Ihren Klagevorschlag am %(date)s erhalten und werden "
+"diesen in Kürze bewerten.\n"
+"      "
+
+#: templates/froide_legalaction/includes/request_pane.html:36
+msgid "Click here to propose a law suit"
+msgstr "Klagevorschlag einreichen"
 
 #: templates/froide_legalaction/thanks.html:6
 msgid "Thanks for submitting"
@@ -224,6 +247,9 @@ msgstr ""
 #: views.py:44
 msgid "Please check for errors in your form."
 msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
+
+#~ msgid "Usage of this data"
+#~ msgstr "Datenschutzerklärung"
 
 #~ msgid "^privacy/$"
 #~ msgstr "^datenschutz/$"
