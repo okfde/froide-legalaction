@@ -176,10 +176,25 @@ class LegalActionRequestForm(LegalActionUserForm):
         return ['date_%s' % kind, 'document_%s' % kind]
 
     def clean(self):
-        if self.foirequest is not None:
-            if Proposal.objects.filter(foirequest=self.foirequest).exists():
-                raise forms.ValidationError(_('You already submitted a suit '
-                                              'proposal for this request.'))
+        cleaned_data = self.cleaned_data
+
+        if self.foirequest is None:
+            return
+
+        if Proposal.objects.filter(foirequest=self.foirequest).exists():
+            raise forms.ValidationError(_('You already submitted a suit '
+                                          'proposal for this request.'))
+
+        DK = ProposalDocument.DOCUMENT_KINDS
+        message_set = set(
+            cleaned_data['foimessage_%s' % kind]
+            for kind, kind_detail in DK
+        )
+        if len(message_set) != len(DK):
+            raise forms.ValidationError(
+                _('You have submitted the same message for '
+                    'different document kinds.')
+            )
 
     def save(self):
         cleaned_data = self.cleaned_data
