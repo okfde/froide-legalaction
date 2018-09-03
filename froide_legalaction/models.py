@@ -63,23 +63,29 @@ class ProposalDocument(models.Model):
         }),
         ('rejection', {
             'label': _('Rejection'),
-            'help_text_upload': _('Please upload your first rejection letter.'),
+            'help_text_upload': _('Please upload your first '
+                                  'rejection letter.'),
             'help_text': _('Please select the rejection response.'),
             'select': lambda qs, first: qs.filter(is_response=True),
             'initial': None,
         }),
         ('appeal', {
             'label': _('Appeal'),
-            'help_text': _('Please choose the message representing your appeal.'),
-            'help_text_upload': _('Please upload your appeal to the rejection of your FOI request.'),
-            'select': lambda qs, first: qs.filter(is_response=False,
-                                timestamp__gt=first.timestamp),
+            'help_text': _('Please choose the message representing '
+                           'your appeal.'),
+            'help_text_upload': _('Please upload your appeal to the '
+                                  'rejection of your FOI request.'),
+            'select': lambda qs, first: qs.filter(
+                is_response=False,
+                timestamp__gt=first.timestamp),
             'initial': None,
         }),
         ('final_rejection', {
             'label': _('Final rejection'),
-            'help_text': _('Please choose the message representing the final rejection of your appeal.'),
-            'help_text_upload': _('Please upload the final rejection of your appeal.'),
+            'help_text': _('Please choose the message representing the '
+                           'final rejection of your appeal.'),
+            'help_text_upload': _('Please upload the final rejection '
+                                  'of your appeal.'),
             'select': lambda qs, first: qs.filter(is_response=True),
             'initial': None,
         }),

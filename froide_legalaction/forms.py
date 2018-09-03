@@ -23,8 +23,9 @@ class FoiMessageChoiceField(forms.ModelChoiceField):
     def label_from_instance(self, obj):
         """
         This method is used to convert objects into strings; it's used to
-        generate the labels for the choices presented by this object. Subclasses
-        can override this method to customize the display of the choices.
+        generate the labels for the choices presented by this object.
+        Subclasses can override this method to customize the display
+        of the choices.
         """
         date = formats.date_format(obj.timestamp, 'SHORT_DATETIME_FORMAT')
         if obj.is_postal:
@@ -38,36 +39,43 @@ class FoiMessageChoiceField(forms.ModelChoiceField):
 
 
 class LegalActionUserForm(forms.Form):
-    first_name = forms.CharField(max_length=30,
-            label=_('First name'),
-            widget=forms.TextInput(attrs={'placeholder': _('First Name'),
-                'class': 'form-control'}))
-    last_name = forms.CharField(max_length=30,
-            label=_('Last name'),
-            widget=forms.TextInput(attrs={'placeholder': _('Last Name'),
-                'class': 'form-control'}))
-    address = forms.CharField(max_length=300,
-            required=False,
-            label=_('Mailing Address'),
-            help_text=_('Your real address is required.'),
-            widget=forms.Textarea(attrs={
-                'rows': '3',
-                'class': 'form-control',
-                'placeholder': _('Street, Post Code, City'),
-            }))
-    email = forms.EmailField(label=_('Email address'),
-            max_length=75,
-            help_text=_('Required'),
-            widget=forms.EmailInput(attrs={
-                    'placeholder': _('mail@ddress.net'),
-                    'class': 'form-control'
-            }))
-    phone = forms.CharField(label=_('Phone number'),
-            max_length=75,
-            help_text=_('Required. We will need to talk you.'),
-            widget=PhoneNumberInput(attrs={
-                    'class': 'form-control'
-            }))
+    first_name = forms.CharField(
+        max_length=30,
+        label=_('First name'),
+        widget=forms.TextInput(attrs={
+            'placeholder': _('First Name'),
+            'class': 'form-control'}))
+    last_name = forms.CharField(
+        max_length=30,
+        label=_('Last name'),
+        widget=forms.TextInput(attrs={
+            'placeholder': _('Last Name'),
+            'class': 'form-control'}))
+    address = forms.CharField(
+        max_length=300,
+        required=False,
+        label=_('Mailing Address'),
+        help_text=_('Your real address is required.'),
+        widget=forms.Textarea(attrs={
+            'rows': '3',
+            'class': 'form-control',
+            'placeholder': _('Street, Post Code, City'),
+        }))
+    email = forms.EmailField(
+        label=_('Email address'),
+        max_length=75,
+        help_text=_('Required'),
+        widget=forms.EmailInput(attrs={
+                'placeholder': _('mail@ddress.net'),
+                'class': 'form-control'
+        }))
+    phone = forms.CharField(
+        label=_('Phone number'),
+        max_length=75,
+        help_text=_('Required. We will need to talk you.'),
+        widget=PhoneNumberInput(attrs={
+                'class': 'form-control'
+        }))
 
     publicbody = forms.ModelChoiceField(
         label=_('Public body'),
@@ -84,9 +92,12 @@ class LegalActionRequestForm(LegalActionUserForm):
                 'class': 'form-control'
             }))
     terms = forms.BooleanField(
-            label=mark_safe(_('You agree that we will share this data with third-parties '
-                'according to our <a href="https://transparenzklagen.de/datenschutzerklaerung/"'
-                ' target="_blank">Privacy Terms</a>')),
+            label=mark_safe(
+                _('You agree that we will share this '
+                  'data with third-parties '
+                  'according to our <a href="'
+                  'https://transparenzklagen.de/datenschutzerklaerung/"'
+                  ' target="_blank">Privacy Terms</a>')),
             required=True,
             widget=BootstrapCheckboxInput
     )
@@ -102,7 +113,9 @@ class LegalActionRequestForm(LegalActionUserForm):
             self.fields['last_name'].initial = self.foirequest.user.last_name
             self.fields['email'].initial = self.foirequest.user.email
             self.fields['address'].initial = self.foirequest.user.address
-            self.foimessage_qs = FoiMessage.objects.filter(request=self.foirequest)
+            self.foimessage_qs = FoiMessage.objects.filter(
+                request=self.foirequest
+            )
             self.first_foimessage = self.foimessage_qs[0]
 
         custom_fields = []
@@ -132,7 +145,10 @@ class LegalActionRequestForm(LegalActionUserForm):
             queryset=kind_detail['select'](qs, mes),
             initial=init(qs, mes) if init else None,
             label=_('Document for {}').format(kind_detail['label']),
-            widget=forms.HiddenInput if kind_detail.get('hidden') else forms.RadioSelect
+            widget=(
+                forms.HiddenInput if kind_detail.get('hidden')
+                else forms.RadioSelect
+            )
         )
         return ['foimessage_%s' % kind]
 
