@@ -9,7 +9,7 @@ class LawsuitAdmin(admin.ModelAdmin):
     date_hierarchy = 'start_date'
     list_display = ('title', 'start_date', 'court_type',
                     'active', 'result')
-    list_filter = ('active', 'result', 'court_type', 'publicbody',)
+    list_filter = ('active', 'result', 'court_type',)
 
     def save_model(self, request, obj, form, change):
         obj.last_update = timezone.now()
