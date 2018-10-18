@@ -1,0 +1,112 @@
+{% load markup %}
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Thema</th>
+      <th>Datum der Klage</th>
+      <th>Gericht</th>
+      <th>Kosten</th>
+      <th>Ergebnis</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>
+          <a href="#klage-detail-{{ object.pk }}">
+            {{ object.title }}{% if object.reference %}({{ object.reference }}){% endif %}
+          </a>
+        </td>
+        <td>
+          {{ object.start_date|date:"SHORT_DATE_FORMAT" }}
+        </td>
+        <td>
+          {{ object.court_type }}
+        </td>
+        <td>
+          {{ object.costs }}&nbsp;EUR
+          {% if object.costs_covered_percent %}<br/>({{ object.costs_covered_percent }}% finanziert){% endif %}
+        </td>
+        <td>
+          <span class="badge badge-{{ object.result_bootstrap_class }}">
+            {{ object.get_result_display }}
+          </span>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% for object in object_list %}
+<div class="card" id="klage-detail-{{ object.pk }}">
+    <div class="card-header">
+      {% if object.plaintiff %}{{ object.plaintiff }} gegen {% endif %}
+      <strong>{{ object.publicbody.name }}</strong>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ object.title }}{% if object.reference %}({{ object.reference }}){% endif %}
+        {% if object.court %}am {{ object.court.name }}{% endif %}
+      </h5>
+
+      <dl>
+        {% if object.request %}
+          <dt>
+            Anfrage auf FragDenStaat.de
+          </dt>
+          <dd>
+            <a href="{{ object.request.get_absolute_url }}">
+              {{ object.request.title }}
+            </a>
+          </dd>
+        {% endif %}
+        {% if object.start_date %}
+          <dt>
+            Klage eingereicht am
+          </dt>
+          <dd>
+            {{ object.start_date|date:"DATE_FORMAT" }}
+          </dd>
+        {% endif %}
+        {% if object.end_date %}
+          <dt>
+            Abgeschlossen am
+          </dt>
+          <dd>
+            {{ object.end_date|date:"DATE_FORMAT" }}
+          </dd>
+        {% endif %}
+        {% if object.result %}
+          <dt>
+            Ergebnis
+          </dt>
+          <dd>
+            <span class="badge badge-{{ object.result_bootstrap_class }}">
+              {{ object.get_result_display }}
+            </span>
+          </dd>
+        {% endif %}
+      </dl>
+
+      {{ object.description | markdown }}
+
+      {% if object.links %}
+      <h4>Links</h4>
+      {{ object.links | markdown }}
+      {% endif %}
+
+      {% if object.cost_detail %}
+      <h4>Kosten</h4>
+      {{ object.cost_detail | markdown }}
+      {% endif %}
+
+      {% if object.needs_money %}
+        <div class="text-right">
+          <a href="/spenden/" class="btn btn-primary">Spenden Sie für diese Klage</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+{% endfor %}

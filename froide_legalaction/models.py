@@ -64,6 +64,28 @@ class Lawsuit(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def costs_covered_percent(self):
+        if self.costs and self.costs_covered:
+            return int(self.costs_covered / self.costs * 100)
+        return None
+
+    @property
+    def needs_money(self):
+        if self.costs and self.costs_covered:
+            return self.costs_covered < self.costs
+        return None
+
+    @property
+    def result_bootstrap_class(self):
+        if self.result == 'won':
+            return 'success'
+        if self.result == 'lost':
+            return 'dark'
+        if self.result == 'settled':
+            return 'secondary'
+        return 'light'
+
 
 class Proposal(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, editable=False)
