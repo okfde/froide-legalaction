@@ -10,7 +10,53 @@ from froide.publicbody.models import PublicBody
 from froide.foirequest.models import FoiRequest, FoiMessage
 
 
-@python_2_unicode_compatible
+class Lawsuit(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
+
+    start_date = models.DateField(null=True, blank=True)
+    last_update = models.DateField(null=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    costs = models.DecimalField(
+        null=True, blank=True,
+        decimal_places=2, max_digits=10
+    )
+    costs_covered = models.DecimalField(
+        null=True, blank=True,
+        decimal_places=2, max_digits=10
+    )
+
+    links = models.TextField(blank=True)
+
+    request = models.ForeignKey(FoiRequest, null=True, blank=True)
+    publicbody = models.ForeignKey(PublicBody, null=True, blank=True)
+
+    court_type = models.CharField(max_length=25, choices=(
+        ('VG', _('Verwaltungsgericht')),
+        ('OVG', _('Oberverwaltungsgericht')),
+        ('BVerwG', _('Bundesverwaltungsgericht')),
+        ('BVerfG', _('Bundesverfassungsgericht')),
+        ('EMRK', _('European Court of Human Rights')),
+    ), blank=True)
+    court = models.CharField(max_length=255, blank=True)
+    plaintiff = models.CharField(max_length=255, blank=True)
+    active = models.BooleanField(default=True)
+    result = models.CharField(max_length=20, blank=True, choices=(
+        ('won', _('gewonnen')),
+        ('lost', _('verloren')),
+        ('settled', _('Einigung')),
+    ))
+
+    class Meta:
+        verbose_name = _('lawsuit')
+        verbose_name_plural = _('lawsuits')
+        ordering = ('-last_update',)
+
+    def __str__(self):
+        return self.title
+
+
 class Proposal(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, editable=False)
     timestamp = models.DateTimeField(default=timezone.now)
