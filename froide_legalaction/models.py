@@ -12,6 +12,7 @@ from froide.foirequest.models import FoiRequest, FoiMessage
 
 class Lawsuit(models.Model):
     title = models.CharField(max_length=255, blank=True)
+    reference = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
 
     start_date = models.DateField(null=True, blank=True)
@@ -26,11 +27,14 @@ class Lawsuit(models.Model):
         null=True, blank=True,
         decimal_places=2, max_digits=10
     )
+    cost_detail = models.TextField(blank=True)
 
     links = models.TextField(blank=True)
 
     request = models.ForeignKey(FoiRequest, null=True, blank=True)
-    publicbody = models.ForeignKey(PublicBody, null=True, blank=True)
+    publicbody = models.ForeignKey(
+        PublicBody, null=True, blank=True,
+        related_name='defendant_in')
 
     court_type = models.CharField(max_length=25, choices=(
         ('VG', _('Verwaltungsgericht')),
@@ -39,13 +43,17 @@ class Lawsuit(models.Model):
         ('BVerfG', _('Bundesverfassungsgericht')),
         ('EMRK', _('European Court of Human Rights')),
     ), blank=True)
-    court = models.CharField(max_length=255, blank=True)
+    court = models.ForeignKey(
+        PublicBody, null=True, blank=True,
+        related_name='ruling_over'
+    )
     plaintiff = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=True)
+
     result = models.CharField(max_length=20, blank=True, choices=(
         ('won', _('gewonnen')),
         ('lost', _('verloren')),
-        ('settled', _('Einigung')),
+        ('settled', _('Erledigung')),
     ))
 
     class Meta:
