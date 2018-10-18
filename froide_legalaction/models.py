@@ -1,8 +1,6 @@
-# -*- encoding: utf-8 -*-
 import uuid
 
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -50,7 +48,6 @@ def proposal_document_upload_path(instance, filename):
     )
 
 
-@python_2_unicode_compatible
 class ProposalDocument(models.Model):
     DOCUMENT_KINDS = (
         ('foirequest', {
