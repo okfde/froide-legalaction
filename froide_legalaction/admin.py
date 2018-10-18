@@ -5,7 +5,7 @@ from .models import Lawsuit, Proposal, ProposalDocument
 
 
 class LawsuitAdmin(admin.ModelAdmin):
-    raw_id_fields = ('request', 'publicbody')
+    raw_id_fields = ('request', 'publicbody', 'court')
     date_hierarchy = 'start_date'
     list_display = ('title', 'start_date', 'court_type',
                     'active', 'result')
