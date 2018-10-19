@@ -41,6 +41,7 @@ class Lawsuit(models.Model):
         ('OVG', _('Oberverwaltungsgericht')),
         ('BVerwG', _('Bundesverwaltungsgericht')),
         ('BVerfG', _('Bundesverfassungsgericht')),
+        ('LVerfG', _('Landesverfassungsgericht')),
         ('EMRK', _('European Court of Human Rights')),
     ), blank=True)
     court = models.ForeignKey(
