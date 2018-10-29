@@ -15,7 +15,8 @@
       <tr>
         <td>
           <a href="#klage-detail-{{ object.pk }}">
-            {{ object.title }}{% if object.reference %}({{ object.reference }}){% endif %}
+            {{ object.title }}
+            {% if object.reference %}({{ object.reference }}){% endif %}
           </a>
         </td>
         <td>
