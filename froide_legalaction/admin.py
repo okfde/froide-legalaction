@@ -5,11 +5,12 @@ from .models import Lawsuit, Proposal, ProposalDocument
 
 
 class LawsuitAdmin(admin.ModelAdmin):
-    raw_id_fields = ('request', 'publicbody', 'court')
+    raw_id_fields = ('request', 'publicbody', 'court',
+                     'plaintiff_user',)
     date_hierarchy = 'start_date'
     list_display = ('title', 'start_date', 'court_type',
-                    'active', 'result')
-    list_filter = ('active', 'result', 'court_type',)
+                    'public', 'active', 'result')
+    list_filter = ('active', 'public', 'result', 'court_type',)
 
     def save_model(self, request, obj, form, change):
         obj.last_update = timezone.now()

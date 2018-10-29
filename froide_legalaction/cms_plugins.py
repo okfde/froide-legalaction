@@ -14,9 +14,19 @@ class LawsuitTablePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
+        lawsuits = Lawsuit.objects.filter(public=True).select_related(
+            'publicbody', 'court', 'request', 'plaintiff_user'
+        )
+        costs = sum(l.costs for l in lawsuits if l)
+        costs_covered = sum(l.costs_covered for l in lawsuits if l)
+        costs_percentage = 0
+        if costs:
+            costs_percentage = int(costs_covered / costs * 100)
+
         context.update({
-            'object_list': Lawsuit.objects.all().select_related(
-                'publicbody', 'court', 'request'
-            )
+            'object_list': lawsuits,
+            'total_costs': costs,
+            'total_costs_not_covered': costs - costs_covered,
+            'total_costs_percentage': costs_percentage,
         })
         return context

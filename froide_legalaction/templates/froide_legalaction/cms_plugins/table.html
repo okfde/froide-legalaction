@@ -6,7 +6,7 @@
       <th>Thema</th>
       <th>Datum der Klage</th>
       <th>Gericht</th>
-      <th>Kosten</th>
+      <th class="text-right">Kosten</th>
       <th>Ergebnis</th>
     </tr>
   </thead>
@@ -24,7 +24,7 @@
         <td>
           {{ object.court_type }}
         </td>
-        <td>
+        <td class="text-right">
           {{ object.costs }}&nbsp;EUR
           {% if object.costs_covered_percent %}<br/>({{ object.costs_covered_percent }}% finanziert){% endif %}
         </td>
@@ -36,12 +36,45 @@
       </tr>
     {% endfor %}
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3" class="text-right">
+        Kosten insgesamt
+      </td>
+      <td class="text-right">
+        {{ total_costs }}&nbsp;EUR
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="text-right">
+        Kosten gedeckt
+      </td>
+      <td class="text-right">
+        {{ total_costs_percentage }}%
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="text-right">
+        <strong>Kosten nicht gedeckt</strong>
+      </td>
+      <td class="text-right">
+        {{ total_costs_not_covered }}&nbsp;EUR
+      </td>
+      <td>
+        <a href="/spenden/">
+          Spenden
+        </a>
+      </td>
+    </tr>
+  </tfoot>
 </table>
 
 {% for object in object_list %}
-<div class="card" id="klage-detail-{{ object.pk }}">
+<div class="card mb-3" id="klage-detail-{{ object.pk }}">
     <div class="card-header">
-      {% if object.plaintiff %}{{ object.plaintiff }} gegen {% endif %}
+      {% if object.plaintiff_name %}{{ object.plaintiff_name }} gegen {% endif %}
       <strong>{{ object.publicbody.name }}</strong>
     </div>
     <div class="card-body">

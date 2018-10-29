@@ -86,6 +86,12 @@ class Lawsuit(models.Model):
         return None
 
     @property
+    def plaintiff_name(self):
+        if self.plaintiff_user:
+            return self.plaintiff_user.get_full_name()
+        return self.plaintiff
+
+    @property
     def result_bootstrap_class(self):
         if self.result in ('won', 'partially_successful'):
             return 'success'
