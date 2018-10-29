@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.conf import settings
 
 from django_fsm import FSMField
 
@@ -42,6 +43,8 @@ class Lawsuit(models.Model):
         ('BVerwG', _('Bundesverwaltungsgericht')),
         ('BVerfG', _('Bundesverfassungsgericht')),
         ('LVerfG', _('Landesverfassungsgericht')),
+        ('EUG', _('Gericht der Europäischen Union')),
+        ('EUGH', _('Europäischer Gerichtshof')),
         ('EMRK', _('European Court of Human Rights')),
     ), blank=True)
     court = models.ForeignKey(
@@ -49,13 +52,18 @@ class Lawsuit(models.Model):
         related_name='ruling_over'
     )
     plaintiff = models.CharField(max_length=255, blank=True)
+    plaintiff_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True)
     active = models.BooleanField(default=True)
 
     result = models.CharField(max_length=20, blank=True, choices=(
         ('won', _('gewonnen')),
         ('lost', _('verloren')),
+        ('not_accepted', _('nicht zur Entscheidung angenommen')),
+        ('partially_successful', _('teilweise erfolgreich')),
         ('settled', _('Erledigung')),
     ))
+    public = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('lawsuit')
@@ -79,11 +87,11 @@ class Lawsuit(models.Model):
 
     @property
     def result_bootstrap_class(self):
-        if self.result == 'won':
+        if self.result in ('won', 'partially_successful'):
             return 'success'
-        if self.result == 'lost':
+        if self.result in ('lost', 'not_accepted'):
             return 'dark'
-        if self.result == 'settled':
+        if self.result in ('settled',):
             return 'secondary'
         return 'light'
 
