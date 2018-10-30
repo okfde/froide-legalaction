@@ -1,86 +1,91 @@
 {% load markup %}
 {% load humanize %}
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Thema</th>
-      <th>Datum der Klage</th>
-      <th>Gericht</th>
-      <th class="text-right">Kosten</th>
-      <th>Ergebnis</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for object in object_list %}
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
       <tr>
-        <td>
-          <a href="#klage-detail-{{ object.pk }}">
-            {{ object.title }}
-            {% if object.reference %}({{ object.reference }}){% endif %}
-          </a>
-        </td>
-        <td>
-          {{ object.start_date|date:"SHORT_DATE_FORMAT" }}
-        </td>
-        <td>
-          {{ object.court_type }}
+        <th>Thema</th>
+        <th>Datum der Klage</th>
+        <th>Gericht</th>
+        <th class="text-right">Kosten</th>
+        <th>Ergebnis</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in object_list %}
+        <tr>
+          <td>
+            <a href="#klage-detail-{{ object.pk }}">
+              {{ object.title }}
+              {% if object.reference %}({{ object.reference }}){% endif %}
+            </a>
+          </td>
+          <td>
+            {{ object.start_date|date:"SHORT_DATE_FORMAT" }}
+          </td>
+          <td>
+            {{ object.court_type }}
+          </td>
+          <td class="text-right">
+            {{ object.costs|intcomma }}&nbsp;EUR
+            {% if object.costs_covered_percent %}
+            <br/>
+            {% if object.costs_covered_percent != 100 %}<span class="text-danger">{% endif %}
+            {{ object.costs_covered_percent }}% finanziert
+            {% if object.costs_covered_percent != 100 %}</span>{% endif %}
+            {% endif %}
+          </td>
+          <td>
+            <span class="badge badge-{{ object.result_bootstrap_class }}">
+              {% if object.active %}
+                läuft
+              {% else %}
+                {{ object.get_result_display }}
+              {% endif %}
+            </span>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" class="text-right">
+          Kosten insgesamt
         </td>
         <td class="text-right">
-          {{ object.costs|intcomma }}&nbsp;EUR
-          {% if object.costs_covered_percent %}
-          <br/>
-          {% if object.costs_covered_percent != 100 %}<span class="text-danger">{% endif %}
-          {{ object.costs_covered_percent }}% finanziert
-          {% if object.costs_covered_percent != 100 %}</span>{% endif %}
-          {% endif %}
+          {{ total_costs|intcomma }}&nbsp;EUR
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right">
+          Kosten gedeckt
+        </td>
+        <td class="text-right">
+          {{ total_costs_percentage }}%
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="text-right">
+          <strong>Kosten nicht gedeckt</strong>
+        </td>
+        <td class="text-right">
+          {{ total_costs_not_covered|intcomma }}&nbsp;EUR
         </td>
         <td>
-          <span class="badge badge-{{ object.result_bootstrap_class }}">
-            {% if object.active %}
-              läuft
-            {% else %}
-              {{ object.get_result_display }}
-            {% endif %}
-          </span>
+          <a href="/spenden/?pk_campaign=lawsuit-list&pk_keyword=tablesum">
+            Spenden
+          </a>
         </td>
       </tr>
-    {% endfor %}
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="3" class="text-right">
-        Kosten insgesamt
-      </td>
-      <td class="text-right">
-        {{ total_costs|intcomma }}&nbsp;EUR
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td colspan="3" class="text-right">
-        Kosten gedeckt
-      </td>
-      <td class="text-right">
-        {{ total_costs_percentage }}%
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td colspan="3" class="text-right">
-        <strong>Kosten nicht gedeckt</strong>
-      </td>
-      <td class="text-right">
-        {{ total_costs_not_covered|intcomma }}&nbsp;EUR
-      </td>
-      <td>
-        <a href="/spenden/">
-          Spenden
-        </a>
-      </td>
-    </tr>
-  </tfoot>
-</table>
+    </tfoot>
+  </table>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-8">
 
 {% for object in object_list %}
 <div class="card mb-3" id="klage-detail-{{ object.pk }}">
@@ -172,10 +177,13 @@
       {% endif %}
       {% if object.needs_money %}
         <div class="text-right">
-          <a href="/spenden/" class="btn btn-primary">Spenden Sie für diese Klage</a>
+          <a href="/spenden/?pk_campaign=lawsuit-list&pk_keyword=lawsuit-{{ object.id }}" class="btn btn-primary">
+            Spenden Sie für diese Klage
+          </a>
         </div>
       {% endif %}
     </div>
   </div>
-
 {% endfor %}
+</div>
+</div>
