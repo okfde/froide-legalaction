@@ -80,6 +80,12 @@ class Lawsuit(models.Model):
         return None
 
     @property
+    def costs_deficit(self):
+        if self.costs and self.costs_covered:
+            return self.costs - self.costs_covered
+        return None
+
+    @property
     def needs_money(self):
         if self.costs and self.costs_covered:
             return self.costs_covered < self.costs

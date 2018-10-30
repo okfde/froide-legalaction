@@ -28,7 +28,12 @@
         </td>
         <td class="text-right">
           {{ object.costs|intcomma }}&nbsp;EUR
-          {% if object.costs_covered_percent %}<br/>({{ object.costs_covered_percent }}% finanziert){% endif %}
+          {% if object.costs_covered_percent %}
+          <br/>
+          {% if object.costs_covered_percent != 100 %}<span class="text-danger">{% endif %}
+          {{ object.costs_covered_percent }}% finanziert
+          {% if object.costs_covered_percent != 100 %}</span>{% endif %}
+          {% endif %}
         </td>
         <td>
           <span class="badge badge-{{ object.result_bootstrap_class }}">
@@ -85,7 +90,7 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">
-        {{ object.title }}{% if object.reference %}({{ object.reference }}){% endif %}
+        {{ object.title }}{% if object.reference %} ({{ object.reference }}){% endif %}
         {% if object.court %}am {{ object.court.name }}{% endif %}
       </h5>
 
@@ -135,11 +140,36 @@
       {{ object.links | markdown }}
       {% endif %}
 
-      {% if object.cost_detail %}
       <h4>Kosten</h4>
+      <table class="table">
+        {% if object.costs %}
+          <tr class="text-right">
+            <td>Insgesamt</td>
+            <td>
+              {{ object.costs|intcomma }}&nbsp;EUR
+            </td>
+          </tr>
+        {% endif %}
+        {% if object.costs_covered_percent %}
+          <tr class="text-right">
+            <td>Finanzierung</td>
+            <td>
+              {{ object.costs_covered_percent }}%
+            </td>
+          </dd>
+        {% endif %}
+        {% if object.costs_deficit %}
+          <tr class="text-right">
+            <td>Ungedeckte Kosten</td>
+            <td>
+            {{ object.costs_deficit|intcomma }}&nbsp;EUR
+            </td>
+          </tr>
+        {% endif %}
+      </table>
+      {% if object.cost_detail %}
       {{ object.cost_detail | markdown }}
       {% endif %}
-
       {% if object.needs_money %}
         <div class="text-right">
           <a href="/spenden/" class="btn btn-primary">Spenden Sie für diese Klage</a>
