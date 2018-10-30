@@ -59,7 +59,7 @@ class Lawsuit(models.Model):
     result = models.CharField(max_length=20, blank=True, choices=(
         ('won', _('gewonnen')),
         ('lost', _('verloren')),
-        ('not_accepted', _('nicht zur Entscheidung angenommen')),
+        ('not_accepted', _('nicht angenommen')),
         ('partially_successful', _('teilweise erfolgreich')),
         ('settled', _('Erledigung')),
     ))
