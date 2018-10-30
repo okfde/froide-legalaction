@@ -18,7 +18,8 @@ class LawsuitTablePlugin(CMSPluginBase):
             'publicbody', 'court', 'request', 'plaintiff_user'
         )
         costs = sum(l.costs for l in lawsuits if l.costs)
-        costs_covered = sum(l.costs_covered for l in lawsuits if l.costs_covered)
+        costs_covered = sum(l.costs_covered for l in lawsuits
+                            if l.costs_covered)
         costs_percentage = 0
         if costs:
             costs_percentage = int(costs_covered / costs * 100)

@@ -32,7 +32,11 @@
         </td>
         <td>
           <span class="badge badge-{{ object.result_bootstrap_class }}">
-            {{ object.get_result_display }}
+            {% if object.active %}
+              läuft
+            {% else %}
+              {{ object.get_result_display }}
+            {% endif %}
           </span>
         </td>
       </tr>

@@ -93,6 +93,8 @@ class Lawsuit(models.Model):
 
     @property
     def result_bootstrap_class(self):
+        if self.active:
+            return 'light'
         if self.result in ('won', 'partially_successful'):
             return 'success'
         if self.result in ('lost', 'not_accepted'):
