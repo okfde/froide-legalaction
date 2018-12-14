@@ -32,10 +32,15 @@ class Lawsuit(models.Model):
 
     links = models.TextField(blank=True)
 
-    request = models.ForeignKey(FoiRequest, null=True, blank=True)
+    request = models.ForeignKey(
+        FoiRequest, null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
     publicbody = models.ForeignKey(
         PublicBody, null=True, blank=True,
-        related_name='defendant_in')
+        related_name='defendant_in',
+        on_delete=models.SET_NULL
+    )
 
     court_type = models.CharField(max_length=25, choices=(
         ('VG', _('Verwaltungsgericht')),
@@ -49,11 +54,14 @@ class Lawsuit(models.Model):
     ), blank=True)
     court = models.ForeignKey(
         PublicBody, null=True, blank=True,
-        related_name='ruling_over'
+        related_name='ruling_over',
+        on_delete=models.SET_NULL
     )
     plaintiff = models.CharField(max_length=255, blank=True)
     plaintiff_user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True)
+        settings.AUTH_USER_MODEL, null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
     active = models.BooleanField(default=True)
 
     result = models.CharField(max_length=20, blank=True, choices=(
