@@ -212,3 +212,12 @@ class ProposalDocument(models.Model):
 
     def __str__(self):
         return self.kind
+
+    def get_bytes(self):
+        if not self.document:
+            return b''
+        self.document.open(mode='rb')
+        try:
+            return self.document.read()
+        finally:
+            self.document.close()
