@@ -186,10 +186,15 @@ class LegalActionRequestForm(LegalActionUserForm):
                                           'proposal for this request.'))
 
         DK = ProposalDocument.DOCUMENT_KINDS
-        message_set = set(
-            cleaned_data['foimessage_%s' % kind]
-            for kind, kind_detail in DK
-        )
+        try:
+            message_set = set(
+                cleaned_data['foimessage_%s' % kind]
+                for kind, kind_detail in DK
+            )
+        except KeyError:
+            raise forms.ValidationError(
+                _('You have not submitted enough document kinds.')
+            )
         if len(message_set) != len(DK):
             raise forms.ValidationError(
                 _('You have submitted the same message for '
