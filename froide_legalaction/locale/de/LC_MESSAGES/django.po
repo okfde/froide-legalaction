@@ -7,20 +7,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-03 14:22+0200\n"
-"PO-Revision-Date: 2018-09-03 14:25+0100\n"
-"Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.org>\n"
+"POT-Creation-Date: 2019-03-02 16:09+0100\n"
+"PO-Revision-Date: 2019-03-02 16:43+0100\n"
+"Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 2.2\n"
 
-#: apps.py:9
+#: apps.py:11
 msgid "Froide Legal Action App"
 msgstr "Froide VerklageDenStaat-App"
+
+#: cms_plugins.py:11
+msgid "Lawsuits"
+msgstr ""
+
+#: cms_plugins.py:12
+msgid "Lawsuit table"
+msgstr ""
 
 #: forms.py:34
 #, python-brace-format
@@ -109,75 +117,139 @@ msgstr "Dokument für {} hochladen"
 msgid "You already submitted a suit proposal for this request."
 msgstr "Du hast schon einen Klagevorschlag für diese Anfrage eingereicht."
 
-#: forms.py:195
+#: forms.py:196
+msgid "You have not submitted enough document kinds."
+msgstr "Sie haben nicht alle Dokumentenkategorien eingereicht."
+
+#: forms.py:200
 msgid "You have submitted the same message for different document kinds."
 msgstr ""
 "Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
 "eingereicht."
 
-#: models.py:37
+#: models.py:46
+msgid "Verwaltungsgericht"
+msgstr ""
+
+#: models.py:47
+msgid "Oberverwaltungsgericht"
+msgstr ""
+
+#: models.py:48
+msgid "Bundesverwaltungsgericht"
+msgstr ""
+
+#: models.py:49
+msgid "Bundesverfassungsgericht"
+msgstr ""
+
+#: models.py:50
+msgid "Landesverfassungsgericht"
+msgstr ""
+
+#: models.py:51
+msgid "Gericht der Europäischen Union"
+msgstr ""
+
+#: models.py:52
+msgid "Europäischer Gerichtshof"
+msgstr ""
+
+#: models.py:53
+msgid "European Court of Human Rights"
+msgstr ""
+
+#: models.py:68
+msgid "gewonnen"
+msgstr ""
+
+#: models.py:69
+msgid "verloren"
+msgstr ""
+
+#: models.py:70
+msgid "nicht angenommen"
+msgstr ""
+
+#: models.py:71
+msgid "teilweise erfolgreich"
+msgstr ""
+
+#: models.py:72
+msgid "Erledigung"
+msgstr ""
+
+#: models.py:77
+msgid "lawsuit"
+msgstr "Klage"
+
+#: models.py:78
+msgid "lawsuits"
+msgstr "Klagen"
+
+#: models.py:142
 msgid "proposal for legal action"
 msgstr "Vorschlag für VerklagDenStaat"
 
-#: models.py:38
+#: models.py:143
 msgid "proposals for legal action"
 msgstr "Vorschläge für VerklagDenStaat"
 
-#: models.py:57
+#: models.py:161
 msgid "FOI request"
 msgstr "IFG-Anfrage"
 
-#: models.py:58
+#: models.py:162
 msgid "Please upload your original FOI request."
 msgstr "Bitte laden Sie Ihre ursprüngliche IFG-Anfrage hoch."
 
-#: models.py:59
+#: models.py:163
 msgid "The original FOI request you made."
 msgstr "Ihre ursprüngliche IFG-Anfrage."
 
-#: models.py:65
+#: models.py:169
 msgid "Rejection"
 msgstr "Ablehnung"
 
-#: models.py:66
+#: models.py:170
 msgid "Please upload your first rejection letter."
 msgstr "Bitte laden Sie den Ablehnungsbescheid hoch."
 
-#: models.py:68
+#: models.py:172
 msgid "Please select the rejection response."
 msgstr "Bitte wählen Sie die Ablehnungsantwort aus."
 
-#: models.py:73
+#: models.py:177
 msgid "Appeal"
 msgstr "Widerspruch"
 
-#: models.py:74
+#: models.py:178
 msgid "Please choose the message representing your appeal."
 msgstr "Bitte wählen Sie Ihren Widerspruch aus."
 
-#: models.py:76
+#: models.py:180
 msgid "Please upload your appeal to the rejection of your FOI request."
 msgstr ""
 "Bitte laden Sie Ihren Widerspruch zur Ablehnung Ihrer IFG-Anfrage hoch."
 
-#: models.py:84
+#: models.py:188
 msgid "Final rejection"
 msgstr "Ablehnung des Widerspruchs"
 
-#: models.py:85
+#: models.py:189
 msgid ""
 "Please choose the message representing the final rejection of your appeal."
 msgstr "Bitte wählen Sie die finale Ablehnung auf Ihren Widerspruch aus."
 
-#: models.py:87
+#: models.py:191
 msgid "Please upload the final rejection of your appeal."
 msgstr "Bitte laden Sie die Ablehnung auf Ihren Widerspruch hoch."
 
-#: models.py:106
+#: models.py:210
 msgid "legalaction document"
 msgstr "VerklagDenStaat-Dokument"
 
-#: models.py:107
+#: models.py:211
 msgid "legalaction documents"
 msgstr "VerklagDenStaat-Dokumente"
 
