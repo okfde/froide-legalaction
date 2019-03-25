@@ -46,6 +46,8 @@ class Lawsuit(models.Model):
         ('VG', _('Verwaltungsgericht')),
         ('OVG', _('Oberverwaltungsgericht')),
         ('BVerwG', _('Bundesverwaltungsgericht')),
+        ('LG', _('Landgericht')),
+        ('OLG', _('Oberlandesgericht')),
         ('BVerfG', _('Bundesverfassungsgericht')),
         ('LVerfG', _('Landesverfassungsgericht')),
         ('EUG', _('Gericht der Europäischen Union')),
