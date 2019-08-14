@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-02 16:09+0100\n"
-"PO-Revision-Date: 2019-03-02 16:43+0100\n"
+"POT-Creation-Date: 2019-08-14 14:35+0200\n"
+"PO-Revision-Date: 2019-08-14 14:36+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -94,10 +94,10 @@ msgstr "Noch etwas, was wir wissen sollten?"
 #: forms.py:96
 msgid ""
 "You agree that we will share this data with third-parties according to our "
-"<a href=\"https://transparenzklagen.de/datenschutzerklaerung/\" target="
+"<a href=\"https://www.transparenzklagen.de/datenschutzerklaerung/\" target="
 "\"_blank\">Privacy Terms</a>"
 msgstr ""
-"Sie stimmen der Weitergabe Ihrer Daten gemäß der <a href=\"https://"
+"Sie stimmen der Weitergabe Ihrer Daten gemäß der <a href=\"https://www,"
 "transparenzklagen.de/datenschutzerklaerung/\" target=\"_blank"
 "\">Datenschutzerklärung von Transparenzklagen.de</a> zu."
 
@@ -140,116 +140,124 @@ msgid "Bundesverwaltungsgericht"
 msgstr ""
 
 #: models.py:49
-msgid "Bundesverfassungsgericht"
+msgid "Landgericht"
 msgstr ""
 
 #: models.py:50
-msgid "Landesverfassungsgericht"
+msgid "Oberlandesgericht"
 msgstr ""
 
 #: models.py:51
-msgid "Gericht der Europäischen Union"
+msgid "Bundesverfassungsgericht"
 msgstr ""
 
 #: models.py:52
-msgid "Europäischer Gerichtshof"
+msgid "Landesverfassungsgericht"
 msgstr ""
 
 #: models.py:53
+msgid "Gericht der Europäischen Union"
+msgstr ""
+
+#: models.py:54
+msgid "Europäischer Gerichtshof"
+msgstr ""
+
+#: models.py:55
 msgid "European Court of Human Rights"
 msgstr ""
 
-#: models.py:68
+#: models.py:70
 msgid "gewonnen"
 msgstr ""
 
-#: models.py:69
+#: models.py:71
 msgid "verloren"
 msgstr ""
 
-#: models.py:70
+#: models.py:72
 msgid "nicht angenommen"
 msgstr ""
 
-#: models.py:71
+#: models.py:73
 msgid "teilweise erfolgreich"
 msgstr ""
 
-#: models.py:72
+#: models.py:74
 msgid "Erledigung"
 msgstr ""
 
-#: models.py:77
+#: models.py:79
 msgid "lawsuit"
 msgstr "Klage"
 
-#: models.py:78
+#: models.py:80
 msgid "lawsuits"
 msgstr "Klagen"
 
-#: models.py:142
+#: models.py:144
 msgid "proposal for legal action"
 msgstr "Vorschlag für VerklagDenStaat"
 
-#: models.py:143
+#: models.py:145
 msgid "proposals for legal action"
 msgstr "Vorschläge für VerklagDenStaat"
 
-#: models.py:161
+#: models.py:163
 msgid "FOI request"
 msgstr "IFG-Anfrage"
 
-#: models.py:162
+#: models.py:164
 msgid "Please upload your original FOI request."
 msgstr "Bitte laden Sie Ihre ursprüngliche IFG-Anfrage hoch."
 
-#: models.py:163
+#: models.py:165
 msgid "The original FOI request you made."
 msgstr "Ihre ursprüngliche IFG-Anfrage."
 
-#: models.py:169
+#: models.py:171
 msgid "Rejection"
 msgstr "Ablehnung"
 
-#: models.py:170
+#: models.py:172
 msgid "Please upload your first rejection letter."
 msgstr "Bitte laden Sie den Ablehnungsbescheid hoch."
 
-#: models.py:172
+#: models.py:174
 msgid "Please select the rejection response."
 msgstr "Bitte wählen Sie die Ablehnungsantwort aus."
 
-#: models.py:177
+#: models.py:179
 msgid "Appeal"
 msgstr "Widerspruch"
 
-#: models.py:178
+#: models.py:180
 msgid "Please choose the message representing your appeal."
 msgstr "Bitte wählen Sie Ihren Widerspruch aus."
 
-#: models.py:180
+#: models.py:182
 msgid "Please upload your appeal to the rejection of your FOI request."
 msgstr ""
 "Bitte laden Sie Ihren Widerspruch zur Ablehnung Ihrer IFG-Anfrage hoch."
 
-#: models.py:188
+#: models.py:190
 msgid "Final rejection"
 msgstr "Ablehnung des Widerspruchs"
 
-#: models.py:189
+#: models.py:191
 msgid ""
 "Please choose the message representing the final rejection of your appeal."
 msgstr "Bitte wählen Sie die finale Ablehnung auf Ihren Widerspruch aus."
 
-#: models.py:191
+#: models.py:193
 msgid "Please upload the final rejection of your appeal."
 msgstr "Bitte laden Sie die Ablehnung auf Ihren Widerspruch hoch."
 
-#: models.py:210
+#: models.py:212
 msgid "legalaction document"
 msgstr "VerklagDenStaat-Dokument"
 
-#: models.py:211
+#: models.py:213
 msgid "legalaction documents"
 msgstr "VerklagDenStaat-Dokumente"
 
@@ -303,11 +311,14 @@ msgstr "Klagevorschlag einreichen"
 msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
 
-#: urls.py:10
+#: urls.py:11
+#| msgid "^thanks/$"
+msgctxt "url part"
 msgid "^thanks/$"
 msgstr "^danke/$"
 
-#: urls.py:11
+#: urls.py:13
+msgctxt "url part"
 msgid "^request/(?P<pk>\\d+)/$"
 msgstr "^anfrage/(?P<pk>\\d+)/$"
 
