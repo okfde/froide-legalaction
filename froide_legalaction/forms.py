@@ -96,7 +96,7 @@ class LegalActionRequestForm(LegalActionUserForm):
                 _('You agree that we will share this '
                   'data with third-parties '
                   'according to our <a href="'
-                  'https://transparenzklagen.de/datenschutzerklaerung/"'
+                  'https://www.transparenzklagen.de/datenschutzerklaerung/"'
                   ' target="_blank">Privacy Terms</a>')),
             required=True,
             widget=BootstrapCheckboxInput
