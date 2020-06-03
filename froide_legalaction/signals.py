@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
 from django.core.mail import mail_managers
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 def send_proposal_created_notification(instance=None, created=False, **kwargs):
