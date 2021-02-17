@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-14 14:35+0200\n"
-"PO-Revision-Date: 2019-08-26 11:46+0200\n"
+"POT-Creation-Date: 2021-02-17 13:24+0000\n"
+"PO-Revision-Date: 2021-02-17 13:25+0000\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.3\n"
 
 #: apps.py:11
 msgid "Froide Legal Action App"
@@ -87,41 +87,39 @@ msgstr "Wird für Rücksprachen benötigt."
 msgid "Public body"
 msgstr "Behörde"
 
-#: forms.py:89
+#: forms.py:88
+msgid ""
+"You agree to our <a href=\"/datenschutzerklaerung/\" target=\"_blank"
+"\">Privacy Terms</a>"
+msgstr ""
+"Sie stimmen unserer <a href=\"https://www.transparenzklagen.de/"
+"datenschutzerklaerung/\" target=\"_blank\">Datenschutzerklärung</a> zu."
+
+#: forms.py:99
 msgid "Anything we should know?"
 msgstr "Noch etwas, was wir wissen sollten?"
 
-#: forms.py:96
-msgid ""
-"You agree that we will share this data with third-parties according to our "
-"<a href=\"https://www.transparenzklagen.de/datenschutzerklaerung/\" target="
-"\"_blank\">Privacy Terms</a>"
-msgstr ""
-"Sie stimmen der Weitergabe Ihrer Daten gemäß der <a href=\"https://www."
-"transparenzklagen.de/datenschutzerklaerung/\" target=\"_blank"
-"\">Datenschutzerklärung von Transparenzklagen.de</a> zu."
-
-#: forms.py:147
+#: forms.py:148
 msgid "Document for {}"
 msgstr "Dokument für {}"
 
-#: forms.py:157
+#: forms.py:158
 msgid "Date of {}"
 msgstr "Datum von {}"
 
-#: forms.py:167
+#: forms.py:168
 msgid "Upload document for {}"
 msgstr "Dokument für {} hochladen"
 
-#: forms.py:185
+#: forms.py:186
 msgid "You already submitted a suit proposal for this request."
 msgstr "Du hast schon einen Klagevorschlag für diese Anfrage eingereicht."
 
-#: forms.py:196
+#: forms.py:197
 msgid "You have not submitted enough document kinds."
 msgstr "Sie haben nicht alle Dokumentenkategorien eingereicht."
 
-#: forms.py:200
+#: forms.py:201
 msgid "You have submitted the same message for different document kinds."
 msgstr ""
 "Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
@@ -312,7 +310,6 @@ msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
 
 #: urls.py:11
-#| msgid "^thanks/$"
 msgctxt "url part"
 msgid "^thanks/$"
 msgstr "^danke/$"
@@ -322,12 +319,12 @@ msgctxt "url part"
 msgid "^request/(?P<pk>\\d+)/$"
 msgstr "^anfrage/(?P<pk>\\d+)/$"
 
-#: views.py:35
+#: views.py:38
 msgid "We have received your submission and we will review it. Thank you!"
 msgstr ""
 "Wir haben Ihre Einreichung erhalten und werden Sie begutachten. Vielen Dank!"
 
-#: views.py:44
+#: views.py:49
 msgid "Please check for errors in your form."
 msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
 
