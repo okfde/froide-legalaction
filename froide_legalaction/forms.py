@@ -83,6 +83,16 @@ class LegalActionUserForm(forms.Form):
         widget=PublicBodySelect
     )
 
+    terms = forms.BooleanField(
+            label=mark_safe(
+                _('You agree '
+                  'to our <a href="'
+                  '/datenschutzerklaerung/"'
+                  ' target="_blank">Privacy Terms</a>')),
+            required=True,
+            widget=BootstrapCheckboxInput
+    )
+
 
 class LegalActionRequestForm(LegalActionUserForm):
     description = forms.CharField(
@@ -91,28 +101,19 @@ class LegalActionRequestForm(LegalActionUserForm):
             widget=forms.Textarea(attrs={
                 'class': 'form-control'
             }))
-    terms = forms.BooleanField(
-            label=mark_safe(
-                _('You agree that we will share this '
-                  'data with third-parties '
-                  'according to our <a href="'
-                  'https://www.transparenzklagen.de/datenschutzerklaerung/"'
-                  ' target="_blank">Privacy Terms</a>')),
-            required=True,
-            widget=BootstrapCheckboxInput
-    )
 
     def __init__(self, *args, **kwargs):
         self.foirequest = kwargs.pop('foirequest', None)
-        super(LegalActionRequestForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if self.foirequest is not None:
+            user = self.foirequest.user
             self.fields['publicbody'].widget = forms.HiddenInput()
             self.fields['publicbody'].initial = self.foirequest.public_body
-            self.fields['first_name'].initial = self.foirequest.user.first_name
-            self.fields['last_name'].initial = self.foirequest.user.last_name
-            self.fields['email'].initial = self.foirequest.user.email
-            self.fields['address'].initial = self.foirequest.user.address
+            self.fields['first_name'].initial = user.first_name
+            self.fields['last_name'].initial = user.last_name
+            self.fields['email'].initial = user.email
+            self.fields['address'].initial = user.address
             self.foimessage_qs = FoiMessage.objects.filter(
                 request=self.foirequest
             )
@@ -133,7 +134,7 @@ class LegalActionRequestForm(LegalActionUserForm):
             ['first_name', 'last_name',
                 'address', 'email', 'phone', 'publicbody'] +
             custom_fields +
-            ['legal_date', 'description', 'terms']
+            ['legal_date', 'description']
         )
 
     def add_foimessage_fields(self, kind, kind_detail):

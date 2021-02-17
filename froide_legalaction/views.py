@@ -24,15 +24,19 @@ def request_form_page(request, pk=None):
     if pk is not None:
         if not request.user.is_authenticated:
             raise Http404
-        foirequest = get_object_or_404(FoiRequest, pk=int(pk), user=request.user)
+        foirequest = get_object_or_404(
+            FoiRequest, pk=int(pk), user=request.user
+        )
 
     if request.method == 'POST':
         form = LegalActionRequestForm(request.POST, request.FILES,
                                       foirequest=foirequest)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS,
-                _('We have received your submission and we will review it. Thank you!'))
+            messages.add_message(
+                request, messages.SUCCESS,
+                _('We have received your submission and we will review it. Thank you!')
+            )
             if foirequest is None:
                 url = reverse('legalaction-thanks')
                 return redirect(url + ('?embed=1' if is_embed else ''))
@@ -40,8 +44,10 @@ def request_form_page(request, pk=None):
                 return redirect(foirequest)
         else:
             status = 400
-            messages.add_message(request, messages.WARNING,
-                _('Please check for errors in your form.'))
+            messages.add_message(
+                request, messages.WARNING,
+                _('Please check for errors in your form.')
+            )
 
     else:
         form = LegalActionRequestForm(foirequest=foirequest)
