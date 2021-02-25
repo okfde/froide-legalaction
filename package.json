@@ -1,0 +1,19 @@
+{
+  "name": "froide_legalaction",
+  "version": "1.0.0",
+  "description": "Froide Legalaction",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okfde/froide-legalaction.git"
+  },
+  "author": "Stefan Wehrmeyer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okfde/froide-legalaction/issues"
+  },
+  "homepage": "https://github.com/okfde/froide-legalaction#readme"
+}

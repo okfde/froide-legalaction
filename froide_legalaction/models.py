@@ -109,15 +109,19 @@ class Lawsuit(models.Model):
 
     @property
     def result_bootstrap_class(self):
-        if self.active:
-            return 'light'
         if self.result in ('won', 'partially_successful'):
             return 'success'
         if self.result in ('lost', 'not_accepted'):
-            return 'dark'
-        if self.result in ('settled',):
-            return 'secondary'
-        return 'light'
+            return 'danger'
+        return 'secondary'
+    
+    @property
+    def result_icon(self):
+        if self.result in ('won', 'partially_successful'):
+            return 'check'
+        if self.result in ('lost', 'not_accepted'):
+            return 'times'
+        return 'clock-o'
 
 
 class Proposal(models.Model):

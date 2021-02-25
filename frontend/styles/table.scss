@@ -1,0 +1,57 @@
+@import '~froide/frontend/styles/variables';
+
+
+.lawsuits-table-plugin {
+  .lawsuit-table-details {
+    display: none;
+  }
+
+  tr.active {
+    background-color: $gray-100;
+    
+    .lawsuit-table-item-title {
+      font-weight: bold;
+    }
+
+    .lawsuit-table-item th {
+      font-weight: bold;
+    }
+
+    + .lawsuit-table-details {
+      display: table-row;
+    }
+
+    td:nth-child(n+4) {
+      display: none;
+    }
+  }
+
+  .lawsuit-table-details {
+    background-color: $gray-100;
+
+    .lawsuit-table-details-inner {
+      padding: 2rem 1rem;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    td, th {
+      border-top: none;
+      padding: 0;
+      padding-bottom: 0.25rem;
+    }
+
+    th {
+      font-weight: normal;
+      color: $body-color;
+      padding-right: 0.75rem;
+      hyphens: none;
+    }
+
+    td {
+      color: $secondary;
+    }
+  }
+} 
