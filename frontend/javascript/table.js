@@ -2,9 +2,10 @@ import '../styles/table.scss'
 
 window.addEventListener('load', () => {
   const table = document.querySelector('.lawsuits-table-plugin')
-  const rows = table.querySelectorAll('tr.lawsuit-table-item')
+  const rows = document.querySelectorAll('.lawsuits-table-plugin tr.lawsuit-table-item')
 
-  for (const row of rows) {
+
+  for (const row of Array.from(rows)) {
     row.addEventListener('click', (e) => {
       e.preventDefault()
       toggleRow(row)
@@ -15,7 +16,7 @@ window.addEventListener('load', () => {
   }
 
   // check for permalink #klage-detail-$n
-  const [, pk] = /#klage-detail-(\d+)/.exec(window.location.hash) || []
+  const [, pk] = /#klage-detail-(\d+)/.exec(window.location.hash) ?? []
   if (pk) {
     const row = table.querySelector(`tr[data-pk="${pk}"]`)
     if (row) {
@@ -25,7 +26,7 @@ window.addEventListener('load', () => {
   }
 })
 
-function toggleRow(row: Element) {
+function toggleRow(row) {
   const title = row.querySelector('.lawsuit-table-item-title')
   const icon = title.querySelector('i.fa')
   const isActive = row.classList.contains('active')
