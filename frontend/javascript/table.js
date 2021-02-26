@@ -23,7 +23,6 @@ window.addEventListener('load', () => {
   })
 
   function updateFilters() { 
-    console.log('update')
     const searchText = search.value.toLowerCase()
     const statusValue = status.value
     const courtValue = court.value
