@@ -109,6 +109,8 @@ class Lawsuit(models.Model):
 
     @property
     def result_bootstrap_class(self):
+        if self.active:
+            return 'secondary'
         if self.result in ('won', 'partially_successful'):
             return 'success'
         if self.result in ('lost', 'not_accepted'):
@@ -117,6 +119,8 @@ class Lawsuit(models.Model):
     
     @property
     def result_icon(self):
+        if self.active:
+            return 'clock-o'
         if self.result in ('won', 'partially_successful'):
             return 'check'
         if self.result in ('lost', 'not_accepted'):
