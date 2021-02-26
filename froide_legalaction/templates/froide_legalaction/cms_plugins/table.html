@@ -3,7 +3,34 @@
 {% load static %}
 {% load sekizai_tags %}
 
-<div class="table-responsive lawsuits-table-plugin">
+<div class="lawsuits-table-filter">
+  <h6>Filter</h6>
+  <div class="row">
+    <div class="col-md-4">
+      <input type="search" placeholder="Suche..." class="form-control" id="lawsuits-search">
+    </div>
+    <div class="col-md-4">
+      <select class="form-control" id="lawsuits-status">
+        <option value="all">Status...</option>
+        <option value="active">läuft</option>
+        {% for result in result_options %}
+          <option value="{{ result.0 }}">{{ result.1 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <select class="form-control" id="lawsuits-court">
+        <option value="all">Gericht...</option>
+        {% for court in court_options %}
+          <option value="{{ court.0 }}">{{ court.1 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive lawsuits-table-plugin mt-3">
   <table class="table table-fixed">
     <thead>
       <tr>
@@ -17,7 +44,12 @@
     </thead>
     <tbody>
       {% for object in object_list %}
-        <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" id="klage-detail-{{ object.pk }}">
+        <tr class="lawsuit-table-none hidden">
+          <td colspan="6" class="text-center py-5">
+            <span>Keine Ergebnisse gefunden.</span>
+          </td>
+        </tr>
+        <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" data-status="{% if object.active %}active{% else %}{{ object.result }}{% endif %}" data-court="{{ object.court_type }}" id="klage-detail-{{ object.pk }}">
           <td>{{ object.pk }}</td>
           <td class="text-center">
             <i class="fa fa-{{ object.result_icon }} text-{{ object.result_bootstrap_class }}" data-toggle="tooltip" title="{% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}"></i>

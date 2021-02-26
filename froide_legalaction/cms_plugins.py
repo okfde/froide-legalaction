@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
-from .models import Lawsuit
+from .models import Lawsuit, RESULTS, COURTS
 
 
 @plugin_pool.register_plugin
@@ -29,5 +29,7 @@ class LawsuitTablePlugin(CMSPluginBase):
             'total_costs': costs,
             'total_costs_not_covered': costs - costs_covered,
             'total_costs_percentage': costs_percentage,
+            'result_options': RESULTS,
+            'court_options': COURTS
         })
         return context
