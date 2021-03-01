@@ -1,189 +1,163 @@
 {% load markup %}
 {% load humanize %}
+{% load static %}
+{% load sekizai_tags %}
 
-<div class="table-responsive">
-  <table class="table table-hover">
+<div class="lawsuits-table-filter">
+  <h6>Filter</h6>
+  <div class="row">
+    <div class="col-md-4">
+      <input type="search" placeholder="Suche..." class="form-control" id="lawsuits-search">
+    </div>
+    <div class="col-md-4">
+      <select class="form-control" id="lawsuits-status">
+        <option value="all">Status...</option>
+        <option value="active">läuft</option>
+        {% for result in result_options %}
+          <option value="{{ result.0 }}">{{ result.1 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <select class="form-control" id="lawsuits-court">
+        <option value="all">Gericht...</option>
+        {% for court in court_options %}
+          <option value="{{ court.0 }}">{{ court.1 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive lawsuits-table-plugin mt-3">
+  <table class="table table-fixed">
     <thead>
       <tr>
+        <th><span class="sr-only">Nummer</span></th>
+        <th><span class="sr-only">Status</span></th>
         <th>Thema</th>
-        <th>Datum der Klage</th>
+        <th>Eingereicht am</th>
         <th>Gericht</th>
         <th class="text-right">Kosten</th>
-        <th>Ergebnis</th>
       </tr>
     </thead>
     <tbody>
       {% for object in object_list %}
-        <tr>
-          <td>
-            <a href="#klage-detail-{{ object.pk }}">
+        <tr class="lawsuit-table-none hidden">
+          <td colspan="6" class="text-center py-5">
+            <span>Keine Ergebnisse gefunden.</span>
+          </td>
+        </tr>
+        <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" data-status="{% if object.active %}active{% else %}{{ object.result }}{% endif %}" data-court="{{ object.court_type }}" id="klage-detail-{{ object.pk }}">
+          <td>{{ object.pk }}</td>
+          <td class="text-center">
+            <i class="fa fa-{{ object.result_icon }} text-{{ object.result_bootstrap_class }}" data-toggle="tooltip" title="{% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}"></i>
+          </td>
+          <td class="lawsuit-table-item-title">
+            <a href="#klage-detail-{{ object.pk }}" class="d-flex">
               {{ object.title }}
-              {% if object.reference %}({{ object.reference }}){% endif %}
+              <span class="small ml-2"><i class="fa fa-chevron-down"></i></span>
             </a>
           </td>
           <td>
             {{ object.start_date|date:"SHORT_DATE_FORMAT" }}
           </td>
           <td>
-            {{ object.court_type }}
+            <abbr title="{{ object.court.name }}" data-toggle="tooltip">{{ object.court_type }}</abbr>
           </td>
           <td class="text-right">
-            {{ object.costs|intcomma }}&nbsp;EUR
-            {% if object.costs_covered_percent %}
-            <br/>
-            {% if object.costs_covered_percent != 100 %}<span class="text-danger">{% endif %}
-            {{ object.costs_covered_percent }}% finanziert
-            {% if object.costs_covered_percent != 100 %}</span>{% endif %}
-            {% endif %}
+            {{ object.costs|intcomma }} €
           </td>
-          <td>
-            <span class="badge badge-{{ object.result_bootstrap_class }}">
-              {% if object.active %}
-                läuft
-              {% else %}
-                {{ object.get_result_display }}
-              {% endif %}
-            </span>
+        </tr>
+        <tr class="lawsuit-table-details">
+          <td></td>
+          <td colspan="6">
+            <div class="lawsuit-table-details-inner">
+              <div class="row">
+                <div class="col-md-6">
+                  <table>
+                    <tr>
+                      <th>Eingereicht am</th>
+                      <td>{{ object.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                    </tr>
+                    <tr>
+                      <th>Aktenzeichen</th>
+                      <td>{{ object.reference }}</td>
+                    </tr>
+                    <tr>
+                      <th>Kläger:in</th>
+                      <td>{{ object.plaintiff }}</td>
+                    </tr>
+                    <tr>
+                      <th>Gericht</th>
+                      <td>{{ object.court.name }}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="col-md-6">
+                  <table>
+                    <tr>
+                      <th>Beklagte</th>
+                      <td>{{ object.publicbody.name }}</td>
+                    </tr>
+                    <tr>
+                      <th>Kosten</th>
+                      <td>{{ object.costs | intcomma }} €</td>
+                    </tr>
+                    <tr>
+                      <th>Anfrage</th>
+                      <td>
+                        <a href="{{ object.request.get_absolute_url }}">
+                          {{ object.request.title }}
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Status</th>
+                      <td class="text-{{ object.result_bootstrap_class }}">
+                        {% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+              <div class="mt-4 text-body">
+                {{ object.description | markdown }}
+                {{ object.links | markdown }}
+              </div>
+            </div>
           </td>
         </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="3" class="text-right">
+        <td colspan="5" class="text-right">
           Kosten insgesamt
         </td>
         <td class="text-right">
-          {{ total_costs|intcomma }}&nbsp;EUR
+          {{ total_costs|intcomma }} €
         </td>
-        <td></td>
-      </tr>
+      </tr> 
       <tr>
-        <td colspan="3" class="text-right">
-          Kosten gedeckt
+        <td colspan="5" class="text-right">
+          <strong>Ungedeckte Kosten</strong>
         </td>
-        <td class="text-right">
-          {{ total_costs_percentage }}%
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td colspan="3" class="text-right">
-          <strong>Kosten nicht gedeckt</strong>
-        </td>
-        <td class="text-right">
-          {{ total_costs_not_covered|intcomma }}&nbsp;EUR
-        </td>
-        <td>
-          <a href="/spenden/?pk_campaign=lawsuit-list&pk_keyword=tablesum">
-            Spenden
-          </a>
+        <td class="text-right text-danger">
+          {{ total_costs_not_covered|intcomma }} €
         </td>
       </tr>
     </tfoot>
   </table>
 </div>
 
-<div class="row justify-content-center">
-  <div class="col-md-10 col-lg-8">
+{% addtoblock "js" %}
+  <script src="{% static "js/lawsuits_table.js" %}"></script>
+{% endaddtoblock %}
 
-{% for object in object_list %}
-<div class="card mb-3" id="klage-detail-{{ object.pk }}">
-    <div class="card-header">
-      {% if object.plaintiff_name %}{{ object.plaintiff_name }} gegen {% endif %}
-      <strong>{{ object.publicbody.name }}</strong>
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">
-        {{ object.title }}{% if object.reference %} ({{ object.reference }}){% endif %}
-        {% if object.court %}am {{ object.court.name }}{% endif %}
-      </h5>
-
-      <dl>
-        {% if object.request %}
-          <dt>
-            Anfrage auf FragDenStaat.de
-          </dt>
-          <dd>
-            <a href="{{ object.request.get_absolute_url }}">
-              {{ object.request.title }}
-            </a>
-          </dd>
-        {% endif %}
-        {% if object.start_date %}
-          <dt>
-            Klage eingereicht am
-          </dt>
-          <dd>
-            {{ object.start_date|date:"DATE_FORMAT" }}
-          </dd>
-        {% endif %}
-        {% if object.end_date %}
-          <dt>
-            Abgeschlossen am
-          </dt>
-          <dd>
-            {{ object.end_date|date:"DATE_FORMAT" }}
-          </dd>
-        {% endif %}
-        {% if object.result %}
-          <dt>
-            Ergebnis
-          </dt>
-          <dd>
-            <span class="badge badge-{{ object.result_bootstrap_class }}">
-              {{ object.get_result_display }}
-            </span>
-          </dd>
-        {% endif %}
-      </dl>
-
-      {{ object.description | markdown }}
-
-      {% if object.links %}
-      <h4>Links</h4>
-      {{ object.links | markdown }}
-      {% endif %}
-
-      <h4>Kosten</h4>
-      <table class="table">
-        {% if object.costs %}
-          <tr class="text-right">
-            <td>Insgesamt</td>
-            <td>
-              {{ object.costs|intcomma }}&nbsp;EUR
-            </td>
-          </tr>
-        {% endif %}
-        {% if object.costs_covered_percent %}
-          <tr class="text-right">
-            <td>Finanzierung</td>
-            <td>
-              {{ object.costs_covered_percent }}%
-            </td>
-          </dd>
-        {% endif %}
-        {% if object.costs_deficit %}
-          <tr class="text-right">
-            <td>Ungedeckte Kosten</td>
-            <td>
-            {{ object.costs_deficit|intcomma }}&nbsp;EUR
-            </td>
-          </tr>
-        {% endif %}
-      </table>
-      {% if object.cost_detail %}
-      {{ object.cost_detail | markdown }}
-      {% endif %}
-      {% if object.needs_money %}
-        <div class="text-right">
-          <a href="/spenden/?pk_campaign=lawsuit-list&pk_keyword=lawsuit-{{ object.id }}" class="btn btn-primary">
-            Spenden Sie für diese Klage
-          </a>
-        </div>
-      {% endif %}
-    </div>
-  </div>
-{% endfor %}
-</div>
-</div>
+{% addtoblock 'css' %}
+  <link rel="stylesheet" href="{% static "css/lawsuits_table.css" %}">
+{% endaddtoblock %}

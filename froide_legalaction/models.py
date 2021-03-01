@@ -10,7 +10,26 @@ from django_fsm import FSMField
 from froide.publicbody.models import PublicBody
 from froide.foirequest.models import FoiRequest, FoiMessage
 
+RESULTS = (
+    ('won', _('gewonnen')),
+    ('lost', _('verloren')),
+    ('not_accepted', _('nicht angenommen')),
+    ('partially_successful', _('teilweise erfolgreich')),
+    ('settled', _('Erledigung')),
+)
 
+COURTS = (
+    ('VG', _('Verwaltungsgericht')),
+    ('OVG', _('Oberverwaltungsgericht')),
+    ('BVerwG', _('Bundesverwaltungsgericht')),
+    ('LG', _('Landgericht')),
+    ('OLG', _('Oberlandesgericht')),
+    ('BVerfG', _('Bundesverfassungsgericht')),
+    ('LVerfG', _('Landesverfassungsgericht')),
+    ('EUG', _('Gericht der Europäischen Union')),
+    ('EUGH', _('Europäischer Gerichtshof')),
+    ('EMRK', _('European Court of Human Rights')),
+)
 class Lawsuit(models.Model):
     title = models.CharField(max_length=255, blank=True)
     reference = models.CharField(max_length=255, blank=True)
@@ -42,18 +61,7 @@ class Lawsuit(models.Model):
         on_delete=models.SET_NULL
     )
 
-    court_type = models.CharField(max_length=25, choices=(
-        ('VG', _('Verwaltungsgericht')),
-        ('OVG', _('Oberverwaltungsgericht')),
-        ('BVerwG', _('Bundesverwaltungsgericht')),
-        ('LG', _('Landgericht')),
-        ('OLG', _('Oberlandesgericht')),
-        ('BVerfG', _('Bundesverfassungsgericht')),
-        ('LVerfG', _('Landesverfassungsgericht')),
-        ('EUG', _('Gericht der Europäischen Union')),
-        ('EUGH', _('Europäischer Gerichtshof')),
-        ('EMRK', _('European Court of Human Rights')),
-    ), blank=True)
+    court_type = models.CharField(max_length=25, choices=COURTS, blank=True)
     court = models.ForeignKey(
         PublicBody, null=True, blank=True,
         related_name='ruling_over',
@@ -66,13 +74,7 @@ class Lawsuit(models.Model):
     )
     active = models.BooleanField(default=True)
 
-    result = models.CharField(max_length=20, blank=True, choices=(
-        ('won', _('gewonnen')),
-        ('lost', _('verloren')),
-        ('not_accepted', _('nicht angenommen')),
-        ('partially_successful', _('teilweise erfolgreich')),
-        ('settled', _('Erledigung')),
-    ))
+    result = models.CharField(max_length=20, blank=True, choices=RESULTS)
     public = models.BooleanField(default=False)
 
     class Meta:
@@ -110,14 +112,22 @@ class Lawsuit(models.Model):
     @property
     def result_bootstrap_class(self):
         if self.active:
-            return 'light'
+            return 'secondary'
         if self.result in ('won', 'partially_successful'):
             return 'success'
         if self.result in ('lost', 'not_accepted'):
-            return 'dark'
-        if self.result in ('settled',):
-            return 'secondary'
-        return 'light'
+            return 'danger'
+        return 'secondary'
+    
+    @property
+    def result_icon(self):
+        if self.active:
+            return 'clock-o'
+        if self.result in ('won', 'partially_successful'):
+            return 'check'
+        if self.result in ('lost', 'not_accepted'):
+            return 'times'
+        return 'clock-o'
 
 
 class Proposal(models.Model):

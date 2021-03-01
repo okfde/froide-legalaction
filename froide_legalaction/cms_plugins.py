@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
-from .models import Lawsuit
+from .models import Lawsuit, RESULTS, COURTS
 
 
 @plugin_pool.register_plugin
@@ -14,7 +14,7 @@ class LawsuitTablePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
-        lawsuits = Lawsuit.objects.filter(public=True).select_related(
+        lawsuits = Lawsuit.objects.filter(public=True).order_by('-start_date').select_related(
             'publicbody', 'court', 'request', 'plaintiff_user'
         )
         costs = sum(l.costs for l in lawsuits if l.costs)
@@ -29,5 +29,7 @@ class LawsuitTablePlugin(CMSPluginBase):
             'total_costs': costs,
             'total_costs_not_covered': costs - costs_covered,
             'total_costs_percentage': costs_percentage,
+            'result_options': RESULTS,
+            'court_options': COURTS
         })
         return context
