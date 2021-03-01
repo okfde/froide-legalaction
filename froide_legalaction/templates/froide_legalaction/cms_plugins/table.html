@@ -57,7 +57,9 @@
           <td class="lawsuit-table-item-title">
             <a href="#klage-detail-{{ object.pk }}" class="d-flex">
               {{ object.title }}
-              <span class="small ml-2"><i class="fa fa-chevron-down"></i></span>
+              <span class="small ml-2">
+                <i class="fa fa-chevron-down"></i>
+              </span>
             </a>
           </td>
           <td>
@@ -104,7 +106,13 @@
                     </tr>
                     <tr>
                       <th>Kosten</th>
-                      <td>{{ object.costs | intcomma }} €</td>
+                      <td>
+                        {% if object.costs %}
+                          {{ object.costs | intcomma }} €
+                        {% else %}
+                          <span class="text-muted">unbekannt</span>
+                        {% endif %}
+                      </td>
                     </tr>
                     <tr>
                       <th>Anfrage</th>
@@ -126,7 +134,7 @@
 
               <div class="mt-4 text-body">
                 {{ object.description | markdown }}
-                {{ object.links | markdown }}
+                {{ object.links | urlizetrunc | linebreaksbr }}
               </div>
             </div>
           </td>
