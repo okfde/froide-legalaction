@@ -134,7 +134,7 @@
 
               <div class="mt-4 text-body">
                 {{ object.description | markdown }}
-                {{ object.links | urlizetrunc | linebreaksbr }}
+                {{ object.links | urlizetrunc:25 | linebreaksbr }}
               </div>
             </div>
           </td>
