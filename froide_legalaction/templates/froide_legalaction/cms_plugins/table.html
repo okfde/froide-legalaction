@@ -69,7 +69,12 @@
             <abbr title="{{ object.court.name }}" data-toggle="tooltip">{{ object.court_type }}</abbr>
           </td>
           <td class="text-right">
-            {{ object.costs|intcomma }} €
+            {% if object.costs %}
+              {{ object.costs | intcomma }}&nbsp;€
+            {% else %}
+              <span class="text-muted">unbekannt</span>
+            {% endif %}
+
           </td>
         </tr>
         <tr class="lawsuit-table-details">
@@ -108,7 +113,7 @@
                       <th>Kosten</th>
                       <td>
                         {% if object.costs %}
-                          {{ object.costs | intcomma }} €
+                          {{ object.costs | intcomma }}&nbsp;€
                         {% else %}
                           <span class="text-muted">unbekannt</span>
                         {% endif %}
@@ -147,7 +152,7 @@
           Kosten insgesamt
         </td>
         <td class="text-right">
-          {{ total_costs|intcomma }} €
+          {{ total_costs|intcomma }}&nbsp;€
         </td>
       </tr> 
       <tr>
@@ -155,7 +160,7 @@
           <strong>Ungedeckte Kosten</strong>
         </td>
         <td class="text-right text-danger">
-          {{ total_costs_not_covered|intcomma }} €
+          {{ total_costs_not_covered|intcomma }}&nbsp;€
         </td>
       </tr>
     </tfoot>
