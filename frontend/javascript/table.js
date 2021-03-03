@@ -32,6 +32,8 @@ window.addEventListener('load', () => {
     for (const row of rows) {
       if (isRowActive(row)) toggleRow(row)
       const title = row.querySelector('.lawsuit-table-item-title').innerText.toLowerCase()
+      const reference = row.dataset.reference.toLowerCase()
+
       let show = true
 
       if (statusValue !== 'all' && row.dataset.status !== statusValue) {
@@ -42,7 +44,8 @@ window.addEventListener('load', () => {
         show = false
       }
 
-      if (searchText.length > 2 && !title.includes(searchText)) {
+      const found = title.includes(searchText) || reference.includes(searchText)
+      if (searchText.length > 2 && !found) {
         show = false
       }
 
