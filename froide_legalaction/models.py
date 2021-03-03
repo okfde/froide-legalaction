@@ -113,7 +113,7 @@ class Lawsuit(models.Model):
     def result_bootstrap_class(self):
         if self.active:
             return 'secondary'
-        if self.result in ('won', 'partially_successful'):
+        if self.result in ('won', 'partially_successful', 'settled'):
             return 'success'
         if self.result in ('lost', 'not_accepted'):
             return 'danger'
@@ -123,7 +123,7 @@ class Lawsuit(models.Model):
     def result_icon(self):
         if self.active:
             return 'clock-o'
-        if self.result in ('won', 'partially_successful'):
+        if self.result in ('won', 'partially_successful', 'settled'):
             return 'check'
         if self.result in ('lost', 'not_accepted'):
             return 'times'
