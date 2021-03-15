@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 from froide.foirequest.models import FoiRequest
-
+from froide.foirequest.auth import can_write_foirequest
 from .forms import LegalActionRequestForm
 
 
@@ -25,8 +25,10 @@ def request_form_page(request, pk=None):
         if not request.user.is_authenticated:
             raise Http404
         foirequest = get_object_or_404(
-            FoiRequest, pk=int(pk), user=request.user
+            FoiRequest, pk=int(pk)
         )
+        if not can_write_foirequest(foirequest, request):
+            raise Http404
 
     if request.method == 'POST':
         form = LegalActionRequestForm(request.POST, request.FILES,
