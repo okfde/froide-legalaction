@@ -1,0 +1,13 @@
+{% if lawsuits|length == 0 %}
+  <p class="text-muted">Aktuell stehen keine Termine an.</p>
+{% else %}
+<ul>
+  {% for lawsuit in lawsuits %}
+    <li>
+      <a href="/info/ueber/klagen/#klage-detail-{{ lawsuit.pk }}" data-toggle-row>{{ lawsuit }}</a>
+      <br>
+      <time datetime="{{ lawsuit.end_date|date:"c" }}">{{ lawsuit.end_date }}</time> am {{ lawsuit.court }}
+    </li>
+  {% endfor %}
+</ul>
+{% endif %}

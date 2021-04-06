@@ -100,6 +100,10 @@
                       <th>Gericht</th>
                       <td>{{ object.court.name }}</td>
                     </tr>
+                    <tr>
+                      <th>Termin</th>
+                      <td>{{ object.end_date|default:"unbekannt"}}</td>
+                    </tr>
                   </table>
                 </div>
 
@@ -115,7 +119,7 @@
                         {% if object.costs %}
                           {{ object.costs | intcomma }}&nbsp;€
                         {% else %}
-                          <span class="text-muted">unbekannt</span>
+                          unbekannt
                         {% endif %}
                       </td>
                     </tr>

@@ -66,15 +66,23 @@ window.addEventListener('load', () => {
   }
 
 
-  // check for permalink #klage-detail-$n
-  const [, pk] = /#klage-detail-(\d+)/.exec(window.location.hash) ?? []
-  if (pk) {
-    const row = table.querySelector(`tr[data-pk="${pk}"]`)
-    if (row) {
+  function toggleById(id = window.location.hash) {
+    const [, pk] = /klage-detail-(\d+)/.exec(id) ?? []
+    if (pk) {
+      const row = table.querySelector(`tr[data-pk="${pk}"]`)
       row.scrollIntoView()
-      toggleRow(row)
+      if (row && !isRowActive(row)) {
+        toggleRow(row)
+      }
     }
   }
+  toggleById()
+
+  document.querySelectorAll('a[data-toggle-row]').forEach(el => {
+    el.addEventListener('click', e => {
+      toggleById(e.target.hash)
+    })
+  })
 })
 
 const isRowActive = row => row.classList.contains('active')
