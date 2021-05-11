@@ -48,7 +48,7 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
 
         lawsuits = Lawsuit.objects.filter(
             public=True, end_date__gte=datetime.today()
-        ).order_by('-end_date').select_related('court')
+        ).order_by('end_date').select_related('court')
 
         context.update({
             'lawsuits': lawsuits
