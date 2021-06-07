@@ -30,14 +30,14 @@ COURTS = (
     ('EUGH', _('Europäischer Gerichtshof')),
     ('EMRK', _('European Court of Human Rights')),
 )
+
+
 class Lawsuit(models.Model):
     title = models.CharField(max_length=255, blank=True)
     reference = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
 
-    start_date = models.DateField(null=True, blank=True)
     last_update = models.DateField(null=True)
-    end_date = models.DateField(null=True, blank=True)
 
     costs = models.DecimalField(
         null=True, blank=True,
@@ -61,21 +61,16 @@ class Lawsuit(models.Model):
         on_delete=models.SET_NULL
     )
 
-    court_type = models.CharField(max_length=25, choices=COURTS, blank=True)
-    court = models.ForeignKey(
-        PublicBody, null=True, blank=True,
-        related_name='ruling_over',
-        on_delete=models.SET_NULL
-    )
     plaintiff = models.CharField(max_length=255, blank=True)
     plaintiff_user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True,
         on_delete=models.SET_NULL
     )
+
     active = models.BooleanField(default=True)
+    public = models.BooleanField(default=False)
 
     result = models.CharField(max_length=20, blank=True, choices=RESULTS)
-    public = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('lawsuit')
@@ -118,7 +113,7 @@ class Lawsuit(models.Model):
         if self.result in ('lost', 'not_accepted'):
             return 'danger'
         return 'secondary'
-    
+
     @property
     def result_icon(self):
         if self.active:
@@ -128,6 +123,24 @@ class Lawsuit(models.Model):
         if self.result in ('lost', 'not_accepted'):
             return 'times'
         return 'clock-o'
+
+
+class Instance(models.Model):
+    lawsuit = models.ForeignKey(Lawsuit, on_delete=models.CASCADE)
+
+    court_type = models.CharField(max_length=25, choices=COURTS, blank=True)
+    court = models.ForeignKey(
+        PublicBody, null=True, blank=True,
+        related_name='court_public_body',
+        on_delete=models.SET_NULL
+    )
+
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('lawsuit')
+        verbose_name_plural = _('lawsuits')
 
 
 class Proposal(models.Model):
