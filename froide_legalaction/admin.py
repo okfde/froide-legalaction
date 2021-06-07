@@ -1,16 +1,21 @@
 from django.contrib import admin
 from django.utils import timezone
 
-from .models import Lawsuit, Proposal, ProposalDocument
+from .models import Instance, Lawsuit, Proposal, ProposalDocument
+
+
+class InstanceInline(admin.TabularInline):
+    model = Instance
+    extra = 1
+    raw_id_fields = ('court', )
 
 
 class LawsuitAdmin(admin.ModelAdmin):
-    raw_id_fields = ('request', 'publicbody', 'court',
-                     'plaintiff_user',)
-    date_hierarchy = 'start_date'
-    list_display = ('title', 'start_date', 'court_type',
-                    'public', 'active', 'result')
-    list_filter = ('active', 'public', 'result', 'court_type',)
+    raw_id_fields = ('request', 'publicbody', 'plaintiff_user',)
+    # date_hierarchy = 'start_date'
+    list_display = ('title', 'public', 'active', 'result')
+    list_filter = ('active', 'public', 'result',)
+    inlines = [InstanceInline]
 
     def save_model(self, request, obj, form, change):
         obj.last_update = timezone.now()
