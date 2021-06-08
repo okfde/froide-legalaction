@@ -34,9 +34,8 @@
   <table class="table table-fixed">
     <thead>
       <tr>
-        <th><span class="sr-only">Nummer</span></th>
         <th><span class="sr-only">Status</span></th>
-        <th>Thema</th>
+        <th class="topic">Thema</th>
         <th>Eingereicht am</th>
         <th>Gericht</th>
         <th class="text-right">Kosten</th>
@@ -49,8 +48,7 @@
             <span>Keine Ergebnisse gefunden.</span>
           </td>
         </tr>
-        <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" data-status="{% if object.active %}active{% else %}{{ object.result }}{% endif %}" data-court="{{ object.court_type }}" data-reference="{{ object.reference }}" id="klage-detail-{{ object.pk }}">
-          <td>{{ object.pk }}</td>
+        <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" data-status="{% if object.active %}active{% else %}{{ object.result }}{% endif %}" data-court="{{ object.last_instance.court_type }}" data-reference="{{ object.reference }}" id="klage-detail-{{ object.pk }}">
           <td class="text-center">
             <i class="fa fa-{{ object.result_icon }} text-{{ object.result_bootstrap_class }}" data-toggle="tooltip" title="{% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}"></i>
           </td>
@@ -66,7 +64,7 @@
             {{ object.start_date|date:"SHORT_DATE_FORMAT" }}
           </td>
           <td>
-            <abbr title="{{ object.court.name }}" data-toggle="tooltip">{{ object.court_type }}</abbr>
+            <abbr title="{{ object.last_instance.court.name }}" data-toggle="tooltip">{{ object.last_instance.court_type }}</abbr>
           </td>
           <td class="text-right">
             {% if object.costs %}
@@ -78,81 +76,61 @@
           </td>
         </tr>
         <tr class="lawsuit-table-details">
-          <td></td>
-          <td colspan="6">
+          <td colspan="5">
             <div class="lawsuit-table-details-inner">
-              <div class="row">
-                <div class="col-md-6">
-                  <table>
-                    <tr>
-                      <th>Eingereicht am</th>
-                      <td>{{ object.start_date|date:"SHORT_DATE_FORMAT" }}</td>
-                    </tr>
-                    <tr>
-                      <th>Aktenzeichen</th>
-                      <td>{{ object.reference }}</td>
-                    </tr>
-                    <tr>
-                      <th>Kläger:in</th>
-                      <td>{{ object.plaintiff }}</td>
-                    </tr>
-                    <tr>
-                      <th>Gericht</th>
-                      <td>{{ object.court.name }}</td>
-                    </tr>
-                    <tr>
-                      <th>Termin</th>
-                      <td>{{ object.end_date|default:"unbekannt"}}</td>
-                    </tr>
-                  </table>
-                </div>
+              <dl>
+                <dt>Eingereicht am</dt>
+                <dd>{{ object.start_date|date:"SHORT_DATE_FORMAT" }}</dd>
+            
+                <dt>Aktenzeichen</dt>
+                <dd>{{ object.reference }}</dd>
+            
+                <dt>Kläger:in</dt>
+                <dd>{{ object.plaintiff }}</dd>
+            
+                <dt>Gericht</dt>
+                <dd>{{ object.courts | join:", " }}</dd>
+            
+                <dt>Termin</dt>
+                <dd>{{ object.end_date|default:"unbekannt"}}</dd>
+            
+                <dt>Beklagte</dt>
+                <dd>{{ object.publicbody.name }}</dd>
+            
+                <dt>Kosten</dt>
+                <dd>
+                  {% if object.costs %}
+                    {{ object.costs | intcomma }}&nbsp;€
+                  {% else %}
+                    unbekannt
+                  {% endif %}
+                </dd>
 
-                <div class="col-md-6">
-                  <table>
-                    <tr>
-                      <th>Beklagte</th>
-                      <td>{{ object.publicbody.name }}</td>
-                    </tr>
-                    <tr>
-                      <th>Kosten</th>
-                      <td>
-                        {% if object.costs %}
-                          {{ object.costs | intcomma }}&nbsp;€
-                        {% else %}
-                          unbekannt
-                        {% endif %}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>Anfrage</th>
-                      <td>
-                        <a href="{{ object.request.get_absolute_url }}">
-                          {{ object.request.title }}
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>Status</th>
-                      <td class="text-{{ object.result_bootstrap_class }}">
-                        {% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
+                <dt>Anfrage</dt>
+                <dd>
+                  <a href="{{ object.request.get_absolute_url }}">
+                    {{ object.request.title }}
+                  </a>
+                </dd>
+            
+                <dt>Status</dt>
+                <dd class="text-{{ object.result_bootstrap_class }}">
+                  {% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}
+                </dd>
+              </dl>
 
               <div class="mt-4 text-body">
                 {{ object.description | markdown }}
                 {{ object.links | markdown }}
               </div>
             </div>
-          </td>
+          </dd>
         </tr>
       {% endfor %}
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="5" class="text-right">
+        <td colspan="4" class="text-right">
           Kosten insgesamt
         </td>
         <td class="text-right">
@@ -160,7 +138,7 @@
         </td>
       </tr> 
       <tr>
-        <td colspan="5" class="text-right">
+        <td colspan="4" class="text-right">
           <strong>Ungedeckte Kosten</strong>
         </td>
         <td class="text-right text-danger">

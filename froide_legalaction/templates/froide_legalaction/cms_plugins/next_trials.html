@@ -9,7 +9,7 @@
       <a href="/info/ueber/klagen/#klage-detail-{{ lawsuit.pk }}" data-toggle-row>{{ lawsuit }}</a>
       <br>
       <time datetime="{{ lawsuit.end_date|date:"c" }}">{{ lawsuit.end_date }}</time>
-      {% blocktrans with court=lawsuit.court %}at {{ court }}{% endblocktrans %}
+      {% blocktrans with court=lawsuit.last_instance.court %}at {{ court }}{% endblocktrans %}
     </li>
   {% endfor %}
 </ul>

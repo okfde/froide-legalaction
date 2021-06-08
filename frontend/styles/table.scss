@@ -2,8 +2,27 @@
 
 
 .lawsuits-table-plugin {
+  table {
+    width: 100%;
+  }
+  
   .lawsuit-table-details {
     display: none;
+  }
+
+  @include media-breakpoint-down(md) {
+    td:nth-child(n+3), th:nth-child(n+3) {
+      display: none;
+    }
+  }
+
+  th {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  th.topic {
+    width: max-content;
   }
 
   tr.active {
@@ -21,7 +40,7 @@
       display: table-row;
     }
 
-    td:nth-child(n+4) {
+    td:nth-child(n+3) {
       display: none;
     }
   }
@@ -37,21 +56,26 @@
       padding: 2rem 1rem;
     }
 
-    table {
+    dl {
       width: 100%;
+      
+      @include media-breakpoint-up(md) {
+        display: grid;
+        grid-template-columns: min-content 1fr min-content 1fr;
+      }
     }
 
     td, th {
       border-top: none;
       padding: 0;
-      padding-bottom: 0.25rem;
     }
-
-    th {
+    
+    dt {
       font-weight: normal;
       color: $body-color;
       padding-right: 0.75rem;
       hyphens: none;
+      white-space: nowrap;
     }
 
     td {
