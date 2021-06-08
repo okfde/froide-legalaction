@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
-from datetime import datetime
+from datetime import date
 
 from .models import Lawsuit, RESULTS, COURTS
 
@@ -16,8 +16,8 @@ class LawsuitTablePlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
-        lawsuits = Lawsuit.objects.filter(public=True).order_by('-start_date').select_related(
-            'publicbody', 'court', 'request', 'plaintiff_user'
+        lawsuits = Lawsuit.objects.filter(public=True).select_related(
+            'publicbody', 'request', 'plaintiff_user'
         )
         costs = sum(l.costs for l in lawsuits if l.costs)
         costs_covered = sum(l.costs_covered for l in lawsuits
@@ -46,11 +46,10 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
 
-        lawsuits = Lawsuit.objects.filter(
-            public=True, end_date__gte=datetime.today()
-        ).order_by('end_date').select_related('court')
+        lawsuits = Lawsuit.objects.filter(public=True)
+        today = date.today()
 
         context.update({
-            'lawsuits': lawsuits
+            'lawsuits': list(filter(lambda lawsuit: lawsuit.end_date and lawsuit.end_date >= today, lawsuits))
         })
         return context

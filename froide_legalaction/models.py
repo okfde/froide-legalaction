@@ -81,6 +81,30 @@ class Lawsuit(models.Model):
         return self.title
 
     @property
+    def instances(self):
+        return Instance.objects.filter(lawsuit=self).select_related('court')
+
+    @property
+    def first_instance(self):
+        return self.instances.order_by('start_date').first()
+
+    @property
+    def last_instance(self):
+        return self.instances.order_by('-start_date').first()
+
+    @property
+    def start_date(self):
+        return self.first_instance.start_date if self.first_instance else None
+
+    @property
+    def end_date(self):
+        return self.last_instance.end_date if self.last_instance else None
+
+    @property
+    def courts(self):
+        return map(lambda instance: instance.court, self.instances)
+
+    @property
     def costs_covered_percent(self):
         if self.costs and self.costs_covered:
             return int(self.costs_covered / self.costs * 100)
