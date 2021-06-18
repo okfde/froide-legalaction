@@ -42,12 +42,12 @@
       </tr>
     </thead>
     <tbody>
+      <tr class="lawsuit-table-none hidden">
+        <td colspan="6" class="text-center py-5">
+          <span>Keine Ergebnisse gefunden.</span>
+        </td>
+      </tr>
       {% for object in object_list %}
-        <tr class="lawsuit-table-none hidden">
-          <td colspan="6" class="text-center py-5">
-            <span>Keine Ergebnisse gefunden.</span>
-          </td>
-        </tr>
         <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" data-status="{% if object.active %}active{% else %}{{ object.result }}{% endif %}" data-court="{{ object.last_instance.court_type }}" data-reference="{{ object.reference }}" id="klage-detail-{{ object.pk }}">
           <td class="text-center">
             <i class="fa fa-{{ object.result_icon }} text-{{ object.result_bootstrap_class }}" data-toggle="tooltip" title="{% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}"></i>
