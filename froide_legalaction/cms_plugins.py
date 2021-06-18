@@ -50,6 +50,6 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
         today = date.today()
 
         context.update({
-            'lawsuits': list(filter(lambda lawsuit: lawsuit.end_date and lawsuit.end_date >= today, lawsuits))
+            'lawsuits': list(lawsuit for lawsuit in lawsuits if lawsuit.end_date and lawsuit.end_date >= today)
         })
         return context
