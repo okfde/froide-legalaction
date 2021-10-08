@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from django.urls import include
+from django.urls import path
 from django.utils.translation import pgettext_lazy
 from django.views.decorators.clickjacking import xframe_options_exempt
 
@@ -17,4 +19,5 @@ urlpatterns = [
         klageautomat, name='klageautomat-index'),
     url(pgettext_lazy('url part', r'^klageautomat/request/(?P<pk>\d+)/$'),
         KlageAutomatWizard.as_view(), name='klageautomat-form_wizard'),
+    path('klageautomat/admin/', include('legal_advice_builder.urls'))
 ]
