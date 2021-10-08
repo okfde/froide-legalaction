@@ -117,18 +117,8 @@ class KlageAutomatWizard(FormWizardView):
                 'behoerde_adresse': {
                     'initial': foi_request.public_body.address
                 },
-                'anfrage_gesetz': {
-                    'initial': [foi_request.law.law_type]
-                },
                 'anfrage_text': {
                     'initial': foi_request.messages[0].plaintext
-                },
-                'anfrage_datum': {
-                    'initial': foi_request.first_message.date()
-                },
-                'anfrage_frist': {
-                    'initial': foi_request.due_date.date().strftime(
-                        "%Y-%m-%d"),
                 },
                 'name': {
                     'initial': '{} {}'.format(
