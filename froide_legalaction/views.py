@@ -10,6 +10,7 @@ from legal_advice_builder.models import LawCase
 
 from froide.foirequest.models import FoiRequest
 from froide.foirequest.auth import can_write_foirequest
+from froide.publicbody.models import Classification, PublicBody
 from .forms import LegalActionRequestForm
 
 
@@ -101,8 +102,34 @@ class KlageAutomatWizard(FormWizardView):
             messages[key] = message
         return messages
 
+    def get_public_body_type(self, public_body):
+        return public_body.jurisdiction.slug
+
+    def get_classification(self, type):
+        if type == 'bund':
+            return Classification.objects.get(
+                slug='bundesverwaltungsgericht')
+        else:
+            return Classification.objects.get(
+                slug='verwaltungsgericht')
+
+    def get_court_for_public_body(self, public_body):
+        jurisdiction = public_body.jurisdiction
+        type = self.get_public_body_type(public_body)
+        classification = self.get_classification(type)
+        court = PublicBody.objects.filter(
+            classification=classification,
+            jurisdiction=jurisdiction
+        ).first()
+        if court:
+            return court.name, court.address
+        else:
+            return '', ''
+
     def get_initial_dict(self):
         foi_request = self.get_foirequest()
+        public_body = foi_request.public_body
+        court_name, court_address = self.get_court_for_public_body(public_body)
         return {
             'pruefen': {
                 'antragstellung': {
@@ -112,10 +139,19 @@ class KlageAutomatWizard(FormWizardView):
             },
             'person': {
                 'behoerde_name': {
-                    'initial': foi_request.public_body.name
+                    'initial': public_body.name
                 },
                 'behoerde_adresse': {
-                    'initial': foi_request.public_body.address
+                    'initial': public_body.address
+                },
+                'behoerde_type': {
+                    'initial': self.get_public_body_type(public_body),
+                },
+                'gericht_name': {
+                    'initial': court_name
+                },
+                'gericht_adresse': {
+                    'initial': court_address
                 },
                 'anfrage_text': {
                     'initial': foi_request.messages[0].plaintext
