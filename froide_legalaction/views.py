@@ -105,26 +105,22 @@ class KlageAutomatWizard(FormWizardView):
     def get_public_body_type(self, public_body):
         return public_body.jurisdiction.slug
 
-    def get_classification(self, type):
-        if type == 'bund':
-            return Classification.objects.get(
-                slug='bundesverwaltungsgericht')
-        else:
-            return Classification.objects.get(
-                slug='verwaltungsgericht')
+    def get_classification(self):
+        return Classification.objects.get(
+            slug='verwaltungsgerichte')
 
     def get_court_for_public_body(self, public_body):
-        jurisdiction = public_body.jurisdiction
-        type = self.get_public_body_type(public_body)
-        classification = self.get_classification(type)
-        court = PublicBody.objects.filter(
-            classification=classification,
-            jurisdiction=jurisdiction
-        ).first()
-        if court:
-            return court.name, court.address
-        else:
-            return '', ''
+        geo = public_body.geo
+        if geo:
+            classification = self.get_classification()
+            court_type_ids = classification.get_children().values_list(
+                'id', flat=True)
+            court = PublicBody.objects.filter(
+                regions__geom__intersects=geo,
+                classification__id__in=court_type_ids).first()
+            if court:
+                return court.name, court.address
+        return '', ''
 
     def get_initial_dict(self):
         foi_request = self.get_foirequest()
