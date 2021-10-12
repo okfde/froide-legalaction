@@ -165,3 +165,11 @@ class KlageAutomatWizard(FormWizardView):
                 }
             }
         }
+
+    def save_answers(self, answers):
+        answer = super().save_answers(answers)
+        answer.extra_info = {
+            'foi_request': self.get_foirequest().id
+        }
+        answer.save()
+        return answer
