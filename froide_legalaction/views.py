@@ -103,6 +103,10 @@ class KlageAutomatWizard(FormWizardView):
                 message.timestamp.date(),
                 message.sender_name,
                 message.subject)
+            for attachment in message.foiattachment_set.all():
+                if not attachment.is_irrelevant and not attachment.is_redacted:
+                    attachment_key = 'attachment_{}'.format(attachment.id)
+                    messages[attachment_key] = attachment.name
         return messages
 
     def get_public_body_type(self, public_body):
