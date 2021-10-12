@@ -99,7 +99,10 @@ class KlageAutomatWizard(FormWizardView):
         messages = {}
         for message in foirequest.messages:
             key = 'message_{}'.format(message.id)
-            messages[key] = message
+            messages[key] = 'am {} von {}: {}'.format(
+                message.timestamp.date(),
+                message.sender_name,
+                message.subject)
         return messages
 
     def get_public_body_type(self, public_body):
