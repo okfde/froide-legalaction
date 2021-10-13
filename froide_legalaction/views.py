@@ -86,9 +86,17 @@ class KlageAutomatWizard(FormWizardView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'foi_request': self.get_foirequest()
+            'foi_request': self.get_foirequest(),
+            'answer': self.get_existing_answer()
         })
         return context
+
+    def get_existing_answer(self):
+        return Answer.objects.filter(
+            law_case=self.get_lawcase(),
+            creator=self.request.user,
+            extra_info__foi_request=self.get_foirequest().id
+        )
 
     def get_lawcase(self):
         return LawCase.objects.all().first()
@@ -183,6 +191,7 @@ class KlageAutomatWizard(FormWizardView):
         }
         answer.save()
         Answer.objects.filter(
+            law_case=self.get_lawcase(),
             creator=self.request.user,
             extra_info__foi_request=foi_request.id
         ).exclude(id=answer.id).delete()
@@ -194,9 +203,13 @@ class KlageautomatAnswerEditView(UpdateView):
     model = Answer
     form_class = RenderedDocumentForm
 
+    def get_lawcase(self):
+        return LawCase.objects.all().first()
+
     def get_object(self):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
+            law_case=self.get_lawcase(),
             creator=self.request.user,
             extra_info__foi_request=foi_request.id).last()
 
