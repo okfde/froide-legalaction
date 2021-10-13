@@ -2,11 +2,13 @@ from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.generic.edit import UpdateView
 from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
 
 from legal_advice_builder.views import FormWizardView
-from legal_advice_builder.models import LawCase
+from legal_advice_builder.forms import RenderedDocumentForm
+from legal_advice_builder.models import LawCase, Answer
 
 from froide.foirequest.models import FoiRequest
 from froide.foirequest.auth import can_write_foirequest
@@ -180,3 +182,29 @@ class KlageAutomatWizard(FormWizardView):
         }
         answer.save()
         return answer
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class KlageautomatAnswerEditView(UpdateView):
+    model = Answer
+    form_class = RenderedDocumentForm
+
+    def get_object(self):
+        foi_request = self.get_foirequest()
+        return Answer.objects.get(
+            creator=self.request.user,
+            extra_info__foi_request=foi_request.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'foi_request': self.get_foirequest()
+        })
+        return context
+
+    def get_foirequest(self):
+        pk = self.kwargs.get('pk')
+        return FoiRequest.objects.get(pk=pk)
+
+    def get_success_url(self):
+        return self.request.path
