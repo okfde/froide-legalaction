@@ -7,7 +7,8 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .views import (request_form_page, thanks_page,
                     klageautomat, KlageAutomatWizard,
-                    KlageautomatAnswerEditView)
+                    KlageautomatAnswerEditView,
+                    KlageautomatAnswerDownloadView)
 
 urlpatterns = [
     url(r'^$', xframe_options_exempt(request_form_page),
@@ -23,5 +24,9 @@ urlpatterns = [
     url(pgettext_lazy('url part',
                       r'^klageautomat/request/(?P<pk>\d+)/answer/$'),
         KlageautomatAnswerEditView.as_view(), name='klageautomat-edit-answer'),
+    url(pgettext_lazy('url part',
+                      r'^klageautomat/request/(?P<pk>\d+)/answer/download$'),
+        KlageautomatAnswerDownloadView.as_view(),
+        name='klageautomat-download-answer'),
     path('klageautomat/admin/', include('legal_advice_builder.urls'))
 ]

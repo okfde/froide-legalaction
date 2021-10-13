@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
 
-from legal_advice_builder.views import FormWizardView
+from legal_advice_builder.views import FormWizardView, PdfDownloadView
 from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import LawCase, Answer
 
@@ -216,7 +217,8 @@ class KlageautomatAnswerEditView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'foi_request': self.get_foirequest()
+            'foi_request': self.get_foirequest(),
+            'law_case': self.get_lawcase()
         })
         return context
 
@@ -226,3 +228,25 @@ class KlageautomatAnswerEditView(UpdateView):
 
     def get_success_url(self):
         return self.request.path
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class KlageautomatAnswerDownloadView(PdfDownloadView):
+
+    def get_lawcase(self):
+        return LawCase.objects.all().first()
+
+    def get_foirequest(self):
+        pk = self.kwargs.get('pk')
+        return FoiRequest.objects.get(pk=pk)
+
+    def get_answer(self):
+        foi_request = self.get_foirequest()
+        return Answer.objects.filter(
+            law_case=self.get_lawcase(),
+            creator=self.request.user,
+            extra_info__foi_request=foi_request.id).last()
+
+    def get_filename(self):
+        return '{}_{}.pdf'.format(self.get_lawcase(),
+                                  self.get_foirequest().id)
