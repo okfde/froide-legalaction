@@ -177,10 +177,15 @@ class KlageAutomatWizard(FormWizardView):
 
     def save_answers(self, answers):
         answer = super().save_answers(answers)
+        foi_request = self.get_foirequest()
         answer.extra_info = {
-            'foi_request': self.get_foirequest().id
+            'foi_request': foi_request.id
         }
         answer.save()
+        Answer.objects.filter(
+            creator=self.request.user,
+            extra_info__foi_request=foi_request.id
+        ).exclude(id=answer.id).delete()
         return answer
 
 
@@ -191,9 +196,9 @@ class KlageautomatAnswerEditView(UpdateView):
 
     def get_object(self):
         foi_request = self.get_foirequest()
-        return Answer.objects.get(
+        return Answer.objects.filter(
             creator=self.request.user,
-            extra_info__foi_request=foi_request.id)
+            extra_info__foi_request=foi_request.id).last()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
