@@ -76,9 +76,26 @@ def thanks_page(request):
     })
 
 
-@staff_member_required
-def klageautomat(request):
-    return render(request, 'legal_advice_builder/foirequest_list.html', {})
+@method_decorator(staff_member_required, name='dispatch')
+class KlageautomatFoirequestList(TemplateView):
+    template_name = 'legal_advice_builder/foirequest_list.html'
+
+    def get_foi_requests(self):
+        search = self.request.GET.get('Search')
+        my_requests = self.request.GET.get('myRequests')
+        if search or my_requests:
+            filter = {}
+            filter['title'] = search
+            if my_requests and my_requests == 'on':
+                filter['user'] = self.request.user
+            return FoiRequest.objects.filter(**filter)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'foi_requests': self.get_foi_requests()
+        })
+        return context
 
 
 @method_decorator(staff_member_required, name='dispatch')
