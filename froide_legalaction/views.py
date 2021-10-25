@@ -85,7 +85,8 @@ class KlageautomatFoirequestList(TemplateView):
         my_requests = self.request.GET.get('myRequests')
         if search or my_requests:
             filter = {}
-            filter['title'] = search
+            if not search == '':
+                filter['title'] = search
             if my_requests and my_requests == 'on':
                 filter['user'] = self.request.user
             return FoiRequest.objects.filter(**filter)
@@ -142,17 +143,16 @@ class KlageAutomatWizard(FormWizardView):
 
     def get_classification(self):
         return Classification.objects.get(
-            slug='verwaltungsgerichte')
+            slug='verwaltungsgericht')
 
     def get_court_for_public_body(self, public_body):
         geo = public_body.geo
         if geo:
-            classification = self.get_classification()
-            court_type_ids = classification.get_children().values_list(
-                'id', flat=True)
+            vg_classification = self.get_classification()
             court = PublicBody.objects.filter(
-                regions__geom__intersects=geo,
-                classification__id__in=court_type_ids).first()
+                classification=vg_classification,
+                regions__geom__intersects=geo
+            ).first()
             if court:
                 return court.name, court.address
         return '', ''
