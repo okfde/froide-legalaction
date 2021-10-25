@@ -185,7 +185,7 @@ class KlageAutomatWizard(FormWizardView):
                     'initial': court_address
                 },
                 'anfrage_text': {
-                    'initial': foi_request.messages[0].plaintext
+                    'initial': foi_request.description
                 },
                 'name': {
                     'initial': '{} {}'.format(
