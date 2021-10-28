@@ -1,3 +1,4 @@
+from django.db.models import Exists, OuterRef
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -81,7 +82,16 @@ def thanks_page(request):
 class KlageautomatFoirequestList(TemplateView):
     template_name = 'legal_advice_builder/foirequest_list.html'
 
+    def get_lawcase(self):
+        return LawCase.objects.all().first()
+
     def get_foi_requests(self):
+
+        subquery = Answer.objects.filter(
+            law_case=self.get_lawcase(),
+            external_id=OuterRef('pk')
+        )
+
         search = self.request.GET.get('Search')
         all_requests = self.request.GET.get('allRequests')
         filter = {
@@ -93,7 +103,9 @@ class KlageautomatFoirequestList(TemplateView):
                 filter['title__contains'] = search
             if all_requests and all_requests == 'on':
                 del filter['user']
-        return FoiRequest.objects.filter(**filter)
+        return FoiRequest.objects.filter(**filter).annotate(
+            answer_exists=Exists(subquery)
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -118,7 +130,7 @@ class KlageAutomatWizard(FormWizardView):
         return Answer.objects.filter(
             law_case=self.get_lawcase(),
             creator=self.request.user,
-            extra_info__foi_request=self.get_foirequest().id
+            external_id=self.get_foirequest().id
         )
 
     def get_lawcase(self):
@@ -208,14 +220,12 @@ class KlageAutomatWizard(FormWizardView):
     def save_answers(self, answers):
         answer = super().save_answers(answers)
         foi_request = self.get_foirequest()
-        answer.extra_info = {
-            'foi_request': foi_request.id
-        }
+        answer.external_id = foi_request.id
         answer.save()
         Answer.objects.filter(
             law_case=self.get_lawcase(),
             creator=self.request.user,
-            extra_info__foi_request=foi_request.id
+            external_id=foi_request.id
         ).exclude(id=answer.id).delete()
         return answer
 
@@ -233,7 +243,7 @@ class KlageautomatAnswerEditView(UpdateView):
         return Answer.objects.filter(
             law_case=self.get_lawcase(),
             creator=self.request.user,
-            extra_info__foi_request=foi_request.id).last()
+            external_id=foi_request.id).last()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -266,7 +276,7 @@ class KlageautomatAnswerDownloadView(PdfDownloadView):
         return Answer.objects.filter(
             law_case=self.get_lawcase(),
             creator=self.request.user,
-            extra_info__foi_request=foi_request.id).last()
+            external_id=foi_request.id).last()
 
     def get_filename(self):
         return '{}_{}.pdf'.format(self.get_lawcase(),
