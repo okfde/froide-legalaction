@@ -12,6 +12,7 @@ from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import LawCase, Answer
 
 from froide.foirequest.models import FoiRequest
+from froide.foirequest.models.request import Status
 from froide.foirequest.auth import can_write_foirequest
 from froide.publicbody.models import Classification, PublicBody
 from .forms import LegalActionRequestForm
@@ -84,7 +85,8 @@ class KlageautomatFoirequestList(TemplateView):
         search = self.request.GET.get('Search')
         all_requests = self.request.GET.get('allRequests')
         filter = {
-            'user': self.request.user
+            'user': self.request.user,
+            'status__in': [Status.AWAITING_RESPONSE, Status.ASLEEP]
         }
         if search or all_requests:
             if not search == '':
