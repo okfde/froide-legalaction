@@ -82,14 +82,16 @@ class KlageautomatFoirequestList(TemplateView):
 
     def get_foi_requests(self):
         search = self.request.GET.get('Search')
-        my_requests = self.request.GET.get('myRequests')
-        if search or my_requests:
-            filter = {}
+        all_requests = self.request.GET.get('allRequests')
+        filter = {
+            'user': self.request.user
+        }
+        if search or all_requests:
             if not search == '':
-                filter['title'] = search
-            if my_requests and my_requests == 'on':
-                filter['user'] = self.request.user
-            return FoiRequest.objects.filter(**filter)
+                filter['title__contains'] = search
+            if all_requests and all_requests == 'on':
+                del filter['user']
+        return FoiRequest.objects.filter(**filter)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
