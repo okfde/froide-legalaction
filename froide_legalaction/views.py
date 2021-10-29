@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.utils.translation import gettext_lazy as _
@@ -94,6 +95,7 @@ class KlageautomatFoirequestList(TemplateView):
 
         search = self.request.GET.get('Search')
         all_requests = self.request.GET.get('allRequests')
+        page_number = self.request.GET.get('page')
         filter = {
             'user': self.request.user,
             'status__in': [Status.AWAITING_RESPONSE, Status.ASLEEP]
@@ -103,14 +105,16 @@ class KlageautomatFoirequestList(TemplateView):
                 filter['title__contains'] = search
             if all_requests and all_requests == 'on':
                 del filter['user']
-        return FoiRequest.objects.filter(**filter).annotate(
+        foi_requests = FoiRequest.objects.filter(**filter).annotate(
             answer_exists=Exists(subquery)
         )
+        paginator = Paginator(foi_requests, 10)
+        return paginator.get_page(page_number)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'foi_requests': self.get_foi_requests()
+            'page_obj': self.get_foi_requests()
         })
         return context
 
