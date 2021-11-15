@@ -114,7 +114,7 @@ class KlageautomatFoirequestList(TemplateView):
             'user': self.request.user,
             'status__in': [Status.AWAITING_RESPONSE, Status.ASLEEP]
         }
-        if search or all_requests:
+        if search or all_requests or only_candidates:
             if not search == '':
                 filter['title__contains'] = search
             if all_requests and all_requests == 'on':
