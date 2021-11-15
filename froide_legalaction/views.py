@@ -99,10 +99,11 @@ class KlageautomatFoirequestList(TemplateView):
 
         now = timezone.now().date()
 
+        three_months_ago = now - timedelta(days=31 * 3)
+
         message_query = FoiMessage.objects.filter(
             request=OuterRef('pk'),
-            is_response=False,
-            timestamp__lte=now - timedelta(days=31 * 3)
+            timestamp__gte=three_months_ago
         )
 
         search = self.request.GET.get('Search')
@@ -119,10 +120,11 @@ class KlageautomatFoirequestList(TemplateView):
             if all_requests and all_requests == 'on':
                 del filter['user']
             if only_candidates and only_candidates == 'on':
-                filter['lawsuite_candidate'] = True
+                filter['needs_waiting'] = False
         foi_requests = FoiRequest.objects.annotate(
             answer_exists=Exists(subquery)
-        ).annotate(lawsuite_candidate=Exists(message_query)).filter(**filter)
+        ).annotate(
+            needs_waiting=Exists(message_query)).filter(**filter)
         paginator = Paginator(foi_requests, 10)
         return paginator.get_page(page_number)
 
