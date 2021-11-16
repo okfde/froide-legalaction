@@ -1,6 +1,9 @@
+from datetime import timedelta
+
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
@@ -13,10 +16,11 @@ from legal_advice_builder.views import FormWizardView, PdfDownloadView
 from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import LawCase, Answer
 
-from froide.foirequest.models import FoiRequest
+from froide.foirequest.models import FoiRequest, FoiMessage
 from froide.foirequest.models.request import Status
 from froide.foirequest.auth import can_write_foirequest
 from froide.publicbody.models import Classification, PublicBody
+
 from .forms import LegalActionRequestForm
 
 
@@ -93,21 +97,34 @@ class KlageautomatFoirequestList(TemplateView):
             external_id=OuterRef('pk')
         )
 
+        now = timezone.now().date()
+
+        three_months_ago = now - timedelta(days=31 * 3)
+
+        message_query = FoiMessage.objects.filter(
+            request=OuterRef('pk'),
+            timestamp__gte=three_months_ago
+        )
+
         search = self.request.GET.get('Search')
         all_requests = self.request.GET.get('allRequests')
+        only_candidates = self.request.GET.get('onlyCandidates')
         page_number = self.request.GET.get('page')
         filter = {
             'user': self.request.user,
             'status__in': [Status.AWAITING_RESPONSE, Status.ASLEEP]
         }
-        if search or all_requests:
+        if search or all_requests or only_candidates:
             if not search == '':
                 filter['title__contains'] = search
             if all_requests and all_requests == 'on':
                 del filter['user']
-        foi_requests = FoiRequest.objects.filter(**filter).annotate(
+            if only_candidates and only_candidates == 'on':
+                filter['needs_waiting'] = False
+        foi_requests = FoiRequest.objects.annotate(
             answer_exists=Exists(subquery)
-        )
+        ).annotate(
+            needs_waiting=Exists(message_query)).filter(**filter)
         paginator = Paginator(foi_requests, 10)
         return paginator.get_page(page_number)
 
