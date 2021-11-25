@@ -17,23 +17,26 @@ class LawsuitTablePlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
         lawsuits = Lawsuit.objects.filter(public=True).select_related(
-            'publicbody', 'request', 'plaintiff_user'
+            "publicbody", "request", "plaintiff_user"
         )
-        costs = sum(l.costs for l in lawsuits if l.costs)
-        costs_covered = sum(l.costs_covered for l in lawsuits
-                            if l.costs_covered)
+        costs = sum(lawsuit.costs for lawsuit in lawsuits if lawsuit.costs)
+        costs_covered = sum(
+            lawsuit.costs_covered for lawsuit in lawsuits if lawsuit.costs_covered
+        )
         costs_percentage = 0
         if costs:
             costs_percentage = int(costs_covered / costs * 100)
 
-        context.update({
-            'object_list': lawsuits,
-            'total_costs': costs,
-            'total_costs_not_covered': costs - costs_covered,
-            'total_costs_percentage': costs_percentage,
-            'result_options': RESULTS,
-            'court_options': COURTS
-        })
+        context.update(
+            {
+                "object_list": lawsuits,
+                "total_costs": costs,
+                "total_costs_not_covered": costs - costs_covered,
+                "total_costs_percentage": costs_percentage,
+                "result_options": RESULTS,
+                "court_options": COURTS,
+            }
+        )
         return context
 
 
@@ -49,7 +52,13 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
         lawsuits = Lawsuit.objects.filter(public=True)
         today = date.today()
 
-        context.update({
-            'lawsuits': list(lawsuit for lawsuit in lawsuits if lawsuit.end_date and lawsuit.end_date >= today)
-        })
+        context.update(
+            {
+                "lawsuits": list(
+                    lawsuit
+                    for lawsuit in lawsuits
+                    if lawsuit.end_date and lawsuit.end_date >= today
+                )
+            }
+        )
         return context
