@@ -74,11 +74,31 @@ class LegalDecision(TranslatableModel):
         Document, on_delete=models.SET_NULL, null=True, blank=True
     )
     foi_court = models.ForeignKey(
-        PublicBody, on_delete=models.SET_NULL, null=True, blank=True
+        PublicBody,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="pb_legaldecisions",
     )
     foi_law = models.ForeignKey(
-        FoiLaw, on_delete=models.SET_NULL, null=True, blank=True
+        FoiLaw,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="foi_law_legaldecisions",
     )
 
     def __str__(self):
         return "{}".format(self.reference)
+
+    @property
+    def court_name(self):
+        if self.foi_court:
+            return self.foi_court.name
+        return self.court
+
+    @property
+    def law_name(self):
+        if self.foi_law:
+            return self.foi_law.name
+        return self.law

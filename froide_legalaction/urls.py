@@ -13,6 +13,7 @@ from .views import (
     KlageAutomatWizard,
     KlageautomatAnswerEditView,
     KlageautomatAnswerDownloadView,
+    LegalDecisionListView,
 )
 
 urlpatterns = [
@@ -55,4 +56,9 @@ urlpatterns = [
         name="klageautomat-download-answer",
     ),
     path("klageautomat/admin/", include("legal_advice_builder.urls")),
+    url(
+        pgettext_lazy("url part", r"^legal-decisions"),
+        LegalDecisionListView.as_view(),
+        name="legal-decision-list",
+    ),
 ]
