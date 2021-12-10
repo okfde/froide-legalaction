@@ -223,3 +223,21 @@ class LegalActionRequestForm(LegalActionUserForm):
             proposal.legal_date = calculate_month_range_de(last_date)
             proposal.save()
         return proposal
+
+
+class KlageautomatApprovalForm(forms.Form):
+
+    read_faqs = forms.BooleanField(
+        required=True, label="Ich habe die FAQs zur Untätigkeitsklage gelesen."
+    )
+    all_files_uploaded = forms.BooleanField(
+        required=True,
+        label="Ich habe alle Informationen zu meiner Anfrage auf FragDenStaat eingetragen.",
+    )
+    no_payment_of_costs = forms.BooleanField(
+        required=True,
+        label="Ich habe verstanden, dass FDS für evt. anfallende Kosten nicht aufkommt.",
+    )
+    accept_term_of_use = forms.BooleanField(
+        required=True, label="Ich akzeptiere die Nuzungsbedingungen."
+    )
