@@ -9,6 +9,7 @@ from .views import (
     request_form_page,
     thanks_page,
     KlageautomatFoirequestList,
+    KlageautomatInfoPage,
     KlageAutomatWizard,
     KlageautomatAnswerEditView,
     KlageautomatAnswerDownloadView,
@@ -30,6 +31,11 @@ urlpatterns = [
         pgettext_lazy("url part", r"^klageautomat/$"),
         KlageautomatFoirequestList.as_view(),
         name="klageautomat-index",
+    ),
+    url(
+        pgettext_lazy("url part", r"^klageautomat/info/request/(?P<pk>\d+)/$"),
+        KlageautomatInfoPage.as_view(),
+        name="klageautomat-info",
     ),
     url(
         pgettext_lazy("url part", r"^klageautomat/request/(?P<pk>\d+)/$"),

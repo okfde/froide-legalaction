@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 from django.views.generic.edit import UpdateView
 from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
@@ -21,7 +21,7 @@ from froide.foirequest.models.request import Status
 from froide.foirequest.auth import can_write_foirequest
 from froide.publicbody.models import Classification, PublicBody
 
-from .forms import LegalActionRequestForm
+from .forms import LegalActionRequestForm, KlageautomatApprovalForm
 
 
 def _get_embed_info(request):
@@ -135,6 +135,24 @@ class KlageautomatFoirequestList(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({"page_obj": self.get_foi_requests()})
         return context
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class KlageautomatInfoPage(FormView):
+    template_name = "legal_advice_builder/klageautomat_info.html"
+    form_class = KlageautomatApprovalForm
+
+    def get_foirequest(self):
+        pk = self.kwargs.get("pk")
+        return FoiRequest.objects.get(pk=pk)
+
+    def get_success_url(self):
+        return reverse("klageautomat-form_wizard", args=[self.get_foirequest().id])
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx.update({"foi_request": self.get_foirequest()})
+        return ctx
 
 
 @method_decorator(staff_member_required, name="dispatch")
