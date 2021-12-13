@@ -15,12 +15,15 @@ from .widgets import ExcludePageParameterLinkWidget
 
 
 def get_foi_courts():
-    vg_classification = Classification.objects.get(slug="verwaltungsgerichte")
-    children = vg_classification.get_children().values_list("id", flat=True)
-    ids = list(children) + [vg_classification.id]
-    return PublicBody.objects.filter(classification__id__in=ids).exclude(
-        pb_legaldecisions=None
-    )
+    try:
+        vg_classification = Classification.objects.get(slug="verwaltungsgerichte")
+        children = vg_classification.get_children().values_list("id", flat=True)
+        ids = list(children) + [vg_classification.id]
+        return PublicBody.objects.filter(classification__id__in=ids).exclude(
+            pb_legaldecisions=None
+        )
+    except Classification.DoesNotExist:
+        return PublicBody.objects.none()
 
 
 def get_foi_law_types():
