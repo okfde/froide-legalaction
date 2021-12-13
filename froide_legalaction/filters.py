@@ -173,5 +173,5 @@ class LegalDecisionFilterSet(FilterSet):
                 elif fielter_type == "ModelChoiceFilter":
                     res.append(self.get_selected_model_choice_value(filter, value))
                 else:
-                    res.append((data.get(key)), self.get_filter_url(clear_field=key))
+                    res.append((value, self.get_filter_url(clear_field=key)))
         return res
