@@ -139,31 +139,36 @@ class LegalDecisionFilterSet(FilterSet):
             url = urlencode(data)
         return mark_safe("%(query_string)s" % {"query_string": url})
 
+    def get_selected_choice_value(self, filter, value):
+        func = filter.extra.get("choices")
+        filter_name = filter.field_name
+        if func:
+            choices = func()
+            for choice in choices:
+                if value == str(choice[0]):
+                    url = self.get_filter_url(clear_field=filter_name)
+                    return (choice[1], url)
+
+    def get_selected_model_choice_value(self, filter, value):
+        qs = filter.extra.get("queryset")
+        element = qs.get(id=value)
+        filter_name = filter.field_name
+        return (str(element), self.get_filter_url(clear_field=filter_name))
+
     def get_selected_filters(self):
         res = []
-        for key in self.data.keys():
-            if not key == "page":
-                filter = self.filters.get(key)
-                if filter:
-                    func = filter.extra.get("choices")
-                    if func:
-                        choices = func()
-                        for choice in choices:
-                            if self.data.get(key) == str(choice[0]):
-                                res.append(
-                                    (
-                                        choice[1],
-                                        self.get_filter_url(clear_field=key),
-                                    )
-                                )
-                    elif filter.extra.get("queryset"):
-                        qs = filter.extra.get("queryset")
-                        if self.data.get(key):
-                            element = qs.get(id=self.data.get(key))
-                            res.append(
-                                (str(element), self.get_filter_url(clear_field=key))
-                            )
-            if key == "text_search":
-                search_string = self.data.get("text_search")
-                res.append((search_string, self.get_filter_url(clear_field=key)))
+        data = self.data.copy()
+        if "page" in data:
+            del data["page"]
+        for key in data.keys():
+            filter = self.filters.get(key)
+            value = data.get(key)
+            fielter_type = filter.__class__.__name__
+            if filter:
+                if fielter_type == "ChoiceFilter":
+                    res.append(self.get_selected_choice_value(filter, value))
+                elif fielter_type == "ModelChoiceFilter":
+                    res.append(self.get_selected_model_choice_value(filter, value))
+                else:
+                    res.append((data.get(key)), self.get_filter_url(clear_field=key))
         return res
