@@ -1,5 +1,3 @@
-from itertools import chain, islice
-
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django_filters.widgets import LinkWidget
 from django.utils.encoding import force_str
@@ -7,25 +5,7 @@ from django.utils.http import urlencode
 from django.utils.translation import gettext as _
 
 
-class CustomLinkWidget(LinkWidget):
-    def render_options(self, choices, selected_choices, name):
-        selected_choices = set(force_str(v) for v in selected_choices)
-        output = []
-        n = 5
-        combined_choices = chain(self.choices, choices)
-        combined_choices = islice(combined_choices, n)
-        for option_value, option_label in combined_choices:
-            if isinstance(option_label, (list, tuple)):
-                for option in option_label:
-                    output.append(self.render_option(name, selected_choices, *option))
-            else:
-                output.append(
-                    self.render_option(
-                        name, selected_choices, option_value, option_label
-                    )
-                )
-        return "\n".join(output)
-
+class ExcludePageParameterLinkWidget(LinkWidget):
     def render_option(self, name, selected_choices, option_value, option_label):
         option_value = force_str(option_value)
         if option_label == BLANK_CHOICE_DASH[0][1]:
