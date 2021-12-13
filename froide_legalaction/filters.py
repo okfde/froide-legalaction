@@ -21,8 +21,13 @@ def get_foi_courts():
     )
 
 
-def get_foi_laws():
-    return FoiLaw.objects.exclude(foi_law_legaldecisions=None)
+def get_foi_law_types():
+    foilaw_types = (
+        FoiLaw.objects.exclude(foi_law_legaldecisions=None)
+        .values("law_type")
+        .annotate(c=Count("id"))
+    )
+    return [(type.get("law_type"), type.get("law_type")) for type in foilaw_types]
 
 
 def get_years_for_choices():
@@ -56,8 +61,11 @@ class LegalDecisionFilterSet(FilterSet):
     foi_court = ModelChoiceFilter(
         queryset=get_foi_courts(), widget=CustomLinkWidget, label=_("by Court")
     )
-    foi_law = ModelChoiceFilter(
-        queryset=get_foi_laws(), widget=CustomLinkWidget, label=_("by Law")
+    foi_law__law_type = ChoiceFilter(
+        choices=get_foi_law_types,
+        widget=CustomLinkWidget,
+        label=_("by Law Type"),
+        lookup_expr="iexact",
     )
     type = ChoiceFilter(
         choices=get_types_for_choices, widget=CustomLinkWidget, label=_("by Type")
@@ -72,13 +80,13 @@ class LegalDecisionFilterSet(FilterSet):
     class Meta:
         model = LegalDecision
         fields = [
+            "tags",
+            "translations__abstract",
+            "reference",
+            "foi_law__law_type",
             "foi_court",
             "type",
             "date",
-            "reference",
-            "foi_law",
-            "tags",
-            "translations__abstract",
         ]
 
     def get_filter_url(self, clear_field=None):
