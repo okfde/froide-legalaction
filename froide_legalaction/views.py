@@ -9,6 +9,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from django.views.generic import TemplateView, FormView
 from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
 
@@ -21,7 +22,9 @@ from froide.foirequest.models.request import Status
 from froide.foirequest.auth import can_write_foirequest
 from froide.publicbody.models import Classification, PublicBody
 
+from .filters import LegalDecisionFilterSet
 from .forms import LegalActionRequestForm, KlageautomatApprovalForm
+from .models import LegalDecision
 
 
 def _get_embed_info(request):
@@ -300,3 +303,29 @@ class KlageautomatAnswerDownloadView(PdfDownloadView):
 
     def get_filename(self):
         return "{}_{}.pdf".format(self.get_lawcase(), self.get_foirequest().id)
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class LegalDecisionListView(ListView):
+
+    model = LegalDecision
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        f = LegalDecisionFilterSet(
+            self.request.GET, queryset=LegalDecision.objects.all()
+        )
+
+        paginator = Paginator(f.qs, self.paginate_by)
+        page = self.request.GET.get("page")
+        paginated = paginator.get_page(page)
+        ctx.update(
+            {
+                "filter": f,
+                "result": paginated,
+                "selected_filters": f.get_selected_filters(),
+                "query_url": f.get_filter_url(),
+            }
+        )
+        return ctx
