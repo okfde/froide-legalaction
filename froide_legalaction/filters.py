@@ -8,22 +8,14 @@ from django.utils.translation import gettext_lazy as _
 
 from django_filters import FilterSet, ModelChoiceFilter, ChoiceFilter, CharFilter
 
-from froide.publicbody.models import Classification, FoiLaw, PublicBody
+from froide.publicbody.models import FoiLaw, PublicBody
 
 from .models import LegalDecision, LegalDecisionType
 from .widgets import ExcludePageParameterLinkWidget
 
 
 def get_foi_courts():
-    try:
-        vg_classification = Classification.objects.get(slug="verwaltungsgerichte")
-        children = vg_classification.get_children().values_list("id", flat=True)
-        ids = list(children) + [vg_classification.id]
-        return PublicBody.objects.filter(classification__id__in=ids).exclude(
-            pb_legaldecisions=None
-        )
-    except Classification.DoesNotExist:
-        return PublicBody.objects.none()
+    return PublicBody.objects.exclude(pb_legaldecisions=None)
 
 
 def get_foi_law_types():
@@ -116,6 +108,7 @@ class LegalDecisionFilterSet(FilterSet):
     def get_quick_search(self, queryset, name, value):
         return queryset.filter(
             Q(translations__abstract__contains=value)
+            | Q(translations__law__contains=value)
             | Q(translations__fulltext__contains=value)
             | Q(tags__translations__name__contains=value)
             | Q(reference__contains=value)
