@@ -14,6 +14,7 @@ from .views import (
     KlageautomatAnswerEditView,
     KlageautomatAnswerDownloadView,
     LegalDecisionListView,
+    LegalDecisionDetailView,
 )
 
 urlpatterns = [
@@ -60,5 +61,10 @@ urlpatterns = [
         pgettext_lazy("url part", r"^legal-decisions"),
         LegalDecisionListView.as_view(),
         name="legal-decision-list",
+    ),
+    url(
+        pgettext_lazy("url part", r"^legal-decisions/(?P<pk>\d+)/$"),
+        LegalDecisionDetailView.as_view(),
+        name="legal-decision-detail",
     ),
 ]
