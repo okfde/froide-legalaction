@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.utils.translation import gettext_lazy as _
@@ -329,3 +329,9 @@ class LegalDecisionListView(ListView):
             }
         )
         return ctx
+
+
+@method_decorator(staff_member_required, name="dispatch")
+class LegalDecisionDetailView(DetailView):
+
+    model = LegalDecision
