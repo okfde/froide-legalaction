@@ -11,7 +11,7 @@ from django_filters import FilterSet, ModelChoiceFilter, ChoiceFilter, CharFilte
 from froide.publicbody.models import FoiLaw, PublicBody
 
 from .models import LegalDecision, LegalDecisionType
-from .widgets import ExcludePageParameterLinkWidget
+from .widgets import ExcludePageParameterLinkWidget, FilterListWidget
 
 
 def get_foi_courts():
@@ -73,7 +73,7 @@ class LegalDecisionFilterSet(FilterSet):
     )
     foi_court = ModelChoiceFilter(
         queryset=get_foi_courts(),
-        widget=ExcludePageParameterLinkWidget,
+        widget=FilterListWidget,
         label=_("by Court"),
     )
     foi_law__law_type = ChoiceFilter(
@@ -90,7 +90,7 @@ class LegalDecisionFilterSet(FilterSet):
     date = ChoiceFilter(
         choices=get_years_for_choices,
         lookup_expr="year",
-        widget=ExcludePageParameterLinkWidget,
+        widget=FilterListWidget,
         label=_("by Year"),
     )
 
@@ -121,7 +121,7 @@ class LegalDecisionFilterSet(FilterSet):
         return queryset.filter(
             Q(translations__abstract__contains=value)
             | Q(tags__translations__name__contains=value)
-        )
+        ).distinct()
 
     def get_filter_url(self, clear_field=None):
         data = self.data.copy()
