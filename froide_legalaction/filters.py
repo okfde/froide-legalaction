@@ -10,7 +10,7 @@ from django_filters import FilterSet, ModelChoiceFilter, ChoiceFilter, CharFilte
 
 from froide.publicbody.models import FoiLaw, PublicBody
 
-from .models import LegalDecision, LegalDecisionType
+from .models import LegalDecision, LegalDecisionType, LegalDecisionTag
 from .widgets import ExcludePageParameterLinkWidget, FilterListWidget
 
 
@@ -65,12 +65,12 @@ class LegalDecisionFilterSet(FilterSet):
         ),
         help_text="",
     )
-    text_search = CharFilter(
-        method="get_text_search",
-        label=_("by Keyword"),
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-        help_text=_("searches in abstract and tags"),
+    tags = ModelChoiceFilter(
+        queryset=LegalDecisionTag.objects.all().order_by("translations__name"),
+        widget=FilterListWidget,
+        label=_("by tags"),
     )
+
     foi_court = ModelChoiceFilter(
         queryset=get_foi_courts(),
         widget=FilterListWidget,
@@ -98,7 +98,7 @@ class LegalDecisionFilterSet(FilterSet):
         model = LegalDecision
         fields = (
             "quick_search",
-            "text_search",
+            "tags",
             "foi_law__law_type",
             "foi_court",
             "type",
@@ -117,11 +117,11 @@ class LegalDecisionFilterSet(FilterSet):
             | Q(foi_law__translations__name__contains=value)
         ).distinct()
 
-    def get_text_search(self, queryset, name, value):
-        return queryset.filter(
-            Q(translations__abstract__contains=value)
-            | Q(tags__translations__name__contains=value)
-        ).distinct()
+    # def get_text_search(self, queryset, name, value):
+    #     return queryset.filter(
+    #         Q(translations__abstract__contains=value)
+    #         | Q(tags__translations__name__contains=value)
+    #     ).distinct()
 
     def get_filter_url(self, clear_field=None):
         data = self.data.copy()
