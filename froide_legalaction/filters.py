@@ -117,12 +117,6 @@ class LegalDecisionFilterSet(FilterSet):
             | Q(foi_law__translations__name__contains=value)
         ).distinct()
 
-    # def get_text_search(self, queryset, name, value):
-    #     return queryset.filter(
-    #         Q(translations__abstract__contains=value)
-    #         | Q(tags__translations__name__contains=value)
-    #     ).distinct()
-
     def get_filter_url(self, clear_field=None):
         data = self.data.copy()
         if "page" in data:
