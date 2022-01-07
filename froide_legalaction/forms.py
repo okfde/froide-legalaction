@@ -1,8 +1,9 @@
+from django.core import validators
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from django.utils import formats, timezone
-from django.db import transaction
-from django.utils.safestring import mark_safe
-from django.core import validators
+from django.utils.html import format_html
+
 from django import forms
 
 from froide.foirequest.models import FoiMessage
@@ -87,7 +88,7 @@ class LegalActionUserForm(forms.Form):
     )
 
     terms = forms.BooleanField(
-        label=mark_safe(
+        label=format_html(
             _(
                 "You agree "
                 'to our <a href="'
@@ -228,7 +229,10 @@ class LegalActionRequestForm(LegalActionUserForm):
 class KlageautomatApprovalForm(forms.Form):
 
     read_faqs = forms.BooleanField(
-        required=True, label="Ich habe die FAQs zur Untätigkeitsklage gelesen."
+        required=True,
+        label=format_html(
+            'Ich habe die <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/">Informationen zur Untätigkeitsklage</a> gelesen.'
+        ),
     )
     all_files_uploaded = forms.BooleanField(
         required=True,
@@ -236,8 +240,13 @@ class KlageautomatApprovalForm(forms.Form):
     )
     no_payment_of_costs = forms.BooleanField(
         required=True,
-        label="Ich habe verstanden, dass FDS für evt. anfallende Kosten nicht aufkommt.",
+        label=format_html(
+            'Ich habe verstanden, dass FDS für evt. anfallende <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/kosten/">Kosten</a> nicht aufkommt.'
+        ),
     )
     accept_term_of_use = forms.BooleanField(
-        required=True, label="Ich akzeptiere die Nuzungsbedingungen."
+        required=True,
+        label=format_html(
+            'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>.'
+        ),
     )
