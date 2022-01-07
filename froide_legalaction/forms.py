@@ -247,6 +247,6 @@ class KlageautomatApprovalForm(forms.Form):
     accept_term_of_use = forms.BooleanField(
         required=True,
         label=mark_safe(
-            'Ich akzeptiere die <a href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>.'
+            'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>.'
         ),
     )
