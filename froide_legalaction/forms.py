@@ -2,7 +2,7 @@ from django.core import validators
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from django.utils import formats, timezone
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
 
 from django import forms
 
@@ -88,7 +88,7 @@ class LegalActionUserForm(forms.Form):
     )
 
     terms = forms.BooleanField(
-        label=mark_safe(
+        label=format_html(
             _(
                 "You agree "
                 'to our <a href="'
@@ -230,7 +230,7 @@ class KlageautomatApprovalForm(forms.Form):
 
     read_faqs = forms.BooleanField(
         required=True,
-        label=mark_safe(
+        label=format_html(
             'Ich habe die <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/">Informationen zur Untätigkeitsklage</a> gelesen.'
         ),
     )
@@ -240,13 +240,13 @@ class KlageautomatApprovalForm(forms.Form):
     )
     no_payment_of_costs = forms.BooleanField(
         required=True,
-        label=mark_safe(
+        label=format_html(
             'Ich habe verstanden, dass FDS für evt. anfallende <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/kosten/">Kosten</a> nicht aufkommt.'
         ),
     )
     accept_term_of_use = forms.BooleanField(
         required=True,
-        label=mark_safe(
+        label=format_html(
             'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>.'
         ),
     )
