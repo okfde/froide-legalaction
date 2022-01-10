@@ -78,15 +78,17 @@ class Lawsuit(models.Model):
 
     @property
     def instances(self):
-        return Instance.objects.filter(lawsuit=self).select_related("court")
+        if not hasattr(self, "_instances"):
+            self._instances = list(self.instance_set.all())
+        return self._instances
 
     @property
     def first_instance(self):
-        return self.instances.order_by("start_date").first()
+        return self.instances[0]
 
     @property
     def last_instance(self):
-        return self.instances.order_by("-start_date").first()
+        return self.instances[-1]
 
     @property
     def start_date(self):
@@ -98,7 +100,7 @@ class Lawsuit(models.Model):
 
     @property
     def courts(self):
-        return map(lambda instance: instance.court, self.instances)
+        return [instance.court for instance in self.instances]
 
     @property
     def costs_covered_percent(self):
@@ -163,6 +165,7 @@ class Instance(models.Model):
     class Meta:
         verbose_name = _("lawsuit")
         verbose_name_plural = _("lawsuits")
+        ordering = ("start_date",)
 
 
 class Proposal(models.Model):

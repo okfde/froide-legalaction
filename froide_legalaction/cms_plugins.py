@@ -1,4 +1,5 @@
 from django.utils.translation import gettext_lazy as _
+from django.db.models import Max
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
@@ -19,6 +20,7 @@ class LawsuitTablePlugin(CMSPluginBase):
         lawsuits = Lawsuit.objects.filter(public=True).select_related(
             "publicbody", "request", "plaintiff_user"
         )
+        lawsuits = lawsuits.prefetch_related("instance_set", "instance_set__court")
         costs = sum(lawsuit.costs for lawsuit in lawsuits if lawsuit.costs)
         costs_covered = sum(
             lawsuit.costs_covered for lawsuit in lawsuits if lawsuit.costs_covered
@@ -49,16 +51,12 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
 
-        lawsuits = Lawsuit.objects.filter(public=True)
         today = date.today()
-
-        context.update(
-            {
-                "lawsuits": list(
-                    lawsuit
-                    for lawsuit in lawsuits
-                    if lawsuit.end_date and lawsuit.end_date >= today
-                )
-            }
+        lawsuits = (
+            Lawsuit.objects.filter(public=True)
+            .annotate(end_date=Max("instance__end_date"))
+            .filter(end_date__gte=today)
         )
+
+        context.update({"lawsuits": lawsuits})
         return context
