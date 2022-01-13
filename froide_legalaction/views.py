@@ -269,10 +269,18 @@ class KlageautomatAnswerEditView(UpdateView):
             external_id=foi_request.id,
         ).last()
 
+    def get_help_message(self):
+        questionaiere = self.get_lawcase().questionaire_set.last()
+        return questionaiere.success_message_with_data(self.object)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(
-            {"foi_request": self.get_foirequest(), "law_case": self.get_lawcase()}
+            {
+                "foi_request": self.get_foirequest(),
+                "law_case": self.get_lawcase(),
+                "help_message": self.get_help_message(),
+            }
         )
         return context
 
