@@ -162,17 +162,16 @@ class KlageautomatInfoPage(FormView):
 class KlageAutomatWizard(FormWizardView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update(
-            {"foi_request": self.get_foirequest(), "answer": self.get_existing_answer()}
-        )
+        context.update({"foi_request": self.get_foirequest()})
+        if self.answer:
+            context.update({"help_message": self.get_help_message()})
         return context
 
-    def get_existing_answer(self):
-        return Answer.objects.filter(
-            law_case=self.get_lawcase(),
-            creator=self.request.user,
-            external_id=self.get_foirequest().id,
-        )
+    def get_help_message(self, answer=None):
+        if not answer:
+            answer = self.answer
+        questionaiere = self.get_lawcase().questionaire_set.last()
+        return questionaiere.success_message_with_data(answer)
 
     def get_lawcase(self):
         return LawCase.objects.all().first()
@@ -180,19 +179,6 @@ class KlageAutomatWizard(FormWizardView):
     def get_foirequest(self):
         pk = self.kwargs.get("pk")
         return FoiRequest.objects.get(pk=pk)
-
-    def get_messages_as_options(self, foirequest):
-        messages = {}
-        for message in foirequest.messages:
-            key = "message_{}".format(message.id)
-            messages[key] = "am {} von {}: {}".format(
-                message.timestamp.date(), message.sender_name, message.subject
-            )
-            for attachment in message.foiattachment_set.all():
-                if not attachment.is_irrelevant and not attachment.is_redacted:
-                    attachment_key = "attachment_{}".format(attachment.id)
-                    messages[attachment_key] = attachment.name
-        return messages
 
     def get_public_body_type(self, public_body):
         return public_body.jurisdiction.slug
@@ -236,7 +222,6 @@ class KlageAutomatWizard(FormWizardView):
                     )
                 },
                 "adresse": {"initial": foi_request.user.address},
-                "anhaenge": {"options": self.get_messages_as_options(foi_request)},
             },
         }
 
@@ -251,6 +236,21 @@ class KlageAutomatWizard(FormWizardView):
             external_id=foi_request.id,
         ).exclude(id=answer.id).delete()
         return answer
+
+    def render_done(self, answers=None, **kwargs):
+        context = self.get_template_with_context(answers)
+        if self.law_case.save_answers:
+            answer = self.save_answers(answers)
+            form = self.get_answer_template_form(answer)
+            preview = answer.rendered_document
+            context.update(
+                {
+                    "answer_form": form,
+                    "preview": preview,
+                    "help_message": self.get_help_message(answer),
+                }
+            )
+        return self.render_to_response(context)
 
 
 @method_decorator(staff_member_required, name="dispatch")
