@@ -105,7 +105,7 @@ class KlageautomatFoirequestList(TemplateView):
 
         now = timezone.now().date()
 
-        three_months_ago = now - timedelta(days=31 * 3)
+        three_months_ago = now - timedelta(days=30 * 3)
 
         message_query = FoiMessage.objects.filter(
             request=OuterRef("pk"), timestamp__gte=three_months_ago
@@ -265,7 +265,6 @@ class KlageautomatAnswerEditView(UpdateView):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
             law_case=self.get_lawcase(),
-            creator=self.request.user,
             external_id=foi_request.id,
         ).last()
 
