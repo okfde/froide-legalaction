@@ -58,7 +58,7 @@ urlpatterns = [
     ),
     path("klageautomat/admin/", include("legal_advice_builder.urls")),
     url(
-        pgettext_lazy("url part", r"^legal-decisions"),
+        pgettext_lazy("url part", r"^legal-decisions/$"),
         LegalDecisionListView.as_view(),
         name="legal-decision-list",
     ),
