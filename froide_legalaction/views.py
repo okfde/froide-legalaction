@@ -312,7 +312,6 @@ class KlageautomatAnswerDownloadView(PdfDownloadView):
         return "{}_{}.pdf".format(self.get_lawcase(), self.get_foirequest().id)
 
 
-@method_decorator(staff_member_required, name="dispatch")
 class LegalDecisionListView(ListView):
 
     model = LegalDecision
@@ -338,7 +337,6 @@ class LegalDecisionListView(ListView):
         return ctx
 
 
-@method_decorator(staff_member_required, name="dispatch")
 class LegalDecisionDetailView(DetailView):
 
     model = LegalDecision
