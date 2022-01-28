@@ -107,14 +107,14 @@ class LegalDecisionFilterSet(FilterSet):
 
     def get_quick_search(self, queryset, name, value):
         return queryset.filter(
-            Q(translations__abstract__contains=value)
-            | Q(translations__law__contains=value)
-            | Q(translations__fulltext__contains=value)
-            | Q(tags__translations__name__contains=value)
-            | Q(reference__contains=value)
-            | Q(type__translations__title__contains=value)
-            | Q(foi_court__name__contains=value)
-            | Q(foi_law__translations__name__contains=value)
+            Q(translations__abstract__icontains=value)
+            | Q(translations__law__icontains=value)
+            | Q(translations__fulltext__icontains=value)
+            | Q(tags__translations__name__icontains=value)
+            | Q(reference__icontains=value)
+            | Q(type__translations__title__icontains=value)
+            | Q(foi_court__name__icontains=value)
+            | Q(foi_law__translations__name__icontains=value)
         ).distinct()
 
     def get_filter_url(self, clear_field=None):
