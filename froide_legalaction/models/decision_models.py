@@ -1,3 +1,7 @@
+import functools
+
+from django.contrib.postgres.search import SearchVectorField, SearchVector
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -46,6 +50,41 @@ class LegalDecisionType(TranslatableModel):
         return self.title
 
 
+class LegalDecisionManager(TranslatableManager):
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("translations")
+
+    def get_search_vector(self, language):
+        SEARCH_LANG = "simple"
+
+        if language == "de":
+            SEARCH_LANG = "german"
+        elif language == "en":
+            SEARCH_LANG = "english"
+
+        fields = [
+            ("search_text", "A"),
+        ]
+        return functools.reduce(
+            lambda a, b: a + b,
+            [SearchVector(f, weight=w, config=SEARCH_LANG) for f, w in fields],
+        )
+
+    def update_search_index(self, qs=None):
+        from froide_legalaction.models import LegalDecisionTranslation
+
+        if qs is None:
+            qs = self.get_queryset()
+        for decision in qs:
+            decision.generate_search_texts()
+        translations = LegalDecisionTranslation.objects.all()
+        languages = [entry.get("code") for entry in settings.PARLER_LANGUAGES.get(1)]
+        for language in languages:
+            translations_for_lang = translations.filter(language_code=language)
+            search_vector = self.get_search_vector(language)
+            translations_for_lang.update(search_vector=search_vector)
+
+
 class LegalDecision(TranslatableModel):
 
     translations = TranslatedFields(
@@ -53,6 +92,8 @@ class LegalDecision(TranslatableModel):
         fulltext=models.TextField(blank=True),
         court=models.CharField(max_length=500, blank=True),
         law=models.CharField(max_length=500, blank=True),
+        search_text=models.TextField(blank=True),
+        search_vector=SearchVectorField(default="", editable=False),
     )
 
     tags = models.ManyToManyField(LegalDecisionTag, blank=True)
@@ -88,6 +129,8 @@ class LegalDecision(TranslatableModel):
         related_name="foi_law_legaldecisions",
     )
 
+    objects = LegalDecisionManager()
+
     def __str__(self):
         return "{}".format(self.reference)
 
@@ -110,3 +153,14 @@ class LegalDecision(TranslatableModel):
         if self.foi_law:
             return self.foi_law.name
         return self.law
+
+    def generate_search_texts(self):
+        for translation in self.translations.all():
+            fulltext = ""
+            if translation.fulltext:
+                fulltext = translation.fulltext
+            text = "{} {} {} {}".format(
+                self.reference, translation.law, translation.abstract, fulltext
+            )
+            translation.search_text = text
+            translation.save()

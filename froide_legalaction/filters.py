@@ -1,7 +1,7 @@
 from django import forms
-from django.db.models import Count
+from django.contrib.postgres.search import SearchQuery, SearchRank
+from django.db.models import Count, F
 from django.db.models.functions import TruncYear
-from django.db.models import Q
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -106,16 +106,12 @@ class LegalDecisionFilterSet(FilterSet):
         )
 
     def get_quick_search(self, queryset, name, value):
-        return queryset.filter(
-            Q(translations__abstract__icontains=value)
-            | Q(translations__law__icontains=value)
-            | Q(translations__fulltext__icontains=value)
-            | Q(tags__translations__name__icontains=value)
-            | Q(reference__icontains=value)
-            | Q(type__translations__title__icontains=value)
-            | Q(foi_court__name__icontains=value)
-            | Q(foi_law__translations__name__icontains=value)
-        ).distinct()
+        query = SearchQuery(value)
+        return (
+            queryset.filter(translations__search_vector=query)
+            .annotate(rank=SearchRank(F("translations__search_vector"), query))
+            .order_by("-rank")
+        )
 
     def get_filter_url(self, clear_field=None):
         data = self.data.copy()
