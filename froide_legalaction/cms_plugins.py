@@ -54,8 +54,8 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
         today = date.today()
         lawsuits = (
             Lawsuit.objects.filter(public=True)
-            .annotate(end_date=Max("instance__end_date"))
-            .filter(end_date__gte=today)
+            .annotate(next_end_date=Max("instance__end_date"))
+            .filter(next_end_date__gte=today)
         )
 
         context.update({"lawsuits": lawsuits})
