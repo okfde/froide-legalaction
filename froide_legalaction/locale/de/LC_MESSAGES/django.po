@@ -358,11 +358,11 @@ msgstr "Abschicken"
 
 #: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html:6
 msgid "Automatically create a lawsuit"
-msgstr "Klage generieren"
+msgstr "Klage erstellen"
 
 #: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html:21
 msgid "Click here to create a law suit"
-msgstr "Jetzt Klage generieren"
+msgstr "Jetzt Klage erstellen"
 
 #: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html:25
 msgid "Click here to edit a law suit"
