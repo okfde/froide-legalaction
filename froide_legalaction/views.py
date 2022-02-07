@@ -26,6 +26,8 @@ from .filters import LegalDecisionFilterSet
 from .forms import LegalActionRequestForm, KlageautomatApprovalForm
 from .models import LegalDecision
 
+from .mixins import KlageautomatMixin
+
 
 def _get_embed_info(request):
     is_embed = request.GET.get("embed", False)
@@ -140,14 +142,9 @@ class KlageautomatFoirequestList(TemplateView):
         return context
 
 
-@method_decorator(staff_member_required, name="dispatch")
-class KlageautomatInfoPage(FormView):
+class KlageautomatInfoPage(KlageautomatMixin, FormView):
     template_name = "legal_advice_builder/klageautomat_info.html"
     form_class = KlageautomatApprovalForm
-
-    def get_foirequest(self):
-        pk = self.kwargs.get("pk")
-        return FoiRequest.objects.get(pk=pk)
 
     def get_success_url(self):
         return reverse("klageautomat-form_wizard", args=[self.get_foirequest().id])
@@ -158,8 +155,7 @@ class KlageautomatInfoPage(FormView):
         return ctx
 
 
-@method_decorator(staff_member_required, name="dispatch")
-class KlageAutomatWizard(FormWizardView):
+class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({"foi_request": self.get_foirequest()})
@@ -172,13 +168,6 @@ class KlageAutomatWizard(FormWizardView):
             answer = self.answer
         questionaiere = self.get_lawcase().questionaire_set.last()
         return questionaiere.success_message_with_data(answer)
-
-    def get_lawcase(self):
-        return LawCase.objects.all().first()
-
-    def get_foirequest(self):
-        pk = self.kwargs.get("pk")
-        return FoiRequest.objects.get(pk=pk)
 
     def get_public_body_type(self, public_body):
         return public_body.jurisdiction.slug
@@ -253,13 +242,9 @@ class KlageAutomatWizard(FormWizardView):
         return self.render_to_response(context)
 
 
-@method_decorator(staff_member_required, name="dispatch")
-class KlageautomatAnswerEditView(UpdateView):
+class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
     model = Answer
     form_class = RenderedDocumentForm
-
-    def get_lawcase(self):
-        return LawCase.objects.all().first()
 
     def get_object(self):
         foi_request = self.get_foirequest()
@@ -283,23 +268,11 @@ class KlageautomatAnswerEditView(UpdateView):
         )
         return context
 
-    def get_foirequest(self):
-        pk = self.kwargs.get("pk")
-        return FoiRequest.objects.get(pk=pk)
-
     def get_success_url(self):
         return self.request.path
 
 
-@method_decorator(staff_member_required, name="dispatch")
-class KlageautomatAnswerDownloadView(PdfDownloadView):
-    def get_lawcase(self):
-        return LawCase.objects.all().first()
-
-    def get_foirequest(self):
-        pk = self.kwargs.get("pk")
-        return FoiRequest.objects.get(pk=pk)
-
+class KlageautomatAnswerDownloadView(KlageautomatMixin, PdfDownloadView):
     def get_answer(self):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
