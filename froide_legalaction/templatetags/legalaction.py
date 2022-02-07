@@ -1,6 +1,7 @@
 from django import template
 
 from ..models import Proposal
+from ..helper.permissions.klageautomat import can_create_answer
 
 from legal_advice_builder.models import Answer
 
@@ -21,3 +22,9 @@ def questionaire_taken(value):
         return Answer.objects.get(external_id=value.id)
     except Answer.DoesNotExist:
         return None
+
+
+@register.simple_tag(takes_context=True)
+def can_use_klageautomat(context, foirequest):
+    request = context.get("request")
+    return can_create_answer(request.user, foirequest)

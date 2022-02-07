@@ -1,4 +1,7 @@
-{% if request.user.is_staff and object.response_deadline_has_past %}
+{% load legalaction%}
+
+{% can_use_klageautomat object as has_right_permissions %}
+{% if has_right_permissions %}
   <div class="row row row-cols-1 row-cols-md-2 g-4">
     <div class="col">
       <div class="card info-box--regular rounded-0 h-100">
