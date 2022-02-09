@@ -176,25 +176,35 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
         return questionaiere.success_message_with_data(answer)
 
     def get_public_body_type(self, public_body):
-        return public_body.jurisdiction.slug
+        if public_body and public_body.jurisdiction:
+            return public_body.jurisdiction.slug
+        return ""
 
     def get_classification(self):
         return Classification.objects.get(slug="verwaltungsgericht")
 
     def get_court_for_public_body(self, public_body):
-        geo = public_body.geo
-        if geo:
-            vg_classification = self.get_classification()
-            court = PublicBody.objects.filter(
-                classification=vg_classification, regions__geom__intersects=geo
-            ).first()
-            if court:
-                return court.name, court.address
+        if public_body:
+            geo = public_body.geo
+            if geo:
+                vg_classification = self.get_classification()
+                court = PublicBody.objects.filter(
+                    classification=vg_classification, regions__geom__intersects=geo
+                ).first()
+                if court:
+                    return court.name, court.address
         return "", ""
 
+    def get_publicbody(self):
+        public_body = self.get_foirequest().public_body
+        answer_pb = self.get_answer_for_question("behoerde_name")
+        if answer_pb and not answer_pb == public_body.name:
+            return ""
+        return public_body
+
     def get_initial_dict(self):
+        public_body = self.get_publicbody()
         foi_request = self.get_foirequest()
-        public_body = foi_request.public_body
         court_name, court_address = self.get_court_for_public_body(public_body)
         return {
             "pruefen": {
@@ -203,8 +213,10 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
                 }
             },
             "person": {
-                "behoerde_name": {"initial": public_body.name},
-                "behoerde_adresse": {"initial": public_body.address},
+                "behoerde_name": {"initial": public_body.name if public_body else ""},
+                "behoerde_adresse": {
+                    "initial": public_body.address if public_body else ""
+                },
                 "behoerde_type": {
                     "initial": self.get_public_body_type(public_body),
                 },
