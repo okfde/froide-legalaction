@@ -1,6 +1,9 @@
 def foirequest_can_be_tested(foi_request):
+    if not foi_request.jurisdiction:
+        return False
     deadline_has_past = foi_request.response_deadline_has_past()
-    return deadline_has_past
+    is_eu_request = foi_request.jurisdiction.slug == "europaeische-union"
+    return deadline_has_past and not is_eu_request
 
 
 def user_has_permissions(user, foi_request):
