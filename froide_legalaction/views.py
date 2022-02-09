@@ -110,10 +110,8 @@ class KlageautomatFoirequestList(TemplateView):
         three_months_ago = now - timedelta(days=30 * 3)
 
         message_query = FoiMessage.objects.filter(
-            request=OuterRef("pk"),
-            timestamp__gte=three_months_ago,
-            sender_user=OuterRef("user"),
-        )
+            request=OuterRef("pk"), timestamp__gte=three_months_ago
+        ).exclude(sender_user=OuterRef("user"))
 
         search = self.request.GET.get("Search")
         all_requests = self.request.GET.get("allRequests")
