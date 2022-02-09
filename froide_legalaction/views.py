@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.db.models import Exists, OuterRef
+from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -110,7 +110,9 @@ class KlageautomatFoirequestList(TemplateView):
         three_months_ago = now - timedelta(days=30 * 3)
 
         message_query = FoiMessage.objects.filter(
-            request=OuterRef("pk"), timestamp__gte=three_months_ago
+            request=OuterRef("pk"),
+            timestamp__gte=three_months_ago,
+            sender_user=OuterRef("user"),
         )
 
         search = self.request.GET.get("Search")
@@ -132,6 +134,10 @@ class KlageautomatFoirequestList(TemplateView):
             FoiRequest.objects.annotate(answer_exists=Exists(subquery))
             .annotate(needs_waiting=Exists(message_query))
             .filter(**filter)
+            .exclude(
+                Q(jurisdiction__isnull=True)
+                | Q(jurisdiction__slug="europaeische-union")
+            )
         )
         paginator = Paginator(foi_requests, 10)
         return paginator.get_page(page_number)
