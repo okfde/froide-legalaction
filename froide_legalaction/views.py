@@ -1,24 +1,17 @@
-from datetime import timedelta
-
-from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse
-from django.utils import timezone
 from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
-from django.views.generic import TemplateView, FormView, DetailView
+from django.views.generic import FormView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.utils.translation import gettext_lazy as _
-from django.utils.decorators import method_decorator
 
 from legal_advice_builder.views import FormWizardView, PdfDownloadView
 from legal_advice_builder.forms import RenderedDocumentForm
-from legal_advice_builder.models import LawCase, Answer
+from legal_advice_builder.models import Answer
 
-from froide.foirequest.models import FoiRequest, FoiMessage
-from froide.foirequest.models.request import Status
+from froide.foirequest.models import FoiRequest
 from froide.foirequest.auth import can_write_foirequest
 from froide.publicbody.models import Classification, PublicBody
 
@@ -90,60 +83,6 @@ def thanks_page(request):
     return render(
         request, "froide_legalaction/thanks.html", {"base_template": base_template}
     )
-
-
-@method_decorator(staff_member_required, name="dispatch")
-class KlageautomatFoirequestList(TemplateView):
-    template_name = "legal_advice_builder/foirequest_list.html"
-
-    def get_lawcase(self):
-        return LawCase.objects.all().first()
-
-    def get_foi_requests(self):
-
-        subquery = Answer.objects.filter(
-            law_case=self.get_lawcase(), external_id=OuterRef("pk")
-        )
-
-        now = timezone.now().date()
-
-        three_months_ago = now - timedelta(days=30 * 3)
-
-        message_query = FoiMessage.objects.filter(
-            request=OuterRef("pk"), timestamp__gte=three_months_ago
-        ).exclude(sender_user=OuterRef("user"))
-
-        search = self.request.GET.get("Search")
-        all_requests = self.request.GET.get("allRequests")
-        only_candidates = self.request.GET.get("onlyCandidates")
-        page_number = self.request.GET.get("page")
-        filter = {
-            "user": self.request.user,
-            "status__in": [Status.AWAITING_RESPONSE, Status.ASLEEP],
-        }
-        if search or all_requests or only_candidates:
-            if not search == "":
-                filter["title__contains"] = search
-            if all_requests and all_requests == "on":
-                del filter["user"]
-            if only_candidates and only_candidates == "on":
-                filter["needs_waiting"] = False
-        foi_requests = (
-            FoiRequest.objects.annotate(answer_exists=Exists(subquery))
-            .annotate(needs_waiting=Exists(message_query))
-            .filter(**filter)
-            .exclude(
-                Q(jurisdiction__isnull=True)
-                | Q(jurisdiction__slug="europaeische-union")
-            )
-        )
-        paginator = Paginator(foi_requests, 10)
-        return paginator.get_page(page_number)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({"page_obj": self.get_foi_requests()})
-        return context
 
 
 class KlageautomatInfoPage(KlageautomatMixin, FormView):
