@@ -150,7 +150,7 @@ class LegalDecisionFilterSet(FilterSet):
             filter = self.filters.get(key)
             value = data.get(key)
             fielter_type = filter.__class__.__name__
-            if filter:
+            if filter and value:
                 if fielter_type == "ChoiceFilter":
                     res.append(self.get_selected_choice_value(filter, value))
                 elif fielter_type == "ModelChoiceFilter":
