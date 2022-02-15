@@ -1,15 +1,13 @@
 import functools
 
-from django.contrib.postgres.search import SearchVectorField, SearchVector
 from django.conf import settings
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from parler.models import TranslatableModel, TranslatedFields
-from parler.managers import TranslatableManager
-
 from froide.document.models import Document
 from froide.publicbody.models import FoiLaw, PublicBody
+from parler.managers import TranslatableManager
+from parler.models import TranslatableModel, TranslatedFields
 
 
 class LegalDecisionTagManager(TranslatableManager):

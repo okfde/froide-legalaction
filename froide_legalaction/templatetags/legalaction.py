@@ -1,9 +1,8 @@
 from django import template
-
-from ..models import Proposal
-from ..helper.permissions.klageautomat import can_create_answer
-
 from legal_advice_builder.models import Answer
+
+from ..helper.permissions.klageautomat import can_create_answer
+from ..models import Proposal
 
 register = template.Library()
 

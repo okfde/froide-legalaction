@@ -1,19 +1,17 @@
 from django.conf.urls import url
-from django.urls import include
-from django.urls import path
+from django.urls import include, path
 from django.utils.translation import pgettext_lazy
 from django.views.decorators.clickjacking import xframe_options_exempt
 
-
 from .views import (
-    request_form_page,
-    thanks_page,
+    KlageautomatAnswerDownloadView,
+    KlageautomatAnswerEditView,
     KlageautomatInfoPage,
     KlageAutomatWizard,
-    KlageautomatAnswerEditView,
-    KlageautomatAnswerDownloadView,
-    LegalDecisionListView,
     LegalDecisionDetailView,
+    LegalDecisionListView,
+    request_form_page,
+    thanks_page,
 )
 
 urlpatterns = [

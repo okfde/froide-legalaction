@@ -1,17 +1,15 @@
+from django import forms
 from django.core import validators
 from django.db import transaction
-from django.utils.translation import gettext_lazy as _
 from django.utils import formats, timezone
 from django.utils.html import format_html
-
-from django import forms
-
+from django.utils.translation import gettext_lazy as _
 from froide.foirequest.models import FoiMessage
+from froide.foirequest.validators import validate_upload_document
+from froide.helper.date_utils import calculate_month_range_de
+from froide.helper.widgets import BootstrapCheckboxInput
 from froide.publicbody.models import PublicBody
 from froide.publicbody.widgets import PublicBodySelect
-from froide.helper.widgets import BootstrapCheckboxInput
-from froide.helper.date_utils import calculate_month_range_de
-from froide.foirequest.validators import validate_upload_document
 
 from .models import Proposal, ProposalDocument
 

@@ -1,6 +1,6 @@
 from datetime import timedelta
-from django.utils import timezone
 
+from django.utils import timezone
 from froide.foirequest.models.request import Status
 
 

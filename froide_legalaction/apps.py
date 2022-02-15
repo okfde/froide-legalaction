@@ -2,8 +2,8 @@ import json
 import os
 
 from django.apps import AppConfig
-from django.utils.translation import gettext_lazy as _
 from django.db.models import signals
+from django.utils.translation import gettext_lazy as _
 
 
 class FroideLegalActionConfig(AppConfig):
@@ -23,6 +23,7 @@ class FroideLegalActionConfig(AppConfig):
 
 def export_user_data(user):
     from froide.foirequest.models.request import get_absolute_domain_short_url
+
     from .models import Proposal
 
     proposals = Proposal.objects.filter(foirequest__user=user)

@@ -1,25 +1,22 @@
-from django.shortcuts import render, get_object_or_404, Http404, redirect
-from django.urls import reverse
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.views.generic import FormView, DetailView
+from django.shortcuts import Http404, get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import DetailView, FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from django.utils.translation import gettext_lazy as _
-
-from legal_advice_builder.views import FormWizardView, PdfDownloadView
+from froide.foirequest.auth import can_write_foirequest
+from froide.foirequest.models import FoiRequest
+from froide.publicbody.models import Classification, PublicBody
 from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import Answer
-
-from froide.foirequest.models import FoiRequest
-from froide.foirequest.auth import can_write_foirequest
-from froide.publicbody.models import Classification, PublicBody
+from legal_advice_builder.views import FormWizardView, PdfDownloadView
 
 from .filters import LegalDecisionFilterSet
-from .forms import LegalActionRequestForm, KlageautomatApprovalForm
-from .models import LegalDecision
-
+from .forms import KlageautomatApprovalForm, LegalActionRequestForm
 from .mixins import KlageautomatMixin
+from .models import LegalDecision
 
 
 def _get_embed_info(request):

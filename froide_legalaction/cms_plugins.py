@@ -1,12 +1,11 @@
-from django.utils.translation import gettext_lazy as _
-from django.db.models import Max
+from datetime import date
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
+from django.db.models import Max
+from django.utils.translation import gettext_lazy as _
 
-from datetime import date
-
-from .models import Lawsuit, RESULTS, COURTS
+from .models import COURTS, RESULTS, Lawsuit
 
 
 @plugin_pool.register_plugin

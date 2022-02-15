@@ -1,9 +1,9 @@
 from django.db.models.fields import BLANK_CHOICE_DASH
-from django_filters.widgets import LinkWidget
 from django.utils.encoding import force_str
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+from django_filters.widgets import LinkWidget
 
 
 class ExcludePageParameterLinkWidget(LinkWidget):

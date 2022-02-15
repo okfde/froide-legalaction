@@ -1,28 +1,27 @@
 import os
 import tempfile
 
+from django.conf.urls import url
 from django.contrib import admin
+from django.core import serializers
 from django.core.exceptions import PermissionDenied
 from django.core.management import call_command
-from django.core import serializers
-from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils import timezone
-
 from parler.admin import TranslatableAdmin
 
 from .models import (
     Instance,
     Lawsuit,
-    Proposal,
-    ProposalDocument,
+    LegalDecision,
     LegalDecisionTag,
     LegalDecisionTagTranslation,
+    LegalDecisionTranslation,
     LegalDecisionType,
     LegalDecisionTypeTranslation,
-    LegalDecision,
-    LegalDecisionTranslation,
+    Proposal,
+    ProposalDocument,
 )
 
 

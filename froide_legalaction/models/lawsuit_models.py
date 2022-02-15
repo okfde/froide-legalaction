@@ -1,14 +1,12 @@
 import uuid
 
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 from django.conf import settings
-
+from django.db import models
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django_fsm import FSMField
-
+from froide.foirequest.models import FoiMessage, FoiRequest
 from froide.publicbody.models import PublicBody
-from froide.foirequest.models import FoiRequest, FoiMessage
 
 RESULTS = (
     ("won", _("gewonnen")),
