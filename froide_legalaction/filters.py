@@ -1,16 +1,15 @@
 from django import forms
 from django.contrib.postgres.search import SearchQuery, SearchRank
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F
 from django.db.models.functions import TruncYear
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
-from django_filters import FilterSet, ModelChoiceFilter, ChoiceFilter, CharFilter
-
+from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter
 from froide.publicbody.models import FoiLaw, PublicBody
 
-from .models import LegalDecision, LegalDecisionType, LegalDecisionTag
+from .models import LegalDecision, LegalDecisionTag, LegalDecisionType
 from .widgets import ExcludePageParameterLinkWidget, FilterListWidget
 
 
@@ -134,12 +133,16 @@ class LegalDecisionFilterSet(FilterSet):
                 if value == str(choice[0]):
                     url = self.get_filter_url(clear_field=filter_name)
                     return (choice[1], url)
+        return (value, "")
 
     def get_selected_model_choice_value(self, filter, value):
         qs = filter.extra.get("queryset")
-        element = qs.get(id=value)
-        filter_name = filter.field_name
-        return (str(element), self.get_filter_url(clear_field=filter_name))
+        try:
+            element = qs.get(id=value)
+            filter_name = filter.field_name
+            return (str(element), self.get_filter_url(clear_field=filter_name))
+        except (ValueError, ObjectDoesNotExist):
+            return (value, "")
 
     def get_selected_filters(self):
         res = []
@@ -149,11 +152,11 @@ class LegalDecisionFilterSet(FilterSet):
         for key in data.keys():
             filter = self.filters.get(key)
             value = data.get(key)
-            fielter_type = filter.__class__.__name__
+            filter_type = filter.__class__.__name__
             if filter and value:
-                if fielter_type == "ChoiceFilter":
+                if filter_type == "ChoiceFilter":
                     res.append(self.get_selected_choice_value(filter, value))
-                elif fielter_type == "ModelChoiceFilter":
+                elif filter_type == "ModelChoiceFilter":
                     res.append(self.get_selected_model_choice_value(filter, value))
                 else:
                     res.append((value, self.get_filter_url(clear_field=key)))
