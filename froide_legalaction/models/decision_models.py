@@ -10,7 +10,7 @@ from parler.managers import TranslatableManager
 from parler.models import TranslatableModel, TranslatedFields
 
 
-class LegalDecisionTagManager(TranslatableManager):
+class PrefetchTranslationsManager(TranslatableManager):
     def get_queryset(self):
         return super().get_queryset().prefetch_related("translations")
 
@@ -21,15 +21,27 @@ class LegalDecisionTag(TranslatableModel):
         slug=models.SlugField(verbose_name=_("slug"), unique=False, max_length=100),
     )
 
-    objects = LegalDecisionTagManager()
+    objects = PrefetchTranslationsManager()
 
     def __str__(self):
         return self.name
 
 
-class LegalDecisionTypeManager(TranslatableManager):
-    def get_queryset(self):
-        return super().get_queryset().prefetch_related("translations")
+class LegalDecisionLaw(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(verbose_name=_("name"), max_length=500)
+    )
+
+    short_names = models.JSONField(default=list, blank=True)
+    law_type = models.CharField(_("law type"), max_length=255, blank=True)
+    foi_law = models.ForeignKey(
+        FoiLaw, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    objects = PrefetchTranslationsManager()
+
+    def __str__(self):
+        return "{} ({})".format(self.name, self.law_type)
 
 
 class LegalDecisionType(TranslatableModel):
@@ -38,7 +50,7 @@ class LegalDecisionType(TranslatableModel):
         slug=models.SlugField(_("slug"), unique=False, max_length=255),
     )
 
-    objects = LegalDecisionTypeManager()
+    objects = PrefetchTranslationsManager()
 
     class Meta:
         verbose_name = _("Legal Decision Type")
@@ -48,10 +60,7 @@ class LegalDecisionType(TranslatableModel):
         return self.title
 
 
-class LegalDecisionManager(TranslatableManager):
-    def get_queryset(self):
-        return super().get_queryset().prefetch_related("translations")
-
+class LegalDecisionManager(PrefetchTranslationsManager):
     def get_search_vector(self, language):
         SEARCH_LANG = "simple"
 
@@ -106,6 +115,8 @@ class LegalDecision(TranslatableModel):
 
     source_data = models.JSONField(blank=True, null=True)
 
+    laws = models.ManyToManyField(LegalDecisionLaw, blank=True)
+
     foi_lawsuit = models.ForeignKey(
         "froide_legalaction.Lawsuit", on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -148,9 +159,7 @@ class LegalDecision(TranslatableModel):
 
     @property
     def law_name(self):
-        if self.foi_law:
-            return self.foi_law.name
-        return self.law
+        return ", ".join(law.name for law in self.laws.all())
 
     def generate_search_texts(self):
         for translation in self.translations.all():

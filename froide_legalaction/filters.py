@@ -7,9 +7,9 @@ from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter
-from froide.publicbody.models import FoiLaw, PublicBody
+from froide.publicbody.models import PublicBody
 
-from .models import LegalDecision, LegalDecisionTag, LegalDecisionType
+from .models import LegalDecision, LegalDecisionLaw, LegalDecisionTag, LegalDecisionType
 from .widgets import ExcludePageParameterLinkWidget, FilterListWidget
 
 
@@ -17,12 +17,8 @@ def get_foi_courts():
     return PublicBody.objects.exclude(pb_legaldecisions=None)
 
 
-def get_foi_law_types():
-    foilaw_types = (
-        FoiLaw.objects.exclude(foi_law_legaldecisions=None)
-        .values("law_type")
-        .annotate(c=Count("id"))
-    )
+def get_law_types():
+    foilaw_types = LegalDecisionLaw.objects.values("law_type").annotate(c=Count("id"))
     return [(type.get("law_type"), type.get("law_type")) for type in foilaw_types]
 
 
@@ -75,8 +71,8 @@ class LegalDecisionFilterSet(FilterSet):
         widget=FilterListWidget,
         label=_("by Court"),
     )
-    foi_law__law_type = ChoiceFilter(
-        choices=get_foi_law_types,
+    laws__law_type = ChoiceFilter(
+        choices=get_law_types,
         widget=ExcludePageParameterLinkWidget,
         label=_("by Law Type"),
         lookup_expr="iexact",
@@ -98,7 +94,7 @@ class LegalDecisionFilterSet(FilterSet):
         fields = (
             "quick_search",
             "tags",
-            "foi_law__law_type",
+            "laws__law_type",
             "foi_court",
             "type",
             "date",

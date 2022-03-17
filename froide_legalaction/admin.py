@@ -15,6 +15,7 @@ from .models import (
     Instance,
     Lawsuit,
     LegalDecision,
+    LegalDecisionLaw,
     LegalDecisionTag,
     LegalDecisionTagTranslation,
     LegalDecisionTranslation,
@@ -64,6 +65,12 @@ class ProposalAdmin(admin.ModelAdmin):
 
 class LegalDecisionTypeAdmin(TranslatableAdmin):
     model = LegalDecisionType
+
+
+class LegalDecisionLawAdmin(TranslatableAdmin):
+    model = LegalDecisionLaw
+
+    list_filter = ("law_type",)
 
 
 class LegalDecisionTagAdmin(TranslatableAdmin):
@@ -131,4 +138,5 @@ admin.site.register(Lawsuit, LawsuitAdmin)
 admin.site.register(Proposal, ProposalAdmin)
 admin.site.register(LegalDecisionTag, LegalDecisionTagAdmin)
 admin.site.register(LegalDecisionType, LegalDecisionTypeAdmin)
+admin.site.register(LegalDecisionLaw, LegalDecisionLawAdmin)
 admin.site.register(LegalDecision, LegalDecisionAdmin)
