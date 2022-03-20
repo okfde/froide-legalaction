@@ -242,9 +242,3 @@ class KlageautomatApprovalForm(forms.Form):
             'Ich habe verstanden, dass FDS für evt. anfallende <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/kosten/">Kosten</a> nicht aufkommt.'
         ),
     )
-    accept_term_of_use = forms.BooleanField(
-        required=True,
-        label=format_html(
-            'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>.'
-        ),
-    )
