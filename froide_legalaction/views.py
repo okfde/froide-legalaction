@@ -11,7 +11,7 @@ from froide.foirequest.models import FoiRequest
 from froide.publicbody.models import Classification, PublicBody
 from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import Answer
-from legal_advice_builder.views import FormWizardView, PdfDownloadView
+from legal_advice_builder.views import FormWizardView, PdfDownloadView, WordDownloadView
 
 from .filters import LegalDecisionFilterSet
 from .forms import KlageautomatApprovalForm, LegalActionRequestForm
@@ -224,7 +224,7 @@ class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
         return self.request.path
 
 
-class KlageautomatAnswerDownloadView(KlageautomatMixin, PdfDownloadView):
+class KlageautomatAnswerPDFDownloadView(KlageautomatMixin, PdfDownloadView):
     def get_answer(self):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
@@ -233,12 +233,18 @@ class KlageautomatAnswerDownloadView(KlageautomatMixin, PdfDownloadView):
             external_id=foi_request.id,
         ).last()
 
-    def get_filename(self):
-        return "{}_{}.pdf".format(self.get_lawcase(), self.get_foirequest().id)
+
+class KlageautomatAnswerWordDownloadView(KlageautomatMixin, WordDownloadView):
+    def get_answer(self):
+        foi_request = self.get_foirequest()
+        return Answer.objects.filter(
+            law_case=self.get_lawcase(),
+            creator=self.request.user,
+            external_id=foi_request.id,
+        ).last()
 
 
 class LegalDecisionListView(ListView):
-
     model = LegalDecision
     paginate_by = 10
 

@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from froide.foirequest.models import FoiRequest
@@ -19,3 +21,7 @@ class KlageautomatMixin:
 
     def get_lawcase(self):
         return LawCase.objects.all().first()
+
+    def get_filename(self):
+        date = datetime.date.today()
+        return "{}_{}_FDS{}".format(date, self.get_lawcase(), self.get_foirequest().id)
