@@ -9,12 +9,15 @@ from django.views.generic.list import ListView
 from froide.foirequest.auth import can_write_foirequest
 from froide.foirequest.models import FoiRequest
 from froide.publicbody.models import Classification, PublicBody
-from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import Answer
 from legal_advice_builder.views import FormWizardView, PdfDownloadView, WordDownloadView
 
 from .filters import LegalDecisionFilterSet
-from .forms import KlageautomatApprovalForm, LegalActionRequestForm
+from .forms import (
+    KlageautomatApprovalForm,
+    KlageautomatRenderedDocumentForm,
+    LegalActionRequestForm,
+)
 from .mixins import KlageautomatMixin
 from .models import LegalDecision
 
@@ -96,6 +99,8 @@ class KlageautomatInfoPage(KlageautomatMixin, FormView):
 
 
 class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
+    document_form_class = KlageautomatRenderedDocumentForm
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({"foi_request": self.get_foirequest()})
@@ -196,7 +201,7 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
 
 class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
     model = Answer
-    form_class = RenderedDocumentForm
+    form_class = KlageautomatRenderedDocumentForm
 
     def get_object(self):
         foi_request = self.get_foirequest()

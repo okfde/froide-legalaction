@@ -1,11 +1,9 @@
 {% load i18n %}
-
 {% load legalaction %}
 
+{% with answer=object|questionaire_taken %}
 <div class="card-body">
 <h3>{% trans "Automatic lawsuit check" %}</h3>
-
-{% with answer=object|questionaire_taken %}
     <p>
       Ihre Anfrage oder ihr Widerspruch wurden seit mehr als drei Monaten nicht beantwortet? Möglicherweise können Sie eine Untätigkeitsklage einreichen.
       Mit unserem <strong>Klageautomaten</strong> können Sie überprüfen, ob eine Klage in Betracht kommt. Wenn das der Fall ist, wird direkt
@@ -15,14 +13,23 @@
       Voraussetzung hierfür ist zunächst, dass die Behörde innerhalb von 3 Monaten nicht reagiert hat. Die Klage kann dann, anders als sonst, erhoben werden, ohne dass zuvor ein Widerspruchsverfahren abgeschlossen worden ist.
     </p>
     <p>Der Klageautomat wird Schritt für Schritt alle wichtigen Informationen abfragen und, wenn alle Voraussetzungen erfüllt sind, eine Klageschrift erstellen.</p>
+    {% if answer %}
+    <div class="alert alert-info">
+      <p>Sie haben bereits einen Klageentwurf zu dieser Anfrage erstellt. Sie können den Entwurf bearbeiten und herunterladen oder die Klageprüfung erneut duchlaufen.</p>
+    </div>
+    {% endif %}
   </div>
   <div class="card-footer border-0 bg-white">
       <a class="btn btn-primary" href="{% url 'klageautomat-info' pk=object.pk %}" target="_blank">
+        {% if answer %}
+        {% trans "Restart lawsuit check" %}
+        {% else %}
         {% trans "Start lawsuit check now" %}
+        {% endif %}
       </a>
       {% if answer %}
       <a class="btn btn-primary" href="{% url 'klageautomat-edit-answer' pk=object.pk %}" target="_blank">
-        {% trans "Click here to edit a lawsuit" %}
+        {% trans "Edit lawsuit" %}
       </a>
       {% endif %}
   </div>

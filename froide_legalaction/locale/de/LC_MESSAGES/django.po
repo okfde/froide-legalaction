@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-17 11:31+0100\n"
+"POT-Creation-Date: 2022-03-25 11:59+0100\n"
 "PO-Revision-Date: 2021-02-17 20:04+0000\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
@@ -357,13 +357,17 @@ msgstr "Abschicken"
 msgid "Automatic lawsuit check"
 msgstr "Automatische Klageprüfung"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html:22
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:25
+msgid "Restart lawsuit check"
+msgstr "Klageprüfung erneut starten"
+
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:27
 msgid "Start lawsuit check now"
 msgstr "Jetzt Klageprüfung starten"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html:26
-msgid "Click here to edit a lawsuit"
-msgstr "Bereits erstellt Klage bearbeiten"
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:32
+msgid "Edit lawsuit"
+msgstr "Klageentwurf bearbeiten"
 
 #: templates/froide_legalaction/includes/lawsuit_propoposal.html:6
 msgid "Propose a law suit to our legal professionals"
@@ -451,6 +455,9 @@ msgstr ""
 #: widgets.py:39
 msgid "search"
 msgstr "Schnellsuche"
+
+#~ msgid "Click here to edit a lawsuit"
+#~ msgstr "Bereits erstellt Klage bearbeiten"
 
 #~ msgid "Click here to create a law suit"
 #~ msgstr "Jetzt Klage automatisch erstellen"
