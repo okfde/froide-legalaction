@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from froide.foirequest.models import FoiRequest
@@ -19,3 +21,30 @@ class KlageautomatMixin:
 
     def get_lawcase(self):
         return LawCase.objects.all().first()
+
+    def get_filename(self):
+        date = datetime.date.today()
+        return "{}_{}_FDS{}".format(date, self.get_lawcase(), self.get_foirequest().id)
+
+    def get_attachment_list(self, answer):
+
+        attachments = [
+            {
+                "text": "K1: Ihre Anfrage vom",
+                "date": answer.get_answer_for_question("antragstellung"),
+            }
+        ]
+
+        bescheid_date_answer = answer.get_answer_for_question("bescheid_datum")
+        if bescheid_date_answer:
+            attachments.append(
+                {"text": "K2: Den Bescheid vom", "date": bescheid_date_answer}
+            )
+
+        widerspruch_date_answer = answer.get_answer_for_question("widerspruch_datum")
+        if widerspruch_date_answer:
+            attachments.append(
+                {"text": "K3: Den Widerspruch vom", "date": widerspruch_date_answer}
+            )
+
+        return attachments

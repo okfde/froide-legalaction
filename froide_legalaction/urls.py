@@ -4,8 +4,9 @@ from django.utils.translation import pgettext_lazy
 from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .views import (
-    KlageautomatAnswerDownloadView,
     KlageautomatAnswerEditView,
+    KlageautomatAnswerPDFDownloadView,
+    KlageautomatAnswerWordDownloadView,
     KlageautomatInfoPage,
     KlageAutomatWizard,
     LegalDecisionDetailView,
@@ -43,10 +44,17 @@ urlpatterns = [
     ),
     url(
         pgettext_lazy(
-            "url part", r"^klageautomat/request/(?P<pk>\d+)/answer/download$"
+            "url part", r"^klageautomat/request/(?P<pk>\d+)/answer/pdf-download$"
         ),
-        KlageautomatAnswerDownloadView.as_view(),
-        name="klageautomat-download-answer",
+        KlageautomatAnswerPDFDownloadView.as_view(),
+        name="klageautomat-pdf-download-answer",
+    ),
+    url(
+        pgettext_lazy(
+            "url part", r"^klageautomat/request/(?P<pk>\d+)/answer/word-download$"
+        ),
+        KlageautomatAnswerWordDownloadView.as_view(),
+        name="klageautomat-word-download-answer",
     ),
     path("klageautomat/admin/", include("legal_advice_builder.urls")),
     url(

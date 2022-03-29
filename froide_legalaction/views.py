@@ -9,12 +9,15 @@ from django.views.generic.list import ListView
 from froide.foirequest.auth import can_write_foirequest
 from froide.foirequest.models import FoiRequest
 from froide.publicbody.models import Classification, PublicBody
-from legal_advice_builder.forms import RenderedDocumentForm
 from legal_advice_builder.models import Answer
-from legal_advice_builder.views import FormWizardView, PdfDownloadView
+from legal_advice_builder.views import FormWizardView, PdfDownloadView, WordDownloadView
 
 from .filters import LegalDecisionFilterSet
-from .forms import KlageautomatApprovalForm, LegalActionRequestForm
+from .forms import (
+    KlageautomatApprovalForm,
+    KlageautomatRenderedDocumentForm,
+    LegalActionRequestForm,
+)
 from .mixins import KlageautomatMixin
 from .models import LegalDecision
 
@@ -96,11 +99,18 @@ class KlageautomatInfoPage(KlageautomatMixin, FormView):
 
 
 class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
+    document_form_class = KlageautomatRenderedDocumentForm
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({"foi_request": self.get_foirequest()})
         if self.answer:
-            context.update({"help_message": self.get_help_message()})
+            context.update(
+                {
+                    "help_message": self.get_help_message(),
+                    "attachments": self.get_attachment_list(self.answer),
+                }
+            )
         return context
 
     def get_help_message(self, answer=None):
@@ -189,6 +199,7 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
                     "answer_form": form,
                     "preview": preview,
                     "help_message": self.get_help_message(answer),
+                    "attachments": self.get_attachment_list(answer),
                 }
             )
         return self.render_to_response(context)
@@ -196,7 +207,7 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
 
 class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
     model = Answer
-    form_class = RenderedDocumentForm
+    form_class = KlageautomatRenderedDocumentForm
 
     def get_object(self):
         foi_request = self.get_foirequest()
@@ -204,6 +215,11 @@ class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
             law_case=self.get_lawcase(),
             external_id=foi_request.id,
         ).last()
+
+    def get_answer_from_list(self, question_id):
+        for answer in self.get_object().answers:
+            if answer.get("question") == question_id:
+                return answer
 
     def get_help_message(self):
         questionaiere = self.get_lawcase().questionaire_set.last()
@@ -216,6 +232,7 @@ class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
                 "foi_request": self.get_foirequest(),
                 "law_case": self.get_lawcase(),
                 "help_message": self.get_help_message(),
+                "attachments": self.get_attachment_list(self.get_object()),
             }
         )
         return context
@@ -224,7 +241,7 @@ class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
         return self.request.path
 
 
-class KlageautomatAnswerDownloadView(KlageautomatMixin, PdfDownloadView):
+class KlageautomatAnswerPDFDownloadView(KlageautomatMixin, PdfDownloadView):
     def get_answer(self):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
@@ -233,12 +250,18 @@ class KlageautomatAnswerDownloadView(KlageautomatMixin, PdfDownloadView):
             external_id=foi_request.id,
         ).last()
 
-    def get_filename(self):
-        return "{}_{}.pdf".format(self.get_lawcase(), self.get_foirequest().id)
+
+class KlageautomatAnswerWordDownloadView(KlageautomatMixin, WordDownloadView):
+    def get_answer(self):
+        foi_request = self.get_foirequest()
+        return Answer.objects.filter(
+            law_case=self.get_lawcase(),
+            creator=self.request.user,
+            external_id=foi_request.id,
+        ).last()
 
 
 class LegalDecisionListView(ListView):
-
     model = LegalDecision
     paginate_by = 10
 

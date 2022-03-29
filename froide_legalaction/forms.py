@@ -10,6 +10,7 @@ from froide.helper.date_utils import calculate_month_range_de
 from froide.helper.widgets import BootstrapCheckboxInput
 from froide.publicbody.models import PublicBody
 from froide.publicbody.widgets import PublicBodySelect
+from legal_advice_builder.forms import RenderedDocumentForm
 
 from .models import Proposal, ProposalDocument
 
@@ -245,6 +246,12 @@ class KlageautomatApprovalForm(forms.Form):
     accept_term_of_use = forms.BooleanField(
         required=True,
         label=format_html(
-            'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>.'
+            'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>. Die <a target="_blank"   href="/datenschutzerklaerung/">Datenschutzerklärung</a> habe ich zur Kenntnis genommen.'
         ),
     )
+
+
+class KlageautomatRenderedDocumentForm(RenderedDocumentForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["rendered_document"].label = "Ihr Klageentwurf"
