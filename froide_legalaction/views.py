@@ -105,7 +105,12 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
         context = super().get_context_data(**kwargs)
         context.update({"foi_request": self.get_foirequest()})
         if self.answer:
-            context.update({"help_message": self.get_help_message()})
+            context.update(
+                {
+                    "help_message": self.get_help_message(),
+                    "attachments": self.get_attachment_list(self.answer),
+                }
+            )
         return context
 
     def get_help_message(self, answer=None):
@@ -194,6 +199,7 @@ class KlageAutomatWizard(KlageautomatMixin, FormWizardView):
                     "answer_form": form,
                     "preview": preview,
                     "help_message": self.get_help_message(answer),
+                    "attachments": self.get_attachment_list(answer),
                 }
             )
         return self.render_to_response(context)
@@ -210,6 +216,11 @@ class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
             external_id=foi_request.id,
         ).last()
 
+    def get_answer_from_list(self, question_id):
+        for answer in self.get_object().answers:
+            if answer.get("question") == question_id:
+                return answer
+
     def get_help_message(self):
         questionaiere = self.get_lawcase().questionaire_set.last()
         return questionaiere.success_message_with_data(self.object)
@@ -221,6 +232,7 @@ class KlageautomatAnswerEditView(KlageautomatMixin, UpdateView):
                 "foi_request": self.get_foirequest(),
                 "law_case": self.get_lawcase(),
                 "help_message": self.get_help_message(),
+                "attachments": self.get_attachment_list(self.get_object()),
             }
         )
         return context
