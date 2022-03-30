@@ -240,13 +240,7 @@ class KlageautomatApprovalForm(forms.Form):
     no_payment_of_costs = forms.BooleanField(
         required=True,
         label=format_html(
-            'Ich habe verstanden, dass FDS für evt. anfallende <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/kosten/">Kosten</a> nicht aufkommt.'
-        ),
-    )
-    accept_term_of_use = forms.BooleanField(
-        required=True,
-        label=format_html(
-            'Ich akzeptiere die <a target="_blank" href="/nutzungsbedingungen/klageautomat/">Nuzungsbedingungen</a>. Die <a target="_blank"   href="/datenschutzerklaerung/">Datenschutzerklärung</a> habe ich zur Kenntnis genommen.'
+            'Ich habe verstanden, dass FragDenStaat für evtl. <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/kosten/">anfallende Kosten</a> nach dem Einreichen einer Klage nicht aufkommt.'
         ),
     )
 
