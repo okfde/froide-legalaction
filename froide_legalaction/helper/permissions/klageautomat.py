@@ -32,8 +32,7 @@ def foirequest_can_be_tested(foi_request):
 def user_has_klageautomat_permissions(user, foi_request):
     is_staff = user.is_active and user.is_staff
     is_foirequest_creator = user == foi_request.user
-    has_permission = user.has_perm("legal_advice_builder.add_answer")
-    return is_staff or (is_foirequest_creator and has_permission)
+    return is_staff or is_foirequest_creator
 
 
 # is used in KlageautomatMixin and can_use_klageautomat template tag
