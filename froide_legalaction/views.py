@@ -246,7 +246,6 @@ class KlageautomatAnswerPDFDownloadView(KlageautomatMixin, PdfDownloadView):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
             law_case=self.get_lawcase(),
-            creator=self.request.user,
             external_id=foi_request.id,
         ).last()
 
@@ -256,7 +255,6 @@ class KlageautomatAnswerWordDownloadView(KlageautomatMixin, WordDownloadView):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
             law_case=self.get_lawcase(),
-            creator=self.request.user,
             external_id=foi_request.id,
         ).last()
 
