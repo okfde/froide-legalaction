@@ -82,11 +82,17 @@ class Lawsuit(models.Model):
 
     @property
     def first_instance(self):
-        return self.instances[0]
+        try:
+            return self.instances[0]
+        except IndexError:
+            return None
 
     @property
     def last_instance(self):
-        return self.instances[-1]
+        try:
+            return self.instances[-1]
+        except IndexError:
+            return None
 
     @property
     def start_date(self):
