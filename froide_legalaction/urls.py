@@ -16,7 +16,11 @@ from .views import (
 )
 
 urlpatterns = [
-    url(r"^$", xframe_options_exempt(request_form_page), name="legalaction-index"),
+    url(
+        pgettext_lazy("url part", r"^propose/$"),
+        xframe_options_exempt(request_form_page),
+        name="legalaction-index",
+    ),
     url(
         pgettext_lazy("url part", r"^thanks/$"),
         xframe_options_exempt(thanks_page),

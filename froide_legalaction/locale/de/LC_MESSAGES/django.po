@@ -394,6 +394,10 @@ msgstr "Jetzt Klagevorschlag einreichen"
 msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
 
+msgctxt "url part"
+msgid "^propose/$"
+msgstr "^vorschlagen/$"
+
 #: urls.py:21
 msgctxt "url part"
 msgid "^thanks/$"
