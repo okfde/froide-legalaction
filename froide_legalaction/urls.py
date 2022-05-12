@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.urls import include, path
 from django.utils.translation import pgettext_lazy
-from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .views import (
     KlageautomatAnswerEditView,
@@ -18,12 +17,12 @@ from .views import (
 urlpatterns = [
     url(
         pgettext_lazy("url part", r"^propose/$"),
-        xframe_options_exempt(request_form_page),
+        request_form_page,
         name="legalaction-index",
     ),
     url(
         pgettext_lazy("url part", r"^thanks/$"),
-        xframe_options_exempt(thanks_page),
+        thanks_page,
         name="legalaction-thanks",
     ),
     url(
