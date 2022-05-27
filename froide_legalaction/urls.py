@@ -4,6 +4,7 @@ from django.utils.translation import pgettext_lazy
 
 from .views import (
     KlageautomatAnswerEditView,
+    KlageautomatAnswerHTMLDownloadView,
     KlageautomatAnswerPDFDownloadView,
     KlageautomatAnswerWordDownloadView,
     KlageautomatInfoPage,
@@ -58,6 +59,13 @@ urlpatterns = [
         ),
         KlageautomatAnswerWordDownloadView.as_view(),
         name="klageautomat-word-download-answer",
+    ),
+    url(
+        pgettext_lazy(
+            "url part", r"^klageautomat/request/(?P<pk>\d+)/answer/html-download$"
+        ),
+        KlageautomatAnswerHTMLDownloadView.as_view(),
+        name="klageautomat-html-download-answer",
     ),
     path("klageautomat/admin/", include("legal_advice_builder.urls")),
     url(

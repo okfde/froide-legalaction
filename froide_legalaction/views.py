@@ -10,7 +10,12 @@ from froide.foirequest.auth import can_write_foirequest
 from froide.foirequest.models import FoiRequest
 from froide.publicbody.models import Classification, PublicBody
 from legal_advice_builder.models import Answer
-from legal_advice_builder.views import FormWizardView, PdfDownloadView, WordDownloadView
+from legal_advice_builder.views import (
+    FormWizardView,
+    HTMLDownloadView,
+    PdfDownloadView,
+    WordDownloadView,
+)
 
 from .filters import LegalDecisionFilterSet
 from .forms import (
@@ -251,6 +256,15 @@ class KlageautomatAnswerPDFDownloadView(KlageautomatMixin, PdfDownloadView):
 
 
 class KlageautomatAnswerWordDownloadView(KlageautomatMixin, WordDownloadView):
+    def get_answer(self):
+        foi_request = self.get_foirequest()
+        return Answer.objects.filter(
+            law_case=self.get_lawcase(),
+            external_id=foi_request.id,
+        ).last()
+
+
+class KlageautomatAnswerHTMLDownloadView(KlageautomatMixin, HTMLDownloadView):
     def get_answer(self):
         foi_request = self.get_foirequest()
         return Answer.objects.filter(
