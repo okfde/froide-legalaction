@@ -151,16 +151,19 @@ class LegalActionRequestForm(LegalActionUserForm):
         return ["foimessage_%s" % kind]
 
     def add_document_fields(self, kind, kind_detail):
+        required = kind_detail["required"]
         self.fields["date_%s" % kind] = forms.DateField(
             label=_("Date of {}").format(kind_detail["label"]),
             validators=[validators.MaxValueValidator(timezone.now().date())],
             widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            required=required,
         )
         self.fields["document_%s" % kind] = forms.FileField(
             label=_("Upload document for {}").format(kind_detail["label"]),
             help_text=kind_detail["help_text_upload"],
             validators=[validate_upload_document],
             widget=forms.FileInput(attrs={"class": "form-control"}),
+            required=required,
         )
         return ["date_%s" % kind, "document_%s" % kind]
 

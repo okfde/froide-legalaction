@@ -220,6 +220,7 @@ class ProposalDocument(models.Model):
                 "select": lambda qs, first: qs.filter(pk=first.pk),
                 "hidden": True,
                 "initial": lambda qs, first: first,
+                "required": True,
             },
         ),
         (
@@ -230,6 +231,7 @@ class ProposalDocument(models.Model):
                 "help_text": _("Please select the rejection response."),
                 "select": lambda qs, first: qs.filter(is_response=True),
                 "initial": None,
+                "required": True,
             },
         ),
         (
@@ -246,6 +248,7 @@ class ProposalDocument(models.Model):
                     is_response=False, timestamp__gt=first.timestamp
                 ),
                 "initial": None,
+                "required": False,
             },
         ),
         (
@@ -261,6 +264,7 @@ class ProposalDocument(models.Model):
                 ),
                 "select": lambda qs, first: qs.filter(is_response=True),
                 "initial": None,
+                "required": False,
             },
         ),
     )
