@@ -127,13 +127,28 @@ class LegalActionRequestForm(LegalActionUserForm):
             if self.foirequest is None:
                 custom_fields.extend(self.add_document_fields(kind, kind_detail))
             else:
-                custom_fields.extend(self.add_foimessage_fields(kind, kind_detail))
+                if self.should_field_be_added(kind):
+                    custom_fields.extend(self.add_foimessage_fields(kind, kind_detail))
 
         self.order_fields(
             ["first_name", "last_name", "address", "email", "phone", "publicbody"]
             + custom_fields
             + ["legal_date", "description"]
         )
+
+    def appeal_allowed(self, foirequest):
+        jurisdictions_not_allowed = ["nrw", "bayern"]
+        if foirequest:
+            return (
+                foirequest.public_body.jurisdiction.slug
+                not in jurisdictions_not_allowed
+            )
+        return True
+
+    def should_field_be_added(self, document_kind):
+        if document_kind in ["appeal", "final_rejection"]:
+            return self.appeal_allowed(self.foirequest)
+        return True
 
     def add_foimessage_fields(self, kind, kind_detail):
         qs, mes = self.foimessage_qs, self.first_foimessage
@@ -180,14 +195,17 @@ class LegalActionRequestForm(LegalActionUserForm):
 
         DK = ProposalDocument.DOCUMENT_KINDS
         try:
-            message_set = set(
-                cleaned_data["foimessage_%s" % kind] for kind, kind_detail in DK
-            )
+            messages = []
+            for kind, _kind_detail in DK:
+                if self.should_field_be_added(kind):
+                    if cleaned_data["foimessage_%s" % kind]:
+                        messages.append(cleaned_data["foimessage_%s" % kind])
+            message_set = set(messages)
         except KeyError:
             raise forms.ValidationError(
                 _("You have not submitted enough document kinds.")
             )
-        if len(message_set) != len(DK):
+        if len(message_set) != len(messages):
             raise forms.ValidationError(
                 _(
                     "You have submitted the same message for "
@@ -212,18 +230,33 @@ class LegalActionRequestForm(LegalActionUserForm):
             )
             last_date = None
             for kind, _kind_detail in ProposalDocument.DOCUMENT_KINDS:
-                pd = ProposalDocument(proposal=proposal, kind=kind)
+                pd = None
                 if self.foirequest is None:
-                    pd.date = cleaned_data["date_%s" % kind]
-                    pd.document = cleaned_data["document_%s" % kind]
+                    date = None
+                    document = None
+                    if "date_%s" % kind in cleaned_data:
+                        date = cleaned_data["date_%s" % kind]
+                    if "document_%s" % kind in cleaned_data:
+                        document = cleaned_data["document_%s" % kind]
+                    if date and document:
+                        pd = ProposalDocument(proposal=proposal, kind=kind)
+                        pd.date = date
+                        pd.document = document
                 else:
-                    fm = cleaned_data["foimessage_%s" % kind]
-                    pd.foimessage = fm
-                    pd.date = fm.timestamp.date()
-                if kind == "final_rejection":
-                    last_date = pd.date
-                pd.save()
-            proposal.legal_date = calculate_month_range_de(last_date)
+                    if (
+                        self.should_field_be_added(kind)
+                        and cleaned_data["foimessage_%s" % kind]
+                    ):
+                        pd = ProposalDocument(proposal=proposal, kind=kind)
+                        fm = cleaned_data["foimessage_%s" % kind]
+                        pd.foimessage = fm
+                        pd.date = fm.timestamp.date()
+                if pd:
+                    if kind == "final_rejection":
+                        last_date = pd.date
+                    pd.save()
+            if last_date:
+                proposal.legal_date = calculate_month_range_de(last_date)
             proposal.save()
         return proposal
 
