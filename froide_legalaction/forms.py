@@ -135,20 +135,6 @@ class LegalActionRequestForm(LegalActionUserForm):
             + ["legal_date", "description"]
         )
 
-    def appeal_allowed(self, foirequest):
-        jurisdictions_not_allowed = ["nrw", "bayern"]
-        if foirequest:
-            return (
-                foirequest.public_body.jurisdiction.slug
-                not in jurisdictions_not_allowed
-            )
-        return True
-
-    def should_field_be_added(self, document_kind):
-        if document_kind in ["appeal", "final_rejection"]:
-            return self.appeal_allowed(self.foirequest)
-        return True
-
     def add_foimessage_fields(self, kind, kind_detail):
         required = kind_detail["required"]
         qs, mes = self.foimessage_qs, self.first_foimessage
