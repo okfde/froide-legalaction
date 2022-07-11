@@ -127,8 +127,7 @@ class LegalActionRequestForm(LegalActionUserForm):
             if self.foirequest is None:
                 custom_fields.extend(self.add_document_fields(kind, kind_detail))
             else:
-                if self.should_field_be_added(kind):
-                    custom_fields.extend(self.add_foimessage_fields(kind, kind_detail))
+                custom_fields.extend(self.add_foimessage_fields(kind, kind_detail))
 
         self.order_fields(
             ["first_name", "last_name", "address", "email", "phone", "publicbody"]
@@ -151,6 +150,7 @@ class LegalActionRequestForm(LegalActionUserForm):
         return True
 
     def add_foimessage_fields(self, kind, kind_detail):
+        required = kind_detail["required"]
         qs, mes = self.foimessage_qs, self.first_foimessage
         init = kind_detail["initial"]
         self.fields["foimessage_%s" % kind] = FoiMessageChoiceField(
@@ -162,6 +162,7 @@ class LegalActionRequestForm(LegalActionUserForm):
             widget=(
                 forms.HiddenInput if kind_detail.get("hidden") else forms.RadioSelect
             ),
+            required=required,
         )
         return ["foimessage_%s" % kind]
 
@@ -197,9 +198,8 @@ class LegalActionRequestForm(LegalActionUserForm):
         try:
             messages = []
             for kind, _kind_detail in DK:
-                if self.should_field_be_added(kind):
-                    if cleaned_data["foimessage_%s" % kind]:
-                        messages.append(cleaned_data["foimessage_%s" % kind])
+                if cleaned_data["foimessage_%s" % kind]:
+                    messages.append(cleaned_data["foimessage_%s" % kind])
             message_set = set(messages)
         except KeyError:
             raise forms.ValidationError(
@@ -243,10 +243,7 @@ class LegalActionRequestForm(LegalActionUserForm):
                         pd.date = date
                         pd.document = document
                 else:
-                    if (
-                        self.should_field_be_added(kind)
-                        and cleaned_data["foimessage_%s" % kind]
-                    ):
+                    if cleaned_data["foimessage_%s" % kind]:
                         pd = ProposalDocument(proposal=proposal, kind=kind)
                         fm = cleaned_data["foimessage_%s" % kind]
                         pd.foimessage = fm
