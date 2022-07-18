@@ -136,6 +136,7 @@ class LegalActionRequestForm(LegalActionUserForm):
         )
 
     def add_foimessage_fields(self, kind, kind_detail):
+        required = kind_detail["required"]
         qs, mes = self.foimessage_qs, self.first_foimessage
         init = kind_detail["initial"]
         self.fields["foimessage_%s" % kind] = FoiMessageChoiceField(
@@ -147,20 +148,24 @@ class LegalActionRequestForm(LegalActionUserForm):
             widget=(
                 forms.HiddenInput if kind_detail.get("hidden") else forms.RadioSelect
             ),
+            required=required,
         )
         return ["foimessage_%s" % kind]
 
     def add_document_fields(self, kind, kind_detail):
+        required = kind_detail["required"]
         self.fields["date_%s" % kind] = forms.DateField(
             label=_("Date of {}").format(kind_detail["label"]),
             validators=[validators.MaxValueValidator(timezone.now().date())],
             widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            required=required,
         )
         self.fields["document_%s" % kind] = forms.FileField(
             label=_("Upload document for {}").format(kind_detail["label"]),
             help_text=kind_detail["help_text_upload"],
             validators=[validate_upload_document],
             widget=forms.FileInput(attrs={"class": "form-control"}),
+            required=required,
         )
         return ["date_%s" % kind, "document_%s" % kind]
 
@@ -177,14 +182,16 @@ class LegalActionRequestForm(LegalActionUserForm):
 
         DK = ProposalDocument.DOCUMENT_KINDS
         try:
-            message_set = set(
-                cleaned_data["foimessage_%s" % kind] for kind, kind_detail in DK
-            )
+            messages = []
+            for kind, _kind_detail in DK:
+                if cleaned_data["foimessage_%s" % kind]:
+                    messages.append(cleaned_data["foimessage_%s" % kind])
+            message_set = set(messages)
         except KeyError:
             raise forms.ValidationError(
                 _("You have not submitted enough document kinds.")
             )
-        if len(message_set) != len(DK):
+        if len(message_set) != len(messages):
             raise forms.ValidationError(
                 _(
                     "You have submitted the same message for "
@@ -209,18 +216,30 @@ class LegalActionRequestForm(LegalActionUserForm):
             )
             last_date = None
             for kind, _kind_detail in ProposalDocument.DOCUMENT_KINDS:
-                pd = ProposalDocument(proposal=proposal, kind=kind)
+                pd = None
                 if self.foirequest is None:
-                    pd.date = cleaned_data["date_%s" % kind]
-                    pd.document = cleaned_data["document_%s" % kind]
+                    date = None
+                    document = None
+                    if "date_%s" % kind in cleaned_data:
+                        date = cleaned_data["date_%s" % kind]
+                    if "document_%s" % kind in cleaned_data:
+                        document = cleaned_data["document_%s" % kind]
+                    if date and document:
+                        pd = ProposalDocument(proposal=proposal, kind=kind)
+                        pd.date = date
+                        pd.document = document
                 else:
-                    fm = cleaned_data["foimessage_%s" % kind]
-                    pd.foimessage = fm
-                    pd.date = fm.timestamp.date()
-                if kind == "final_rejection":
-                    last_date = pd.date
-                pd.save()
-            proposal.legal_date = calculate_month_range_de(last_date)
+                    if cleaned_data["foimessage_%s" % kind]:
+                        pd = ProposalDocument(proposal=proposal, kind=kind)
+                        fm = cleaned_data["foimessage_%s" % kind]
+                        pd.foimessage = fm
+                        pd.date = fm.timestamp.date()
+                if pd:
+                    if kind == "final_rejection":
+                        last_date = pd.date
+                    pd.save()
+            if last_date:
+                proposal.legal_date = calculate_month_range_de(last_date)
             proposal.save()
         return proposal
 
