@@ -1,7 +1,6 @@
 {% load markup %}
 {% load humanize %}
-{% load static %}
-{% load sekizai_tags %}
+{% load frontend %}
 
 <div class="lawsuits-table-filter">
   <div class="row">
@@ -33,11 +32,11 @@
   <table class="table table-fixed">
     <thead>
       <tr>
-        <th><span class="sr-only">Status</span></th>
+        <th><span class="visually-hidden">Status</span></th>
         <th class="topic">Thema</th>
         <th>Eingereicht am</th>
         <th>Gericht</th>
-        <th class="text-right">Kosten</th>
+        <th class="text-end">Kosten</th>
       </tr>
     </thead>
     <tbody>
@@ -49,12 +48,12 @@
       {% for object in object_list %}
         <tr class="lawsuit-table-item" data-pk="{{ object.pk }}" data-status="{% if object.active %}active{% else %}{{ object.result }}{% endif %}" data-court="{{ object.last_instance.court_type }}" data-reference="{{ object.reference }}" id="klage-detail-{{ object.pk }}">
           <td class="text-center">
-            <i class="fa fa-{{ object.result_icon }} text-{{ object.result_bootstrap_class }}" data-toggle="tooltip" title="{% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}"></i>
+            <i class="fa fa-{{ object.result_icon }} text-{{ object.result_bootstrap_class }}" data-bs-toggle="tooltip" title="{% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}"></i>
           </td>
           <td class="lawsuit-table-item-title">
             <a href="#klage-detail-{{ object.pk }}" class="d-flex">
               {{ object.title }}
-              <span class="small ml-2">
+              <span class="small ms-2">
                 <i class="fa fa-chevron-down"></i>
               </span>
             </a>
@@ -63,9 +62,9 @@
             {{ object.start_date|date:"SHORT_DATE_FORMAT" }}
           </td>
           <td>
-            <abbr title="{{ object.last_instance.court.name }}" data-toggle="tooltip">{{ object.last_instance.court_type }}</abbr>
+            <abbr title="{{ object.last_instance.court.name }}" data-bs-toggle="tooltip">{{ object.last_instance.court_type }}</abbr>
           </td>
-          <td class="text-right">
+          <td class="text-end">
             {% if object.costs %}
               {{ object.costs | intcomma }}&nbsp;€
             {% else %}
@@ -80,22 +79,22 @@
               <dl>
                 <dt>Eingereicht am</dt>
                 <dd>{{ object.start_date }}</dd>
-            
+
                 <dt>Aktenzeichen</dt>
                 <dd>{{ object.reference }}</dd>
-            
+
                 <dt>Kläger:in</dt>
                 <dd>{{ object.plaintiff }}</dd>
-            
+
                 <dt>Gericht</dt>
                 <dd>{{ object.courts | join:", " }}</dd>
-            
+
                 <dt>Termin</dt>
                 <dd>{{ object.end_date|default:"unbekannt"}}</dd>
-            
+
                 <dt>Beklagte</dt>
                 <dd>{{ object.publicbody.name }}</dd>
-            
+
                 <dt>Kosten</dt>
                 <dd>
                   {% if object.costs %}
@@ -111,7 +110,7 @@
                     {{ object.request.title }}
                   </a>
                 </dd>
-            
+
                 <dt>Status</dt>
                 <dd class="text-{{ object.result_bootstrap_class }}">
                   {% if object.active %}läuft{% else %}{{ object.get_result_display }}{% endif %}
@@ -129,18 +128,18 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="4" class="text-right">
+        <td colspan="4" class="text-end">
           Kosten insgesamt
         </td>
-        <td class="text-right">
+        <td class="text-end">
           {{ total_costs|intcomma }}&nbsp;€
         </td>
-      </tr> 
+      </tr>
       <tr>
-        <td colspan="4" class="text-right">
+        <td colspan="4" class="text-end">
           <strong>Ungedeckte Kosten</strong>
         </td>
-        <td class="text-right text-danger">
+        <td class="text-end text-danger">
           {{ total_costs_not_covered|intcomma }}&nbsp;€
         </td>
       </tr>
@@ -148,10 +147,4 @@
   </table>
 </div>
 
-{% addtoblock "js" %}
-  <script src="{% static "js/lawsuits_table.js" %}"></script>
-{% endaddtoblock %}
-
-{% addtoblock 'css' %}
-  <link rel="stylesheet" href="{% static "css/lawsuits_table.css" %}">
-{% endaddtoblock %}
+{% include "_frontend.html" with entry_point="lawsuits_table.js" %}

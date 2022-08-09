@@ -8,14 +8,14 @@
     <li class="col col-12 col-md-4 d-flex mb-2">
       <div class="border-gray p-3 w-100">
         <p class="mb-2">
-          <a href="#klage-detail-{{ lawsuit.pk }}" data-toggle-row class="action-link">{{ lawsuit }}</a>
+          <a href="#klage-detail-{{ lawsuit.pk }}" data-bs-toggle-row class="action-link">{{ lawsuit }}</a>
         </p>
 
         <time datetime="{{ lawsuit.end_date|date:"c" }}">
-          <i class="fa fa-calendar mr-1"></i> {{ lawsuit.end_date }}
+          <i class="fa fa-calendar me-1"></i> {{ lawsuit.end_date }}
         </time>
         <div>
-          <i class="fa fa-legal mr-1"></i>
+          <i class="fa fa-legal me-1"></i>
           {{ lawsuit.last_instance.court }}
         </div>
       </div>

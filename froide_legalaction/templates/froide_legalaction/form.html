@@ -1,9 +1,8 @@
 {% extends base_template %}
 
 {% load i18n %}
-{% load static %}
+{% load frontend %}
 {% load form_helper %}
-{% load block_helper %}
 
 {% block main %}
 <h3>{% trans "Propose a FOI law suit" %}</h3>
@@ -17,16 +16,12 @@
 <form class="form-horizontal" method="post" action=""{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
   {% csrf_token %}
   {% render_form form %}
-  <button type="submit" class="btn btn-primary btn-lg pull-right">
+  <button type="submit" class="btn btn-primary btn-lg float-end">
     {% blocktrans %}Submit{% endblocktrans %}
   </button>
 </form>
-{% addtoblock "js" %}
-  <script src="{% static 'js/common.js' %}"></script>
-{% endaddtoblock %}
-{% addtoblock "js" %}
-  <script src="{% static 'js/publicbody.js' %}" charset="utf-8"></script>
-{% endaddtoblock %}
+
+{% include "_frontend.html" with entry_point="publicbody.js" %}
 {% endblock %}
 
 {% endblock %}
