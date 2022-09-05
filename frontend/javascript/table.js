@@ -96,5 +96,5 @@ function toggleRow(row) {
   icon.classList.toggle('fa-chevron-up')
   icon.classList.toggle('fa-chevron-down')
 
-  title.setAttribute('colspan', isActive ? '1' : '4')
+  title.setAttribute('colspan', isActive ? '1' : '3')
 }
