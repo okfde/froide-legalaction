@@ -35,12 +35,11 @@
         <th class="topic">Thema</th>
         <th>Eingereicht am</th>
         <th>Gericht</th>
-        <th class="text-end">Kosten</th>
       </tr>
     </thead>
     <tbody>
-      <tr class="lawsuit-table-none hidden">
-        <td colspan="6" class="text-center py-5">
+      <tr class="lawsuit-table-none d-none">
+        <td colspan="4" class="text-center py-5">
           <span>Keine Ergebnisse gefunden.</span>
         </td>
       </tr>
@@ -63,17 +62,10 @@
           <td>
             <abbr title="{{ object.last_instance.court.name }}" data-bs-toggle="tooltip">{{ object.last_instance.court_type }}</abbr>
           </td>
-          <td class="text-end">
-            {% if object.costs %}
-              {{ object.costs | intcomma }}&nbsp;€
-            {% else %}
-              <span class="text-muted">unbekannt</span>
-            {% endif %}
-
-          </td>
         </tr>
         <tr class="lawsuit-table-details">
-          <td colspan="5">
+          <td></td>
+          <td colspan="3">
             <div class="lawsuit-table-details-inner">
               <dl>
                 <dt>Eingereicht am</dt>
@@ -94,15 +86,6 @@
                 <dt>Beklagte</dt>
                 <dd>{{ object.publicbody.name }}</dd>
 
-                <dt>Kosten</dt>
-                <dd>
-                  {% if object.costs %}
-                    {{ object.costs | intcomma }}&nbsp;€
-                  {% else %}
-                    unbekannt
-                  {% endif %}
-                </dd>
-
                 <dt>Anfrage</dt>
                 <dd>
                   <a href="{{ object.request.get_absolute_url }}">
@@ -116,7 +99,7 @@
                 </dd>
               </dl>
 
-              <div class="mt-4 text-body">
+              <div class="my-3 tight-margin text-body">
                 {{ object.description | markdown }}
                 {{ object.links | markdown }}
               </div>
@@ -125,24 +108,6 @@
         </tr>
       {% endfor %}
     </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="4" class="text-end">
-          Kosten insgesamt
-        </td>
-        <td class="text-end">
-          {{ total_costs|intcomma }}&nbsp;€
-        </td>
-      </tr>
-      <tr>
-        <td colspan="4" class="text-end">
-          <strong>Ungedeckte Kosten</strong>
-        </td>
-        <td class="text-end text-danger">
-          {{ total_costs_not_covered|intcomma }}&nbsp;€
-        </td>
-      </tr>
-    </tfoot>
   </table>
 </div>
 
