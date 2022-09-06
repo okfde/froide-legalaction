@@ -27,11 +27,12 @@
 
   tr.active {
     background-color: $gray-100;
-    
-    .lawsuit-table-item-title {
-      font-weight: bold;
-    }
 
+    td, th {
+      border-bottom: none;
+    }
+    
+    .lawsuit-table-item-title,
     .lawsuit-table-item th {
       font-weight: bold;
     }
@@ -45,16 +46,8 @@
     }
   }
 
-  tr.hidden {
-    display: none;
-  }
-
   .lawsuit-table-details {
     background-color: $gray-100;
-
-    .lawsuit-table-details-inner {
-      padding: 2rem 1rem;
-    }
 
     dl {
       width: 100%;
@@ -63,11 +56,6 @@
         display: grid;
         grid-template-columns: min-content 1fr min-content 1fr;
       }
-    }
-
-    td, th {
-      border-top: none;
-      padding: 0;
     }
     
     dt {

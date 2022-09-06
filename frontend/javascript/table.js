@@ -50,18 +50,18 @@ window.addEventListener('load', () => {
       }
 
       if (show) {
-        row.classList.remove('hidden')
+        row.classList.remove('d-none')
         foundNone = false
       } else {
-        row.classList.add('hidden')
+        row.classList.add('d-none')
       }
     }
 
     const foundNoneEl = table.querySelector('.lawsuit-table-none')
     if (foundNone) {
-      foundNoneEl.classList.remove('hidden')
+      foundNoneEl.classList.remove('d-none')
     } else {
-      foundNoneEl.classList.add('hidden')
+      foundNoneEl.classList.add('d-none')
     }
   }
 
@@ -96,5 +96,5 @@ function toggleRow(row) {
   icon.classList.toggle('fa-chevron-up')
   icon.classList.toggle('fa-chevron-down')
 
-  title.setAttribute('colspan', isActive ? '1' : '4')
+  title.setAttribute('colspan', isActive ? '1' : '3')
 }
