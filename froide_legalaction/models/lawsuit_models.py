@@ -9,23 +9,23 @@ from froide.foirequest.models import FoiMessage, FoiRequest
 from froide.publicbody.models import PublicBody
 
 RESULTS = (
-    ("won", _("gewonnen")),
-    ("lost", _("verloren")),
-    ("not_accepted", _("nicht angenommen")),
-    ("partially_successful", _("teilweise erfolgreich")),
-    ("settled", _("Erledigung")),
+    ("won", _("won")),
+    ("lost", _("lost")),
+    ("not_accepted", _("not accepted")),
+    ("partially_successful", _("partially successful")),
+    ("settled", _("settled")),
 )
 
 COURTS = (
-    ("VG", _("Verwaltungsgericht")),
-    ("OVG", _("Oberverwaltungsgericht")),
-    ("BVerwG", _("Bundesverwaltungsgericht")),
-    ("LG", _("Landgericht")),
-    ("OLG", _("Oberlandesgericht")),
-    ("BVerfG", _("Bundesverfassungsgericht")),
-    ("LVerfG", _("Landesverfassungsgericht")),
-    ("EUG", _("Gericht der Europäischen Union")),
-    ("EUGH", _("Europäischer Gerichtshof")),
+    ("VG", _("Administrative Court")),
+    ("OVG", _("Higher Administrative Court")),
+    ("BVerwG", _("Federal Administrative Court")),
+    ("LG", _("Regional Court")),
+    ("OLG", _("Higher Regional Court")),
+    ("BVerfG", _("Federal Constitutional Court")),
+    ("LVerfG", _("State Constitutional Court")),
+    ("EUG", _("European General Court")),
+    ("EUGH", _("European Court of Justice")),
     ("EMRK", _("European Court of Human Rights")),
 )
 
