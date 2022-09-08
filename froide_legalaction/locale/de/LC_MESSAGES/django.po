@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-25 11:59+0100\n"
-"PO-Revision-Date: 2021-02-17 20:04+0000\n"
+"POT-Creation-Date: 2022-09-08 14:49+0200\n"
+"PO-Revision-Date: 2022-09-08 14:50+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -16,106 +16,106 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.1.1\n"
 
-#: apps.py:11
+#: froide_legalaction/apps.py
 msgid "Froide Legal Action App"
 msgstr "Froide VerklageDenStaat-App"
 
-#: cms_plugins.py:13 cms_plugins.py:46
+#: froide_legalaction/cms_plugins.py
 msgid "Lawsuits"
-msgstr ""
+msgstr "Klagen"
 
-#: cms_plugins.py:14
+#: froide_legalaction/cms_plugins.py
 msgid "Lawsuit table"
-msgstr ""
+msgstr "Klagentabelle"
 
-#: cms_plugins.py:47
+#: froide_legalaction/cms_plugins.py
 msgid "Next trials"
-msgstr ""
+msgstr "Nächste Verhandlungen"
 
-#: filters.py:62
+#: froide_legalaction/filters.py
 msgid "Quicksearch"
 msgstr "Schnellsuche"
 
-#: filters.py:70
+#: froide_legalaction/filters.py
 msgid "by tags"
 msgstr "nach Schlagwort"
 
-#: filters.py:76
+#: froide_legalaction/filters.py
 msgid "by Court"
 msgstr "nach Gericht"
 
-#: filters.py:81
+#: froide_legalaction/filters.py
 msgid "by Law Type"
 msgstr "nach Gesetzestyp"
 
-#: filters.py:87
+#: froide_legalaction/filters.py
 msgid "by Type"
 msgstr "nach Entscheidungsart"
 
-#: filters.py:93
+#: froide_legalaction/filters.py
 msgid "by Year"
 msgstr "nach Jahr"
 
-#: forms.py:33
+#: froide_legalaction/forms.py
 #, python-brace-format
 msgid "{date} from {publicbody}: {subject}"
 msgstr "{date} von {publicbody}: {subject}"
 
-#: forms.py:42
+#: froide_legalaction/forms.py
 msgid "First name"
 msgstr "Vorname"
 
-#: forms.py:44
+#: froide_legalaction/forms.py
 msgid "First Name"
 msgstr "Vorname"
 
-#: forms.py:49
+#: froide_legalaction/forms.py
 msgid "Last name"
 msgstr "Nachname"
 
-#: forms.py:51
+#: froide_legalaction/forms.py
 msgid "Last Name"
 msgstr "Nachname"
 
-#: forms.py:57
+#: froide_legalaction/forms.py
 msgid "Mailing Address"
 msgstr "Postadresse"
 
-#: forms.py:58
+#: froide_legalaction/forms.py
 msgid "Your real address is required."
 msgstr "Wir benötigen Ihre echte Adresse."
 
-#: forms.py:63
+#: froide_legalaction/forms.py
 msgid "Street, Post Code, City"
 msgstr "Straße, Postleitzahl, Stadt"
 
-#: forms.py:68
+#: froide_legalaction/forms.py
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: forms.py:70
+#: froide_legalaction/forms.py
 msgid "Required"
 msgstr "Pflichtfeld"
 
-#: forms.py:72
+#: froide_legalaction/forms.py
 msgid "mail@ddress.net"
 msgstr "email@dresse.net"
 
-#: forms.py:76
+#: froide_legalaction/forms.py
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: forms.py:78
+#: froide_legalaction/forms.py
 msgid "Required. We will need to talk you."
 msgstr "Wird für Rücksprachen benötigt."
 
-#: forms.py:83
+#: froide_legalaction/forms.py
 msgid "Public body"
 msgstr "Behörde"
 
-#: forms.py:91
+#: froide_legalaction/forms.py
 msgid ""
 "You agree to our <a href=\"/datenschutzerklaerung/\" target=\"_blank"
 "\">Privacy Terms</a>"
@@ -123,221 +123,216 @@ msgstr ""
 "Sie stimmen unserer <a href=\"/datenschutzerklaerung/\" target=\"_blank"
 "\">Datenschutzerklärung</a> zu."
 
-#: forms.py:104
+#: froide_legalaction/forms.py
 msgid "Anything we should know?"
 msgstr "Noch etwas, was wir wissen sollten?"
 
-#: forms.py:145
+#: froide_legalaction/forms.py
 msgid "Document for {}"
 msgstr "Dokument für {}"
 
-#: forms.py:154
+#: froide_legalaction/forms.py
 msgid "Date of {}"
 msgstr "Datum von {}"
 
-#: forms.py:159
+#: froide_legalaction/forms.py
 msgid "Upload document for {}"
 msgstr "Dokument für {} hochladen"
 
-#: forms.py:174
+#: froide_legalaction/forms.py
 msgid "You already submitted a suit proposal for this request."
 msgstr "Du hast schon einen Klagevorschlag für diese Anfrage eingereicht."
 
-#: forms.py:184
+#: froide_legalaction/forms.py
 msgid "You have not submitted enough document kinds."
 msgstr "Sie haben nicht alle Dokumentenkategorien eingereicht."
 
-#: forms.py:189
+#: froide_legalaction/forms.py
 msgid "You have submitted the same message for different document kinds."
 msgstr ""
 "Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
 "eingereicht."
 
-#: models/decision_models.py:20
+#: froide_legalaction/models/decision_models.py
 msgid "name"
 msgstr "Name"
 
-#: models/decision_models.py:21 models/decision_models.py:38
+#: froide_legalaction/models/decision_models.py
 msgid "slug"
 msgstr "slug"
 
-#: models/decision_models.py:37
+#: froide_legalaction/models/decision_models.py
 msgid "title"
 msgstr "Titel"
 
-#: models/decision_models.py:44
+#: froide_legalaction/models/decision_models.py
 msgid "Legal Decision Type"
 msgstr "Rechtsentscheidungstyp"
 
-#: models/decision_models.py:45
+#: froide_legalaction/models/decision_models.py
 msgid "Legal Decision Types"
 msgstr "Rechtsentscheidungstypen"
 
-#: models/decision_models.py:138
+#: froide_legalaction/models/decision_models.py
 msgid "{} of {} on {}"
 msgstr "{}: {} am {}"
 
-#: models/decision_models.py:141
+#: froide_legalaction/models/decision_models.py
 msgid "{} of {}"
 msgstr "{}: {}"
 
-#: models/lawsuit_models.py:12
-msgid "gewonnen"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "won"
+msgstr "gewonnen"
 
-#: models/lawsuit_models.py:13
-msgid "verloren"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "lost"
+msgstr "verloren"
 
-#: models/lawsuit_models.py:14
-msgid "nicht angenommen"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "not accepted"
+msgstr "nicht angenommen"
 
-#: models/lawsuit_models.py:15
-msgid "teilweise erfolgreich"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "partially successful"
+msgstr "teilweise erfolgreich"
 
-#: models/lawsuit_models.py:16
-msgid "Erledigung"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "settled"
+msgstr "Erledigung"
 
-#: models/lawsuit_models.py:20
-msgid "Verwaltungsgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "Administrative Court"
+msgstr "Verwaltungsgericht"
 
-#: models/lawsuit_models.py:21
-msgid "Oberverwaltungsgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "Higher Administrative Court"
+msgstr "Oberverwaltungsgericht"
 
-#: models/lawsuit_models.py:22
-msgid "Bundesverwaltungsgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "Federal Administrative Court"
+msgstr "Bundesverwaltungsgericht"
 
-#: models/lawsuit_models.py:23
-msgid "Landgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "Regional Court"
+msgstr "Landgericht"
 
-#: models/lawsuit_models.py:24
-msgid "Oberlandesgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "Higher Regional Court"
+msgstr "Oberlandesgericht"
 
-#: models/lawsuit_models.py:25
-msgid "Bundesverfassungsgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "Federal Constitutional Court"
+msgstr "Bundesverfassungsgericht"
 
-#: models/lawsuit_models.py:26
-msgid "Landesverfassungsgericht"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "State Constitutional Court"
+msgstr "Landesverfassungsgericht"
 
-#: models/lawsuit_models.py:27
-msgid "Gericht der Europäischen Union"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "European General Court"
+msgstr "Gericht der Europäischen Union"
 
-#: models/lawsuit_models.py:28
-msgid "Europäischer Gerichtshof"
-msgstr ""
+#: froide_legalaction/models/lawsuit_models.py
+msgid "European Court of Justice"
+msgstr "Europäischer Gerichtshof"
 
-#: models/lawsuit_models.py:29
+#: froide_legalaction/models/lawsuit_models.py
 msgid "European Court of Human Rights"
-msgstr ""
+msgstr "Europäischer Gerichtshof für Menschenrechte"
 
-#: models/lawsuit_models.py:70 models/lawsuit_models.py:164
+#: froide_legalaction/models/lawsuit_models.py
 msgid "lawsuit"
 msgstr "Klage"
 
-#: models/lawsuit_models.py:71 models/lawsuit_models.py:165
+#: froide_legalaction/models/lawsuit_models.py
 msgid "lawsuits"
 msgstr "Klagen"
 
-#: models/lawsuit_models.py:192
+#: froide_legalaction/models/lawsuit_models.py
 msgid "proposal for legal action"
 msgstr "Vorschlag für VerklagDenStaat"
 
-#: models/lawsuit_models.py:193
+#: froide_legalaction/models/lawsuit_models.py
 msgid "proposals for legal action"
 msgstr "Vorschläge für VerklagDenStaat"
 
-#: models/lawsuit_models.py:211
+#: froide_legalaction/models/lawsuit_models.py
 msgid "FOI request"
 msgstr "IFG-Anfrage"
 
-#: models/lawsuit_models.py:212
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Please upload your original FOI request."
 msgstr "Bitte laden Sie Ihre ursprüngliche IFG-Anfrage hoch."
 
-#: models/lawsuit_models.py:213
+#: froide_legalaction/models/lawsuit_models.py
 msgid "The original FOI request you made."
 msgstr "Ihre ursprüngliche IFG-Anfrage."
 
-#: models/lawsuit_models.py:222
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Rejection"
 msgstr "Ablehnung"
 
-#: models/lawsuit_models.py:223
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Please upload your first rejection letter."
 msgstr "Bitte laden Sie den Ablehnungsbescheid hoch."
 
-#: models/lawsuit_models.py:224
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Please select the rejection response."
 msgstr "Bitte wählen Sie die Ablehnungsantwort aus."
 
-#: models/lawsuit_models.py:232
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Appeal"
 msgstr "Widerspruch"
 
-#: models/lawsuit_models.py:234
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Please choose the message representing your appeal."
 msgstr "Bitte wählen Sie Ihren Widerspruch aus."
 
-#: models/lawsuit_models.py:237
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Please upload your appeal to the rejection of your FOI request."
 msgstr ""
 "Bitte laden Sie Ihren Widerspruch zur Ablehnung Ihrer IFG-Anfrage hoch."
 
-#: models/lawsuit_models.py:248
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Final rejection"
 msgstr "Ablehnung des Widerspruchs"
 
-#: models/lawsuit_models.py:250
+#: froide_legalaction/models/lawsuit_models.py
 msgid ""
 "Please choose the message representing the final rejection of your appeal."
 msgstr "Bitte wählen Sie die finale Ablehnung auf Ihren Widerspruch aus."
 
-#: models/lawsuit_models.py:254
+#: froide_legalaction/models/lawsuit_models.py
 msgid "Please upload the final rejection of your appeal."
 msgstr "Bitte laden Sie die Ablehnung auf Ihren Widerspruch hoch."
 
-#: models/lawsuit_models.py:274
+#: froide_legalaction/models/lawsuit_models.py
 msgid "legalaction document"
 msgstr "VerklagDenStaat-Dokument"
 
-#: models/lawsuit_models.py:275
+#: froide_legalaction/models/lawsuit_models.py
 msgid "legalaction documents"
 msgstr "VerklagDenStaat-Dokumente"
 
-#: signals.py:13
+#: froide_legalaction/signals.py
 msgid "New legal action proposal submitted"
 msgstr "Neuer Klagevorschlag wurde eingereicht"
 
-#: templates/admin/froide_legalaction/legaldecision/change_list.html:10
+#: froide_legalaction/templates/admin/froide_legalaction/legaldecision/change_list.html
 msgid "Upload Legal Decisions as JSON"
-msgstr ""
+msgstr "Gerichtsentscheidungen als JSON hochladen"
 
-#: templates/froide_legalaction/base.html:5
-#: templates/froide_legalaction/form.html:9
+#: froide_legalaction/templates/froide_legalaction/base.html
+#: froide_legalaction/templates/froide_legalaction/form.html
 msgid "Propose a FOI law suit"
 msgstr "Jetzt klagen"
 
-#: templates/froide_legalaction/cms_plugins/next_trials.html:4
+#: froide_legalaction/templates/froide_legalaction/cms_plugins/next_trials.html
 msgid "There are currently no pending trials."
 msgstr "Aktuell stehen keine Verhandlungen an."
 
-#: templates/froide_legalaction/cms_plugins/next_trials.html:12
-#, python-format
-msgid "at %(court)s"
-msgstr "am %(court)s"
-
-#: templates/froide_legalaction/form.html:11
+#: froide_legalaction/templates/froide_legalaction/form.html
 msgid ""
 "\n"
 "    Please fill out the form below to propose a law suit for your FOI "
@@ -349,31 +344,31 @@ msgstr ""
 "einzureichen.\n"
 "      "
 
-#: templates/froide_legalaction/form.html:21
+#: froide_legalaction/templates/froide_legalaction/form.html
 msgid "Submit"
 msgstr "Abschicken"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html:6
+#: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html
 msgid "Automatic lawsuit check"
 msgstr "Automatische Klageprüfung"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html:25
+#: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html
 msgid "Restart lawsuit check"
 msgstr "Klageprüfung erneut starten"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html:27
+#: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html
 msgid "Start lawsuit check now"
 msgstr "Jetzt Klageprüfung starten"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html:32
+#: froide_legalaction/templates/froide_legalaction/includes/lawcase_questionaire.html
 msgid "Edit lawsuit"
 msgstr "Klageentwurf bearbeiten"
 
-#: templates/froide_legalaction/includes/lawsuit_propoposal.html:6
+#: froide_legalaction/templates/froide_legalaction/includes/lawsuit_propoposal.html
 msgid "Propose a law suit to our legal professionals"
 msgstr "Klage Jurist:innen vorschlagen"
 
-#: templates/froide_legalaction/includes/lawsuit_propoposal.html:11
+#: froide_legalaction/templates/froide_legalaction/includes/lawsuit_propoposal.html
 #, python-format
 msgid ""
 "\n"
@@ -386,79 +381,89 @@ msgstr ""
 "diesen in Kürze bewerten.\n"
 "      "
 
-#: templates/froide_legalaction/includes/lawsuit_propoposal.html:41
+#: froide_legalaction/templates/froide_legalaction/includes/lawsuit_propoposal.html
 msgid "Click here to propose a law suit"
 msgstr "Jetzt Klagevorschlag einreichen"
 
-#: templates/froide_legalaction/thanks.html:6
+#: froide_legalaction/templates/froide_legalaction/thanks.html
 msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
 
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^propose/$"
-msgstr "^vorschlagen/$"
+msgid "propose/"
+msgstr "vorschlagen/"
 
-#: urls.py:21
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^thanks/$"
-msgstr "^danke/$"
+msgid "thanks/"
+msgstr "danke/"
 
-#: urls.py:26
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^request/(?P<pk>\\d+)/$"
-msgstr "^anfrage/(?P<pk>\\d+)/$"
+msgid "request/<int:pk>/"
+msgstr "anfrage/<int:pk>/"
 
-#: urls.py:31
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^klageautomat/info/request/(?P<pk>\\d+)/$"
-msgstr "^klageautomat/info/anfrage/(?P<pk>\\d+)/$"
+msgid "klageautomat/info/request/<int:pk>/"
+msgstr "klageautomat/info/anfrage/<int:pk>/"
 
-#: urls.py:36
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^klageautomat/request/(?P<pk>\\d+)/$"
-msgstr "^klageautomat/anfrage/(?P<pk>\\d+)/$"
+msgid "klageautomat/request/<int:pk>/"
+msgstr "klageautomat/anfrage/<int:pk>/"
 
-#: urls.py:41
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^klageautomat/request/(?P<pk>\\d+)/answer/$"
-msgstr "^klageautomat/anfrage/(?P<pk>\\d+)/antwort/$"
+msgid "klageautomat/request/<int:pk>/answer/"
+msgstr "klageautomat/anfrage/<int:pk>/antwort/"
 
-#: urls.py:47
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^klageautomat/request/(?P<pk>\\d+)/answer/pdf-download$"
-msgstr "^klageautomat/anfrage/(?P<pk>\\d+)/antwort/pdf-download$"
+msgid "klageautomat/request/<int:pk>/answer/pdf-download/"
+msgstr "klageautomat/anfrage/<int:pk>/antwort/pdf-download/"
 
-#: urls.py:54
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^klageautomat/request/(?P<pk>\\d+)/answer/word-download$"
-msgstr "^klageautomat/anfrage/(?P<pk>\\d+)/antwort/word-download$"
+msgid "klageautomat/request/<int:pk>/answer/word-download/"
+msgstr "klageautomat/anfrage/<int:pk>/antwort/word-download/"
 
-#: urls.py:61
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^legal-decisions/$"
-msgstr "^gerichtsentscheidungen/$"
+msgid "klageautomat/request/<int:pk>/answer/html-download/"
+msgstr "klageautomat/anfrage/<int:pk>/antwort/pdf-download/"
 
-#: urls.py:66
+#: froide_legalaction/urls.py
 msgctxt "url part"
-msgid "^legal-decisions/(?P<pk>\\d+)/$"
-msgstr "^gerichtsentscheidungen/(?P<pk>\\d+)/$"
+msgid "legal-decisions/"
+msgstr "gerichtsentscheidungen/"
 
-#: views.py:54
+#: froide_legalaction/urls.py
+msgctxt "url part"
+msgid "legal-decisions/<int:pk>/"
+msgstr "gerichtsentscheidungen/<int:pk>/"
+
+#: froide_legalaction/views.py
 msgid "We have received your submission and we will review it. Thank you!"
 msgstr ""
 "Wir haben Ihre Einreichung erhalten und werden Sie begutachten. Vielen Dank!"
 
-#: views.py:64
+#: froide_legalaction/views.py
 msgid "Please check for errors in your form."
 msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
 
-#: widgets.py:13
+#: froide_legalaction/widgets.py
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
-#: widgets.py:39
+#: froide_legalaction/widgets.py
 msgid "search"
 msgstr "Schnellsuche"
+
+#, python-format
+#~ msgid "at %(court)s"
+#~ msgstr "am %(court)s"
 
 #~ msgid "Click here to edit a lawsuit"
 #~ msgstr "Bereits erstellt Klage bearbeiten"
