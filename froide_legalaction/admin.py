@@ -1,13 +1,13 @@
 import os
 import tempfile
 
-from django.conf.urls import url
 from django.contrib import admin
 from django.core import serializers
 from django.core.exceptions import PermissionDenied
 from django.core.management import call_command
 from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.urls import path
 from django.utils import timezone
 from parler.admin import TranslatableAdmin
 
@@ -81,8 +81,8 @@ class LegalDecisionAdmin(TranslatableAdmin):
     def get_urls(self):
         urls = super().get_urls()
         upload_urls = [
-            url(
-                r"^upload/$",
+            path(
+                "upload/",
                 self.admin_site.admin_view(self.upload_legal_decisions),
                 name="legal_decision-admin_upload",
             ),
