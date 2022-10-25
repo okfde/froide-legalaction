@@ -1,5 +1,8 @@
+import csv
+import json
 import os
 import tempfile
+from io import StringIO
 
 from django.contrib import admin
 from django.core import serializers
@@ -9,6 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import path
 from django.utils import timezone
+from froide.publicbody.models import FoiLaw, PublicBody
 from parler.admin import TranslatableAdmin
 
 from .models import (
@@ -105,12 +109,41 @@ class LegalDecisionAdmin(TranslatableAdmin):
         response["Content-Disposition"] = "attachment; filename=export.json"
         return response
 
+    def fetch_data_from_db(self, court, law):
+        law = FoiLaw.objects.translated(name=law).first()
+        court = PublicBody.objects.filter(name=court).first()
+        return court, law
+
+    def add_tags_to_legal_decision(self, legal_decision, tags):
+        tags = json.loads(tags)
+        for tag in tags:
+            if len(tag) < 100:
+                obj = LegalDecisionTag.objects.translated(name=tag).first()
+                if not obj:
+                    obj = LegalDecisionTag.objects.create(name=tag)
+                legal_decision.tags.add(obj)
+
+    def load_decisions_from_csv(self, csv_file):
+        csvf = StringIO(csv_file.read().decode())
+        reader = csv.DictReader(csvf)
+        for row in reader:
+            tags = row.pop("tags")
+            court, law = self.fetch_data_from_db(row.get("court"), row.get("law"))
+            row.update({"foi_court": court, "foi_law": law})
+            ld = LegalDecision.objects.create(**row)
+            self.add_tags_to_legal_decision(ld, tags)
+
     def upload_legal_decisions(self, request):
         if not request.method == "POST":
             raise PermissionDenied
         if not self.has_change_permission(request):
             raise PermissionDenied
         uploaded_file = request.FILES["file"]
+
+        if uploaded_file.content_type == "text/csv":
+            self.load_decisions_from_csv(uploaded_file)
+            return redirect("admin:froide_legalaction_legaldecision_changelist")
+
         prefix, suffix = os.path.splitext(uploaded_file.name)
         destination_path = tempfile.mkstemp(suffix=suffix, prefix=prefix + "_")[1]
         with open(destination_path, "wb") as fp:

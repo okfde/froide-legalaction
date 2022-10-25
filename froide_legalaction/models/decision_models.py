@@ -134,11 +134,11 @@ class LegalDecision(TranslatableModel):
 
     @property
     def title(self):
-        if self.date:
+        if self.date and self.type:
             return _("{} of {} on {}").format(
                 self.type, self.court_name, str(self.date)
             )
-        return _("{} of {}").format(self.type, self.court_name)
+        return self.court_name
 
     @property
     def court_name(self):

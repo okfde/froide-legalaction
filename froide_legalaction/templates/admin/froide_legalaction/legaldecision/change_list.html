@@ -7,7 +7,7 @@
     <form method="post" action="{% url 'admin:legal_decision-admin_upload' %}" enctype="multipart/form-data">{% csrf_token %}
       <p>
         <input type="file" name="file"/>
-        <input type="submit" value="{% trans "Upload Legal Decisions as JSON" %}"/>
+        <input type="submit" value="{% trans "Upload Legal Decisions" %}"/>
       </p>
     </form>
   </div>
