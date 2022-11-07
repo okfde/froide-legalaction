@@ -19,7 +19,7 @@ def get_foi_courts():
 
 def get_foi_law_types():
     foilaw_types = (
-        FoiLaw.objects.exclude(foi_law_legaldecisions=None)
+        FoiLaw.objects.exclude(legal_decisions=None)
         .values("law_type")
         .annotate(c=Count("id"))
     )
@@ -75,7 +75,7 @@ class LegalDecisionFilterSet(FilterSet):
         widget=FilterListWidget,
         label=_("by Court"),
     )
-    foi_law__law_type = ChoiceFilter(
+    foi_laws__law_type = ChoiceFilter(
         choices=get_foi_law_types,
         widget=ExcludePageParameterLinkWidget,
         label=_("by Law Type"),
@@ -98,7 +98,7 @@ class LegalDecisionFilterSet(FilterSet):
         fields = (
             "quick_search",
             "tags",
-            "foi_law__law_type",
+            "foi_laws__law_type",
             "foi_court",
             "type",
             "date",

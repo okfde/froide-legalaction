@@ -75,7 +75,7 @@ class LegalDecisionAdmin(TranslatableAdmin):
     list_filter = ("type", "tags")
     list_display = ("reference", "court")
     search_fields = ["reference", "translations__court", "translations__abstract"]
-    raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_law")
+    raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_laws")
     actions = ["export_legal_decisions"]
 
     def get_urls(self):
