@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -22,6 +23,7 @@ from .forms import (
     KlageautomatApprovalForm,
     KlageautomatRenderedDocumentForm,
     LegalActionRequestForm,
+    LegalDecisionCreateForm,
 )
 from .mixins import KlageautomatMixin
 from .models import LegalDecision
@@ -295,6 +297,27 @@ class LegalDecisionListView(ListView):
             }
         )
         return ctx
+
+
+class LegalDecisionCreateView(FormView):
+    form_class = LegalDecisionCreateForm
+    template_name = "froide_legalaction/legaldecision_create.html"
+
+    def get_success_url(self):
+        return reverse("legal-decision-list")
+
+    def form_valid(self, form):
+        docs = form.cleaned_data.get("document_collection").documents.all()
+        foi_court = form.cleaned_data.get("foi_court")
+        for doc in docs:
+            data = {"foi_document": doc}
+            if foi_court:
+                data.update({"foi_court": foi_court, "court": foi_court.name})
+            LegalDecision.objects.create(**data)
+            url = self.get_success_url()
+            if foi_court:
+                url = "{}?foi_court={}".format(url, foi_court.id)
+        return HttpResponseRedirect(url)
 
 
 class LegalDecisionDetailView(DetailView):

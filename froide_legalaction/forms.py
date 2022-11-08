@@ -4,6 +4,7 @@ from django.db import transaction
 from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from froide.document.models import DocumentCollection
 from froide.foirequest.models import FoiMessage
 from froide.foirequest.validators import validate_upload_document
 from froide.helper.date_utils import calculate_month_range_de
@@ -268,3 +269,15 @@ class KlageautomatRenderedDocumentForm(RenderedDocumentForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["rendered_document"].label = "Ihr Klageentwurf"
+
+
+class LegalDecisionCreateForm(forms.Form):
+    document_collection = forms.ModelChoiceField(
+        queryset=DocumentCollection.objects.all().order_by("-created_at")
+    )
+    foi_court = forms.ModelChoiceField(
+        queryset=PublicBody.objects.filter(
+            classification__name__icontains="Verwaltungsgericht"
+        ),
+        required=False,
+    )

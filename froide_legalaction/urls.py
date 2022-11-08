@@ -8,6 +8,7 @@ from .views import (
     KlageautomatAnswerWordDownloadView,
     KlageautomatInfoPage,
     KlageAutomatWizard,
+    LegalDecisionCreateView,
     LegalDecisionDetailView,
     LegalDecisionListView,
     request_form_page,
@@ -69,6 +70,11 @@ urlpatterns = [
         pgettext_lazy("url part", "legal-decisions/"),
         LegalDecisionListView.as_view(),
         name="legal-decision-list",
+    ),
+    path(
+        pgettext_lazy("url part", "legal-decisions/create/"),
+        LegalDecisionCreateView.as_view(),
+        name="legal-decision-create",
     ),
     path(
         pgettext_lazy("url part", "legal-decisions/<int:pk>/"),
