@@ -3,6 +3,7 @@ import functools
 from django.conf import settings
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from froide.document.models import Document
 from froide.publicbody.models import FoiLaw, PublicBody
@@ -51,6 +52,14 @@ class LegalDecisionType(TranslatableModel):
 class LegalDecisionManager(TranslatableManager):
     def get_queryset(self):
         return super().get_queryset().prefetch_related("translations")
+
+    def all_incomplete(self):
+        return self.annotate(
+            incomplete=Q(reference="")
+            | Q(date__isnull=True)
+            | Q(translations__abstract="")
+            | Q(foi_laws__isnull=True)
+        ).filter(incomplete=True)
 
     def get_search_vector(self, language):
         SEARCH_LANG = "simple"
