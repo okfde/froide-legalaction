@@ -12,8 +12,9 @@ from froide.helper.widgets import BootstrapCheckboxInput
 from froide.publicbody.models import PublicBody
 from froide.publicbody.widgets import PublicBodySelect
 from legal_advice_builder.forms import RenderedDocumentForm
+from parler.forms import TranslatableModelForm
 
-from .models import Proposal, ProposalDocument
+from .models import LegalDecision, Proposal, ProposalDocument
 
 
 class PhoneNumberInput(forms.widgets.Input):
@@ -281,3 +282,17 @@ class LegalDecisionCreateForm(forms.Form):
         ),
         required=False,
     )
+
+
+class LegalDecisionUpdateForm(TranslatableModelForm):
+    class Meta:
+        model = LegalDecision
+        fields = ["reference", "abstract", "type", "date", "foi_laws", "foi_court"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+        self.fields["foi_court"].queryset = PublicBody.objects.filter(
+            classification__name__icontains="Verwaltungsgericht"
+        )

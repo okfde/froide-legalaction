@@ -24,6 +24,7 @@ from .forms import (
     KlageautomatRenderedDocumentForm,
     LegalActionRequestForm,
     LegalDecisionCreateForm,
+    LegalDecisionUpdateForm,
 )
 from .mixins import KlageautomatMixin
 from .models import LegalDecision
@@ -306,6 +307,11 @@ class LegalDecisionIncompleteListView(LegalDecisionListView):
     def get_filter_queryset(self):
         return LegalDecision.objects.all_incomplete()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({"show_incomplete_fields": True})
+        return context
+
 
 class LegalDecisionCreateView(FormView):
     form_class = LegalDecisionCreateForm
@@ -329,5 +335,13 @@ class LegalDecisionCreateView(FormView):
 
 
 class LegalDecisionDetailView(DetailView):
-
     model = LegalDecision
+
+
+class LegalDecisionIncompleteUpdateView(UpdateView):
+    form_class = LegalDecisionUpdateForm
+    model = LegalDecision
+    template_name = "froide_legalaction/legaldecision_detail.html"
+
+    def get_success_url(self):
+        return reverse("legal-decision-list-incomplete")

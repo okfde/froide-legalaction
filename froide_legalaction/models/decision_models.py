@@ -57,6 +57,8 @@ class LegalDecisionManager(TranslatableManager):
         return self.filter(
             Q(reference="")
             | Q(date__isnull=True)
+            | Q(type__isnull=True)
+            | Q(translations__court="")
             | Q(translations__abstract="")
             | Q(foi_laws__isnull=True)
             | Q(foi_court__isnull=True)
@@ -111,7 +113,7 @@ class LegalDecision(TranslatableModel):
 
     date = models.DateField(blank=True, null=True)
     outcome = models.CharField(max_length=500, blank=True)
-    reference = models.CharField(max_length=200)
+    reference = models.CharField(max_length=200, blank=True)
     paragraphs = models.JSONField(default=list, blank=True)
 
     source_data = models.JSONField(blank=True, null=True)
@@ -129,7 +131,9 @@ class LegalDecision(TranslatableModel):
         blank=True,
         related_name="pb_legaldecisions",
     )
-    foi_laws = models.ManyToManyField(FoiLaw, related_name="legal_decisions")
+    foi_laws = models.ManyToManyField(
+        FoiLaw, related_name="legal_decisions", blank=True
+    )
 
     objects = LegalDecisionManager()
 
@@ -155,6 +159,23 @@ class LegalDecision(TranslatableModel):
         if self.foi_laws:
             return ", ".join([foi_law.name for foi_law in self.foi_laws.all()])
         return self.law
+
+    @property
+    def fields_incomplete(self):
+        res = []
+        if not self.reference:
+            res.append(str(_("reference")))
+        if not self.date:
+            res.append(str(_("date")))
+        if not self.abstract:
+            res.append(str(_("abstract")))
+        if not self.foi_laws.all():
+            res.append(str(_("Laws")))
+        if not self.foi_court and not self.court:
+            res.append(str(_("Court")))
+        if not self.type:
+            res.append(str(_("Type")))
+        return ", ".join(res)
 
     def generate_search_texts(self):
         for translation in self.translations.all():
