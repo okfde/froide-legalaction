@@ -279,10 +279,13 @@ class LegalDecisionListView(ListView):
     model = LegalDecision
     paginate_by = 10
 
+    def get_filter_queryset(self):
+        return LegalDecision.objects.all()
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         f = LegalDecisionFilterSet(
-            self.request.GET, queryset=LegalDecision.objects.all()
+            self.request.GET, queryset=self.get_filter_queryset()
         )
 
         paginator = Paginator(f.qs, self.paginate_by)
@@ -297,6 +300,11 @@ class LegalDecisionListView(ListView):
             }
         )
         return ctx
+
+
+class LegalDecisionIncompleteListView(LegalDecisionListView):
+    def get_filter_queryset(self):
+        return LegalDecision.objects.all_incomplete()
 
 
 class LegalDecisionCreateView(FormView):

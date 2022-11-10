@@ -54,12 +54,13 @@ class LegalDecisionManager(TranslatableManager):
         return super().get_queryset().prefetch_related("translations")
 
     def all_incomplete(self):
-        return self.annotate(
-            incomplete=Q(reference="")
+        return self.filter(
+            Q(reference="")
             | Q(date__isnull=True)
             | Q(translations__abstract="")
             | Q(foi_laws__isnull=True)
-        ).filter(incomplete=True)
+            | Q(foi_court__isnull=True)
+        )
 
     def get_search_vector(self, language):
         SEARCH_LANG = "simple"
