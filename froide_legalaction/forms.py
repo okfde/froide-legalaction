@@ -14,7 +14,7 @@ from froide.publicbody.widgets import PublicBodySelect
 from legal_advice_builder.forms import RenderedDocumentForm
 from parler.forms import TranslatableModelForm
 
-from .models import LegalDecision, Proposal, ProposalDocument
+from .models import LegalDecision, LegalDecisionType, Proposal, ProposalDocument
 
 
 class PhoneNumberInput(forms.widgets.Input):
@@ -281,6 +281,9 @@ class LegalDecisionCreateForm(forms.Form):
             classification__name__icontains="Verwaltungsgericht"
         ),
         required=False,
+    )
+    type = forms.ModelChoiceField(
+        queryset=LegalDecisionType.objects.all(), required=False
     )
 
     def __init__(self, *args, **kwargs):

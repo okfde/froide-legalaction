@@ -323,10 +323,13 @@ class LegalDecisionCreateView(FormView):
     def form_valid(self, form):
         docs = form.cleaned_data.get("document_collection").documents.all()
         foi_court = form.cleaned_data.get("foi_court")
+        type = form.cleaned_data.get("type")
         for doc in docs:
             data = {"foi_document": doc}
             if foi_court:
                 data.update({"foi_court": foi_court, "court": foi_court.name})
+            if type:
+                data.update({"type": type})
             LegalDecision.objects.create(**data)
             url = self.get_success_url()
             if foi_court:
