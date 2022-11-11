@@ -283,11 +283,16 @@ class LegalDecisionCreateForm(forms.Form):
         required=False,
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
 
 class LegalDecisionUpdateForm(TranslatableModelForm):
     class Meta:
         model = LegalDecision
-        fields = ["reference", "abstract", "type", "date", "foi_laws", "foi_court"]
+        fields = ["reference", "type", "date", "foi_court"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
