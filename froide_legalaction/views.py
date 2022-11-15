@@ -320,7 +320,7 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
     template_name = "froide_legalaction/legaldecision_create.html"
 
     def get_success_url(self):
-        return reverse("legal-decision-list")
+        return reverse("legal-decision-list-incomplete")
 
     def form_valid(self, form):
         docs = form.cleaned_data.get("document_collection").documents.all()
