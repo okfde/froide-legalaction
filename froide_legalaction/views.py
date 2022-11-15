@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, redirect, render
@@ -313,7 +314,8 @@ class LegalDecisionIncompleteListView(LegalDecisionListView):
         return context
 
 
-class LegalDecisionCreateView(FormView):
+class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
+    permission_required = "froide_legalaction.add_legaldecision"
     form_class = LegalDecisionCreateForm
     template_name = "froide_legalaction/legaldecision_create.html"
 
@@ -341,7 +343,8 @@ class LegalDecisionDetailView(DetailView):
     model = LegalDecision
 
 
-class LegalDecisionIncompleteUpdateView(UpdateView):
+class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "froide_legalaction.change_legaldecision"
     form_class = LegalDecisionUpdateForm
     model = LegalDecision
     template_name = "froide_legalaction/legaldecision_detail.html"
