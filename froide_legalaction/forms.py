@@ -277,9 +277,7 @@ class LegalDecisionCreateForm(forms.Form):
         queryset=DocumentCollection.objects.all().order_by("-created_at")
     )
     foi_court = forms.ModelChoiceField(
-        queryset=PublicBody.objects.filter(
-            classification__name__icontains="Verwaltungsgericht"
-        ),
+        queryset=PublicBody.objects.filter(classification__name__icontains="gericht"),
         required=False,
     )
     type = forms.ModelChoiceField(
@@ -302,5 +300,5 @@ class LegalDecisionUpdateForm(TranslatableModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-control"
         self.fields["foi_court"].queryset = PublicBody.objects.filter(
-            classification__name__icontains="Verwaltungsgericht"
+            classification__name__icontains="gericht"
         )
