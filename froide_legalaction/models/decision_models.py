@@ -119,13 +119,7 @@ class LegalDecision(TranslatableModel):
         blank=True,
         related_name="pb_legaldecisions",
     )
-    foi_law = models.ForeignKey(
-        FoiLaw,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="foi_law_legaldecisions",
-    )
+    foi_laws = models.ManyToManyField(FoiLaw, related_name="legal_decisions")
 
     objects = LegalDecisionManager()
 
@@ -148,8 +142,8 @@ class LegalDecision(TranslatableModel):
 
     @property
     def law_name(self):
-        if self.foi_law:
-            return self.foi_law.name
+        if self.foi_laws:
+            return ", ".join([foi_law.name for foi_law in self.foi_laws.all()])
         return self.law
 
     def generate_search_texts(self):
