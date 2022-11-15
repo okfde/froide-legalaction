@@ -306,7 +306,10 @@ class LegalDecisionListView(ListView):
 
 class LegalDecisionIncompleteListView(LegalDecisionListView):
     def get_filter_queryset(self):
-        return LegalDecision.objects.all_incomplete()
+        incomplete = LegalDecision.objects.all_incomplete()
+        if self.request.GET.get("ids"):
+            id_list = self.request.GET.get("ids").split(",")
+            return incomplete.filter(id__in=id_list)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -326,16 +329,20 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
         docs = form.cleaned_data.get("document_collection").documents.all()
         foi_court = form.cleaned_data.get("foi_court")
         type = form.cleaned_data.get("type")
+        ids = []
         for doc in docs:
             data = {"foi_document": doc}
             if foi_court:
                 data.update({"foi_court": foi_court, "court": foi_court.name})
             if type:
                 data.update({"type": type})
-            LegalDecision.objects.create(**data)
-            url = self.get_success_url()
-            if foi_court:
-                url = "{}?foi_court={}".format(url, foi_court.id)
+            legal_decision = LegalDecision.objects.create(**data)
+            ids.append(str(legal_decision.id))
+            ids_string = ",".join(ids)
+            url = "{}?ids={}".format(self.get_success_url(), ids_string)
+        messages.add_message(
+            self.request, messages.SUCCESS, _("Added new legal decisions")
+        )
         return HttpResponseRedirect(url)
 
 
