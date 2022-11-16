@@ -310,6 +310,7 @@ class LegalDecisionIncompleteListView(LegalDecisionListView):
         if self.request.GET.get("ids"):
             id_list = self.request.GET.get("ids").split(",")
             return incomplete.filter(id__in=id_list)
+        return incomplete
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -356,5 +357,32 @@ class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
     model = LegalDecision
     template_name = "froide_legalaction/legaldecision_detail.html"
 
+    def get_next_id(self):
+        ids = self.request.GET.get("ids")
+        if ids:
+            id_list = ids.split(",")
+            try:
+                index = id_list.index(str(self.object.id))
+                return id_list[index + 1]
+            except (ValueError, IndexError):
+                return None
+
     def get_success_url(self):
         return reverse("legal-decision-list-incomplete")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        next_id = self.get_next_id()
+        if next_id and "next" in self.request.POST:
+            ids = self.request.GET.get("ids")
+            url = reverse(
+                "legal-decision-incomplete-update", kwargs={"pk": int(next_id)}
+            )
+            return HttpResponseRedirect("{}?ids={}".format(url, ids))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.get_next_id():
+            context.update({"has_next": True})
+        return context
