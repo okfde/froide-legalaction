@@ -366,6 +366,14 @@ class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
                 return id_list[index + 1]
             except (ValueError, IndexError):
                 return None
+        next = (
+            LegalDecision.objects.all_incomplete()
+            .filter(id__gt=self.object.id)
+            .order_by("id")
+            .first()
+        )
+        if next:
+            return next.id
 
     def get_success_url(self):
         return reverse("legal-decision-list-incomplete")
