@@ -169,12 +169,17 @@ class LegalDecision(TranslatableModel):
             res.append(str(_("reference")))
         if not self.date:
             res.append(str(_("date")))
-        if not self.abstract:
+        try:
+            self.abstract
+        except self.DoesNotExist:
             res.append(str(_("abstract")))
         if not self.foi_laws.all():
             res.append(str(_("Laws")))
-        if not self.foi_court and not self.court:
-            res.append(str(_("Court")))
+        if not self.foi_court:
+            try:
+                self.court
+            except self.DoesNotExist:
+                res.append(str(_("Court")))
         if not self.type:
             res.append(str(_("Type")))
         return ", ".join(res)
