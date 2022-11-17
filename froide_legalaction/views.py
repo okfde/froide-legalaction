@@ -344,6 +344,11 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
         messages.add_message(
             self.request, messages.SUCCESS, _("Added new legal decisions")
         )
+        if ids:
+            url = reverse(
+                "legal-decision-incomplete-update", kwargs={"pk": int(ids[0])}
+            )
+            return HttpResponseRedirect("{}?ids={}".format(url, ids_string))
         return HttpResponseRedirect(url)
 
 
