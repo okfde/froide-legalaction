@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db.models import Q
+from django.template import defaultfilters
 from django.utils.translation import gettext_lazy as _
 from froide.document.models import Document
 from froide.publicbody.models import FoiLaw, PublicBody
@@ -141,11 +142,15 @@ class LegalDecision(TranslatableModel):
         return "{}".format(self.reference)
 
     @property
+    def formatted_date(self):
+        return defaultfilters.date(self.date, "DATE_FORMAT")
+
+    @property
     def title(self):
         if self.type and self.court_name:
             if self.date:
                 return _("{} of {} on {}").format(
-                    self.type, self.court_name, str(self.date)
+                    self.type, self.court_name, str(self.formatted_date)
                 )
             return _("{} of {}").format(self.type, self.court_name)
         return self.foi_document.title
