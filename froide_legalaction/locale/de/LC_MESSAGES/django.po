@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-17 14:34+0100\n"
+"POT-Creation-Date: 2022-11-25 11:54+0100\n"
 "PO-Revision-Date: 2022-09-08 14:50+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
@@ -58,64 +58,64 @@ msgstr "nach Entscheidungsart"
 msgid "by Year"
 msgstr "nach Jahr"
 
-#: forms.py:36
+#: forms.py:41
 #, python-brace-format
 msgid "{date} from {publicbody}: {subject}"
 msgstr "{date} von {publicbody}: {subject}"
 
-#: forms.py:45
+#: forms.py:50
 msgid "First name"
 msgstr "Vorname"
 
-#: forms.py:47
+#: forms.py:52
 msgid "First Name"
 msgstr "Vorname"
 
-#: forms.py:52
+#: forms.py:57
 msgid "Last name"
 msgstr "Nachname"
 
-#: forms.py:54
+#: forms.py:59
 msgid "Last Name"
 msgstr "Nachname"
 
-#: forms.py:60
+#: forms.py:65
 msgid "Mailing Address"
 msgstr "Postadresse"
 
-#: forms.py:61
+#: forms.py:66
 msgid "Your real address is required."
 msgstr "Wir benötigen Ihre echte Adresse."
 
-#: forms.py:66
+#: forms.py:71
 msgid "Street, Post Code, City"
 msgstr "Straße, Postleitzahl, Stadt"
 
-#: forms.py:71
+#: forms.py:76
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: forms.py:73
+#: forms.py:78
 msgid "Required"
 msgstr "Pflichtfeld"
 
-#: forms.py:75
+#: forms.py:80
 msgid "mail@ddress.net"
 msgstr "email@dresse.net"
 
-#: forms.py:79
+#: forms.py:84
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: forms.py:81
+#: forms.py:86
 msgid "Required. We will need to talk you."
 msgstr "Wird für Rücksprachen benötigt."
 
-#: forms.py:86
+#: forms.py:91
 msgid "Public body"
 msgstr "Behörde"
 
-#: forms.py:94
+#: forms.py:99
 msgid ""
 "You agree to our <a href=\"/datenschutzerklaerung/\" "
 "target=\"_blank\">Privacy Terms</a>"
@@ -123,35 +123,43 @@ msgstr ""
 "Sie stimmen unserer <a href=\"/datenschutzerklaerung/\" "
 "target=\"_blank\">Datenschutzerklärung</a> zu."
 
-#: forms.py:107
+#: forms.py:112
 msgid "Anything we should know?"
 msgstr "Noch etwas, was wir wissen sollten?"
 
-#: forms.py:149
+#: forms.py:154
 msgid "Document for {}"
 msgstr "Dokument für {}"
 
-#: forms.py:160
+#: forms.py:165
 msgid "Date of {}"
 msgstr "Datum von {}"
 
-#: forms.py:166
+#: forms.py:171
 msgid "Upload document for {}"
 msgstr "Dokument für {} hochladen"
 
-#: forms.py:182
+#: forms.py:187
 msgid "You already submitted a suit proposal for this request."
 msgstr "Du hast schon einen Klagevorschlag für diese Anfrage eingereicht."
 
-#: forms.py:194
+#: forms.py:199
 msgid "You have not submitted enough document kinds."
 msgstr "Sie haben nicht alle Dokumentenkategorien eingereicht."
 
-#: forms.py:199
+#: forms.py:204
 msgid "You have submitted the same message for different document kinds."
 msgstr ""
 "Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
 "eingereicht."
+
+#: forms.py:306 models/decision_models.py:145
+msgid "Laws"
+msgstr "Gesetze"
+
+#: forms.py:316 models/decision_models.py:104 models/decision_models.py:141
+msgid "Court"
+msgstr "Gericht"
 
 #: models/decision_models.py:22
 msgid "name"
@@ -165,45 +173,59 @@ msgstr "slug"
 msgid "title"
 msgstr "Titel"
 
-#: models/decision_models.py:46
+#: models/decision_models.py:46 models/decision_models.py:114
 msgid "Legal Decision Type"
-msgstr "Rechtsentscheidungstyp"
+msgstr "Entscheidungsart"
 
 #: models/decision_models.py:47
 msgid "Legal Decision Types"
-msgstr "Rechtsentscheidungstypen"
+msgstr "Entscheidungsarten"
 
-#: models/decision_models.py:152
+#: models/decision_models.py:101
+msgid "Abstract"
+msgstr "Leitsatz"
+
+#: models/decision_models.py:102
+msgid "Fulltext"
+msgstr "Volltext"
+
+#: models/decision_models.py:106
+msgid "Law"
+msgstr "Gesetz"
+
+#: models/decision_models.py:117
+msgid "Date"
+msgstr "Datum"
+
+#: models/decision_models.py:119
+msgid "Outcome"
+msgstr "Ergebnis"
+
+#: models/decision_models.py:121
+#, fuzzy
+#| msgid "reference"
+msgid "Reference"
+msgstr "Aktenzeichen"
+
+#: models/decision_models.py:123
+msgid "Paragraphs"
+msgstr "Paragraphen"
+
+#: models/decision_models.py:129
+msgid "Lawsuit"
+msgstr "Klage"
+
+#: models/decision_models.py:133
+msgid "Document"
+msgstr "Dokument"
+
+#: models/decision_models.py:161
 msgid "{} of {} on {}"
 msgstr "{}: {} am {}"
 
-#: models/decision_models.py:155
+#: models/decision_models.py:164
 msgid "{} of {}"
 msgstr "{}: {}"
-
-#: models/decision_models.py:174
-msgid "reference"
-msgstr "Aktenzeichen"
-
-#: models/decision_models.py:176
-msgid "date"
-msgstr "Datum"
-
-#: models/decision_models.py:180
-msgid "abstract"
-msgstr "Leitsatz"
-
-#: models/decision_models.py:182
-msgid "Laws"
-msgstr "Gesetze"
-
-#: models/decision_models.py:187
-msgid "Court"
-msgstr "Gericht"
-
-#: models/decision_models.py:189
-msgid "Type"
-msgstr "Entscheidungsart"
 
 #: models/lawsuit_models.py:12
 msgid "won"
@@ -500,7 +522,7 @@ msgstr ""
 msgid "Please check for errors in your form."
 msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
 
-#: views.py:345
+#: views.py:352
 msgid "Added new legal decisions"
 msgstr "Neue gerichtsentscheidungen angelegt"
 
@@ -511,6 +533,12 @@ msgstr "Alle"
 #: widgets.py:39
 msgid "search"
 msgstr "Schnellsuche"
+
+#~ msgid "date"
+#~ msgstr "Datum"
+
+#~ msgid "Type"
+#~ msgstr "Entscheidungsart"
 
 #, python-format
 #~ msgid "at %(court)s"

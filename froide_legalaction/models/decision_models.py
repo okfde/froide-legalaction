@@ -59,10 +59,9 @@ class LegalDecisionManager(TranslatableManager):
             Q(reference="")
             | Q(date__isnull=True)
             | Q(type__isnull=True)
-            | Q(translations__court="")
             | Q(translations__abstract="")
             | Q(foi_laws__isnull=True)
-            | Q(foi_court__isnull=True)
+            | Q(foi_court__isnull=True, translations__court="")
         )
 
     def get_search_vector(self, language):
@@ -99,31 +98,48 @@ class LegalDecisionManager(TranslatableManager):
 class LegalDecision(TranslatableModel):
 
     translations = TranslatedFields(
-        abstract=models.TextField(blank=True),
+        abstract=models.TextField(blank=True, verbose_name=_("Abstract")),
         fulltext=models.TextField(blank=True),
-        court=models.CharField(max_length=500, blank=True),
-        law=models.CharField(max_length=500, blank=True),
+        verbose_name=_("Fulltext"),
+        court=models.CharField(max_length=500, blank=True, verbose_name=_("Court")),
+        law=models.CharField(max_length=500, blank=True, verbose_name=_("Law")),
         search_text=models.TextField(blank=True),
         search_vector=SearchVectorField(default="", editable=False),
     )
 
     tags = models.ManyToManyField(LegalDecisionTag, blank=True)
     type = models.ForeignKey(
-        LegalDecisionType, on_delete=models.SET_NULL, null=True, blank=True
+        LegalDecisionType,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Legal Decision Type"),
     )
 
-    date = models.DateField(blank=True, null=True)
-    outcome = models.CharField(max_length=500, blank=True)
-    reference = models.CharField(max_length=200, blank=True)
-    paragraphs = models.JSONField(default=list, blank=True)
+    date = models.DateField(blank=True, null=True, verbose_name=_("Date"))
+    outcome = models.CharField(max_length=500, blank=True, verbose_name=_("Outcome"))
+    reference = models.CharField(
+        max_length=200, blank=True, verbose_name=_("Reference")
+    )
+    paragraphs = models.JSONField(
+        default=list, blank=True, verbose_name=_("Paragraphs")
+    )
 
     source_data = models.JSONField(blank=True, null=True)
 
     foi_lawsuit = models.ForeignKey(
-        "froide_legalaction.Lawsuit", on_delete=models.SET_NULL, null=True, blank=True
+        "froide_legalaction.Lawsuit",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Lawsuit"),
     )
     foi_document = models.ForeignKey(
-        Document, on_delete=models.SET_NULL, null=True, blank=True
+        Document,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Document"),
     )
     foi_court = models.ForeignKey(
         PublicBody,
@@ -131,9 +147,10 @@ class LegalDecision(TranslatableModel):
         null=True,
         blank=True,
         related_name="pb_legaldecisions",
+        verbose_name=_("Court"),
     )
     foi_laws = models.ManyToManyField(
-        FoiLaw, related_name="legal_decisions", blank=True
+        FoiLaw, related_name="legal_decisions", blank=True, verbose_name=_("Laws")
     )
 
     objects = LegalDecisionManager()
@@ -167,26 +184,48 @@ class LegalDecision(TranslatableModel):
             return ", ".join([foi_law.name for foi_law in self.foi_laws.all()])
         return self.law
 
-    @property
-    def fields_incomplete(self):
-        res = []
-        if not self.reference:
-            res.append(str(_("reference")))
-        if not self.date:
-            res.append(str(_("date")))
+    def abstract_is_set(self):
         try:
             self.abstract
+            return not self.abstract == ""
         except self.DoesNotExist:
-            res.append(str(_("abstract")))
-        if not self.foi_laws.all():
-            res.append(str(_("Laws")))
+            return False
+
+    def court_is_set(self):
         if not self.foi_court:
             try:
                 self.court
+                return True
             except self.DoesNotExist:
-                res.append(str(_("Court")))
-        if not self.type:
-            res.append(str(_("Type")))
+                return False
+        return True
+
+    @property
+    def fields_incomplete(self):
+        from froide_legalaction.models import LegalDecisionTranslation
+
+        relevant_fields = [
+            "reference",
+            "date",
+            "abstract",
+            "foi_laws",
+            "foi_court",
+            "type",
+        ]
+        res = []
+
+        fields = self._meta.fields
+        translated_fields = LegalDecisionTranslation._meta.get_fields()
+        all_fields = fields + translated_fields
+
+        for field in all_fields:
+            is_relevant = field.name in relevant_fields
+            has_field = hasattr(self, field.name)
+            if is_relevant:
+                if has_field and not getattr(self, field.name):
+                    res.append(str(field.verbose_name))
+                elif not has_field:
+                    res.append(str(field.verbose_name))
         return ", ".join(res)
 
     def generate_search_texts(self):
