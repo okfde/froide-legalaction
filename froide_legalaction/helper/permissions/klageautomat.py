@@ -30,15 +30,12 @@ def foirequest_can_be_tested(foi_request):
     return is_old_enough and is_active and is_no_eu_request
 
 
-def user_has_klageautomat_permissions(user, foi_request, request):
-    is_staff = user.is_active and user.is_staff
-    is_foirequest_creator = user == foi_request.user
-    has_foi_request_edit_perms = can_write_foirequest(foi_request, request)
-    return is_staff or is_foirequest_creator or has_foi_request_edit_perms
+def user_has_klageautomat_permissions(foi_request, request):
+    return can_write_foirequest(foi_request, request)
 
 
 # is used in KlageautomatMixin and can_use_klageautomat template tag
-def can_create_answer(user, foi_request, request):
+def can_create_answer(foi_request, request):
     return foirequest_can_be_tested(foi_request) and user_has_klageautomat_permissions(
-        user, foi_request, request
+        foi_request, request
     )

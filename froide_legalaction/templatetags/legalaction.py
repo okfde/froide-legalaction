@@ -26,4 +26,4 @@ def questionaire_taken(value):
 @register.simple_tag(takes_context=True)
 def can_use_klageautomat(context, foirequest):
     request = context.get("request")
-    return can_create_answer(request.user, foirequest, request)
+    return can_create_answer(foirequest, request)
