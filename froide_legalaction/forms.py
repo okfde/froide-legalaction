@@ -1,18 +1,25 @@
 from django import forms
 from django.core import validators
 from django.db import transaction
+from django.urls import reverse_lazy
 from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from froide.document.models import DocumentCollection
 from froide.foirequest.models import FoiMessage
 from froide.foirequest.validators import validate_upload_document
 from froide.helper.date_utils import calculate_month_range_de
-from froide.helper.widgets import BootstrapCheckboxInput
-from froide.publicbody.models import PublicBody
+from froide.helper.widgets import (
+    AutocompleteMultiWidget,
+    AutocompleteWidget,
+    BootstrapCheckboxInput,
+)
+from froide.publicbody.models import Classification, FoiLaw, PublicBody
 from froide.publicbody.widgets import PublicBodySelect
 from legal_advice_builder.forms import RenderedDocumentForm
+from parler.forms import TranslatableModelForm
 
-from .models import Proposal, ProposalDocument
+from .models import LegalDecision, LegalDecisionType, Proposal, ProposalDocument
 
 
 class PhoneNumberInput(forms.widgets.Input):
@@ -268,3 +275,73 @@ class KlageautomatRenderedDocumentForm(RenderedDocumentForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["rendered_document"].label = "Ihr Klageentwurf"
+
+
+class LegalDecisionCreateForm(forms.Form):
+    document_collection = forms.ModelChoiceField(
+        queryset=DocumentCollection.objects.none()
+    )
+    foi_court = forms.ModelChoiceField(
+        queryset=PublicBody.objects.filter(classification__name__icontains="gericht"),
+        required=False,
+    )
+    type = forms.ModelChoiceField(
+        queryset=LegalDecisionType.objects.all(), required=False
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
+        qs = DocumentCollection.objects.get_authenticated_queryset(
+            self.request
+        ).order_by("-created_at")
+        self.fields["document_collection"].queryset = qs
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+
+class LegalDecisionUpdateForm(TranslatableModelForm):
+    foi_laws = forms.ModelMultipleChoiceField(
+        queryset=FoiLaw.objects.all(),
+        label=_("Laws"),
+        widget=AutocompleteMultiWidget(
+            autocomplete_url=reverse_lazy("api:law-autocomplete"),
+            model=FoiLaw,
+            allow_new=False,
+        ),
+        required=False,
+    )
+    foi_court = forms.ModelChoiceField(
+        queryset=PublicBody.objects.none(),
+        label=_("Court"),
+        widget=AutocompleteWidget(
+            autocomplete_url=reverse_lazy("api:publicbody-autocomplete"),
+            model=PublicBody,
+            allow_new=False,
+        ),
+        required=False,
+    )
+
+    class Meta:
+        model = LegalDecision
+        fields = ["reference", "type", "date", "foi_court", "foi_laws", "abstract"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+        url = self.fields["foi_laws"].widget.autocomplete_url
+        self.fields["foi_laws"].widget.autocomplete_url = "{}?meta=False".format(url)
+
+        court = Classification.objects.filter(name="Gericht").first()
+        url = self.fields["foi_court"].widget.autocomplete_url
+        self.fields[
+            "foi_court"
+        ].widget.autocomplete_url = "{}?classification={}".format(url, court.id)
+        self.fields["foi_court"].queryset = self.get_court_queryset()
+
+    def get_court_queryset(self):
+        court = Classification.objects.filter(name="Gericht").first()
+        descendants = court.get_descendants().values_list("id", flat=True)
+        court_ids = [court.id] + list(descendants)
+        return PublicBody.objects.filter(classification__id__in=court_ids)

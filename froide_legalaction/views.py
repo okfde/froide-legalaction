@@ -1,5 +1,7 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -22,6 +24,8 @@ from .forms import (
     KlageautomatApprovalForm,
     KlageautomatRenderedDocumentForm,
     LegalActionRequestForm,
+    LegalDecisionCreateForm,
+    LegalDecisionUpdateForm,
 )
 from .mixins import KlageautomatMixin
 from .models import LegalDecision
@@ -277,10 +281,13 @@ class LegalDecisionListView(ListView):
     model = LegalDecision
     paginate_by = 10
 
+    def get_filter_queryset(self):
+        return LegalDecision.objects.all()
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         f = LegalDecisionFilterSet(
-            self.request.GET, queryset=LegalDecision.objects.all()
+            self.request.GET, queryset=self.get_filter_queryset()
         )
 
         paginator = Paginator(f.qs, self.paginate_by)
@@ -297,6 +304,103 @@ class LegalDecisionListView(ListView):
         return ctx
 
 
-class LegalDecisionDetailView(DetailView):
+class LegalDecisionIncompleteListView(LegalDecisionListView):
+    def get_filter_queryset(self):
+        incomplete = LegalDecision.objects.all_incomplete()
+        if self.request.GET.get("ids"):
+            id_list = self.request.GET.get("ids").split(",")
+            return incomplete.filter(id__in=id_list)
+        return incomplete
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({"show_incomplete_fields": True})
+        return context
+
+
+class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
+    permission_required = "froide_legalaction.add_legaldecision"
+    form_class = LegalDecisionCreateForm
+    template_name = "froide_legalaction/legaldecision_create.html"
+
+    def get_success_url(self):
+        return reverse("legal-decision-list-incomplete")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({"request": self.request})
+        return kwargs
+
+    def form_valid(self, form):
+        docs = form.cleaned_data.get("document_collection").documents.all()
+        foi_court = form.cleaned_data.get("foi_court")
+        type = form.cleaned_data.get("type")
+        ids = []
+        for doc in docs:
+            data = {"foi_document": doc}
+            if foi_court:
+                data.update({"foi_court": foi_court, "court": foi_court.name})
+            if type:
+                data.update({"type": type})
+            legal_decision = LegalDecision.objects.create(**data)
+            ids.append(str(legal_decision.id))
+            ids_string = ",".join(ids)
+            url = "{}?ids={}".format(self.get_success_url(), ids_string)
+        messages.add_message(
+            self.request, messages.SUCCESS, _("Added new legal decisions")
+        )
+        if ids:
+            url = reverse(
+                "legal-decision-incomplete-update", kwargs={"pk": int(ids[0])}
+            )
+            return HttpResponseRedirect("{}?ids={}".format(url, ids_string))
+        return HttpResponseRedirect(url)
+
+
+class LegalDecisionDetailView(DetailView):
     model = LegalDecision
+
+
+class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "froide_legalaction.change_legaldecision"
+    form_class = LegalDecisionUpdateForm
+    model = LegalDecision
+    template_name = "froide_legalaction/legaldecision_detail.html"
+
+    def get_next_id(self):
+        ids = self.request.GET.get("ids")
+        if ids:
+            id_list = ids.split(",")
+            try:
+                index = id_list.index(str(self.object.id))
+                return id_list[index + 1]
+            except (ValueError, IndexError):
+                return None
+        next = (
+            LegalDecision.objects.all_incomplete()
+            .filter(id__gt=self.object.id)
+            .order_by("id")
+            .first()
+        )
+        if next:
+            return next.id
+
+    def get_success_url(self):
+        return reverse("legal-decision-list-incomplete")
+
+    def form_valid(self, form):
+        self.object = form.save()
+        next_id = self.get_next_id()
+        if next_id and "next" in self.request.POST:
+            ids = self.request.GET.get("ids")
+            url = reverse(
+                "legal-decision-incomplete-update", kwargs={"pk": int(next_id)}
+            )
+            return HttpResponseRedirect("{}?ids={}".format(url, ids))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.get_next_id():
+            context.update({"has_next": True})
+        return context
