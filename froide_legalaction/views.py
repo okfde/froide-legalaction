@@ -304,7 +304,9 @@ class LegalDecisionListView(ListView):
         return ctx
 
 
-class LegalDecisionIncompleteListView(LegalDecisionListView):
+class LegalDecisionIncompleteListView(PermissionRequiredMixin, LegalDecisionListView):
+    permission_required = "froide_legalaction.change_legaldecision"
+
     def get_filter_queryset(self):
         incomplete = LegalDecision.objects.all_incomplete()
         if self.request.GET.get("ids"):
