@@ -170,7 +170,9 @@ class LegalDecision(TranslatableModel):
                     self.type, self.court_name, str(self.formatted_date)
                 )
             return _("{} of {}").format(self.type, self.court_name)
-        return self.foi_document.title
+        if self.foi_document:
+            return self.foi_document.title
+        return self.reference
 
     @property
     def court_name(self):
