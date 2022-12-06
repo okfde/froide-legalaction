@@ -11,7 +11,7 @@ from .helper.permissions.klageautomat import can_create_answer
 class KlageautomatMixin:
     def dispatch(self, request, *args, **kwargs):
         foi_request = get_object_or_404(FoiRequest, pk=kwargs.get("pk"))
-        if not can_create_answer(request.user, foi_request):
+        if not can_create_answer(foi_request, request):
             raise Http404
         return super().dispatch(request, *args, **kwargs)
 
