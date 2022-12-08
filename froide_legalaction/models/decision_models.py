@@ -210,7 +210,6 @@ class LegalDecision(TranslatableModel):
             "reference",
             "date",
             "abstract",
-            "foi_laws",
             "foi_court",
             "type",
         ]
@@ -228,6 +227,8 @@ class LegalDecision(TranslatableModel):
                     res.append(str(field.verbose_name))
                 elif not has_field:
                     res.append(str(field.verbose_name))
+        if not self.foi_laws.all():
+            res.append(str(_("Laws")))
         return ", ".join(res)
 
     def generate_search_texts(self):
