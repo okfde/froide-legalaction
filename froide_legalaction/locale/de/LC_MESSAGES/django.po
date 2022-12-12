@@ -522,7 +522,7 @@ msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
 
 #: views.py:352
 msgid "Added new legal decisions"
-msgstr "Neue gerichtsentscheidungen angelegt"
+msgstr "Neue Gerichtsentscheidungen angelegt."
 
 #: widgets.py:13
 msgid "All"
