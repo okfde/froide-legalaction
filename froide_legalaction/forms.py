@@ -277,12 +277,33 @@ class KlageautomatRenderedDocumentForm(RenderedDocumentForm):
         self.fields["rendered_document"].label = "Ihr Klageentwurf"
 
 
-class LegalDecisionCreateForm(forms.Form):
+class FoiCourtFieldMixin:
+    def get_court_queryset(self):
+        court = Classification.objects.filter(name="Gericht").first()
+        descendants = court.get_descendants().values_list("id", flat=True)
+        court_ids = [court.id] + list(descendants)
+        return PublicBody.objects.filter(classification__id__in=court_ids)
+
+    def set_foi_court_widget_url(self):
+        court = Classification.objects.filter(name="Gericht").first()
+        url = self.fields["foi_court"].widget.autocomplete_url
+        self.fields[
+            "foi_court"
+        ].widget.autocomplete_url = "{}?classification={}".format(url, court.id)
+
+
+class LegalDecisionCreateForm(forms.Form, FoiCourtFieldMixin):
     document_collection = forms.ModelChoiceField(
         queryset=DocumentCollection.objects.none()
     )
     foi_court = forms.ModelChoiceField(
-        queryset=PublicBody.objects.filter(classification__name__icontains="gericht"),
+        queryset=PublicBody.objects.none(),
+        label=_("Court"),
+        widget=AutocompleteWidget(
+            autocomplete_url=reverse_lazy("api:publicbody-autocomplete"),
+            model=PublicBody,
+            allow_new=False,
+        ),
         required=False,
     )
     type = forms.ModelChoiceField(
@@ -298,9 +319,11 @@ class LegalDecisionCreateForm(forms.Form):
         self.fields["document_collection"].queryset = qs
         for visible in self.visible_fields():
             visible.field.widget.attrs["class"] = "form-control"
+        self.set_foi_court_widget_url()
+        self.fields["foi_court"].queryset = self.get_court_queryset()
 
 
-class LegalDecisionUpdateForm(TranslatableModelForm):
+class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
     foi_laws = forms.ModelMultipleChoiceField(
         queryset=FoiLaw.objects.all(),
         label=_("Laws"),
@@ -324,7 +347,15 @@ class LegalDecisionUpdateForm(TranslatableModelForm):
 
     class Meta:
         model = LegalDecision
-        fields = ["reference", "type", "date", "foi_court", "foi_laws", "abstract"]
+        fields = [
+            "reference",
+            "type",
+            "date",
+            "court",
+            "foi_court",
+            "foi_laws",
+            "abstract",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -333,15 +364,5 @@ class LegalDecisionUpdateForm(TranslatableModelForm):
         url = self.fields["foi_laws"].widget.autocomplete_url
         self.fields["foi_laws"].widget.autocomplete_url = "{}?meta=False".format(url)
 
-        court = Classification.objects.filter(name="Gericht").first()
-        url = self.fields["foi_court"].widget.autocomplete_url
-        self.fields[
-            "foi_court"
-        ].widget.autocomplete_url = "{}?classification={}".format(url, court.id)
+        self.set_foi_court_widget_url()
         self.fields["foi_court"].queryset = self.get_court_queryset()
-
-    def get_court_queryset(self):
-        court = Classification.objects.filter(name="Gericht").first()
-        descendants = court.get_descendants().values_list("id", flat=True)
-        court_ids = [court.id] + list(descendants)
-        return PublicBody.objects.filter(classification__id__in=court_ids)

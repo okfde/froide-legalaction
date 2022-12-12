@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 11:54+0100\n"
+"POT-Creation-Date: 2022-12-09 17:43+0100\n"
 "PO-Revision-Date: 2022-09-08 14:50+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
@@ -153,13 +153,13 @@ msgstr ""
 "Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
 "eingereicht."
 
-#: forms.py:306 models/decision_models.py:145
-msgid "Laws"
-msgstr "Gesetze"
-
-#: forms.py:316 models/decision_models.py:104 models/decision_models.py:141
+#: forms.py:286 forms.py:335
 msgid "Court"
 msgstr "Gericht"
+
+#: forms.py:325 models/decision_models.py:153 models/decision_models.py:231
+msgid "Laws"
+msgstr "Gesetze"
 
 #: models/decision_models.py:22
 msgid "name"
@@ -173,7 +173,7 @@ msgstr "slug"
 msgid "title"
 msgstr "Titel"
 
-#: models/decision_models.py:46 models/decision_models.py:114
+#: models/decision_models.py:46 models/decision_models.py:116
 msgid "Legal Decision Type"
 msgstr "Entscheidungsart"
 
@@ -185,45 +185,51 @@ msgstr "Entscheidungsarten"
 msgid "Abstract"
 msgstr "Leitsatz"
 
-#: models/decision_models.py:102
+#: models/decision_models.py:103
 msgid "Fulltext"
 msgstr "Volltext"
 
-#: models/decision_models.py:106
+#: models/decision_models.py:104
+msgid "Name of Court"
+msgstr "Name des Gerichts"
+
+#: models/decision_models.py:105
 msgid "Law"
 msgstr "Gesetz"
 
-#: models/decision_models.py:117
+#: models/decision_models.py:119
 msgid "Date"
 msgstr "Datum"
 
-#: models/decision_models.py:119
+#: models/decision_models.py:120
 msgid "Outcome"
 msgstr "Ergebnis"
 
-#: models/decision_models.py:121
-#, fuzzy
-#| msgid "reference"
+#: models/decision_models.py:122
 msgid "Reference"
 msgstr "Aktenzeichen"
 
-#: models/decision_models.py:123
+#: models/decision_models.py:125
 msgid "Paragraphs"
 msgstr "Paragraphen"
 
-#: models/decision_models.py:129
+#: models/decision_models.py:135
 msgid "Lawsuit"
 msgstr "Klage"
 
-#: models/decision_models.py:133
+#: models/decision_models.py:142
 msgid "Document"
 msgstr "Dokument"
 
-#: models/decision_models.py:161
+#: models/decision_models.py:150
+msgid "Link to Court"
+msgstr "Verknüpfung zum Gericht"
+
+#: models/decision_models.py:169
 msgid "{} of {} on {}"
 msgstr "{}: {} am {}"
 
-#: models/decision_models.py:164
+#: models/decision_models.py:172
 msgid "{} of {}"
 msgstr "{}: {}"
 
@@ -431,14 +437,6 @@ msgstr ""
 msgid "Click here to propose a law suit"
 msgstr "Jetzt Klagevorschlag einreichen"
 
-#: templates/froide_legalaction/legaldecision_create.html:4
-msgid "Legal Decisions create"
-msgstr "Rechtsentscheidungen hinzufügen"
-
-#: templates/froide_legalaction/legaldecision_create.html:13
-msgid "submit"
-msgstr "Abschicken"
-
 #: templates/froide_legalaction/thanks.html:6
 msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
@@ -524,7 +522,7 @@ msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
 
 #: views.py:352
 msgid "Added new legal decisions"
-msgstr "Neue gerichtsentscheidungen angelegt"
+msgstr "Neue Gerichtsentscheidungen angelegt."
 
 #: widgets.py:13
 msgid "All"
@@ -533,6 +531,12 @@ msgstr "Alle"
 #: widgets.py:39
 msgid "search"
 msgstr "Schnellsuche"
+
+#~ msgid "Legal Decisions create"
+#~ msgstr "Rechtsentscheidungen hinzufügen"
+
+#~ msgid "submit"
+#~ msgstr "Abschicken"
 
 #~ msgid "date"
 #~ msgstr "Datum"
