@@ -101,7 +101,9 @@ class LegalDecision(TranslatableModel):
         abstract=models.TextField(blank=True, verbose_name=_("Abstract")),
         fulltext=models.TextField(blank=True),
         verbose_name=_("Fulltext"),
-        court=models.CharField(max_length=500, blank=True, verbose_name=_("Court")),
+        court=models.CharField(
+            max_length=500, blank=True, verbose_name=_("Name of Court")
+        ),
         law=models.CharField(max_length=500, blank=True, verbose_name=_("Law")),
         search_text=models.TextField(blank=True),
         search_vector=SearchVectorField(default="", editable=False),
@@ -147,7 +149,7 @@ class LegalDecision(TranslatableModel):
         null=True,
         blank=True,
         related_name="pb_legaldecisions",
-        verbose_name=_("Court"),
+        verbose_name=_("Link to Court"),
     )
     foi_laws = models.ManyToManyField(
         FoiLaw, related_name="legal_decisions", blank=True, verbose_name=_("Laws")
