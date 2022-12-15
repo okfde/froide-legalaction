@@ -1,7 +1,8 @@
 from django import forms
 from django.core import validators
+from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -366,3 +367,20 @@ class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
 
         self.set_foi_court_widget_url()
         self.fields["foi_court"].queryset = self.get_court_queryset()
+
+    def clean_reference(self):
+        reference = self.cleaned_data.get("reference")
+        legal_decision = (
+            LegalDecision.objects.filter(reference=reference)
+            .exclude(id=self.instance.id)
+            .first()
+        )
+        if legal_decision:
+            url = reverse(
+                "legal-decision-incomplete-update", kwargs={"pk": legal_decision.id}
+            )
+            message = _(
+                "This reference already exists <a href='{}' target='_blank'>here.</a>"
+            ).format(url)
+            raise ValidationError(format_html(message))
+        return reference
