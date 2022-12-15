@@ -379,12 +379,8 @@ class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
             url = reverse(
                 "legal-decision-incomplete-update", kwargs={"pk": legal_decision.id}
             )
-            message = format_html(
-                _(
-                    "This reference already exists <a href='{}' target='_blank'>here.</a>".format(
-                        url
-                    )
-                )
-            )
-            raise ValidationError(message)
+            message = _(
+                "This reference already exists <a href='{}' target='_blank'>here.</a>"
+            ).format(url)
+            raise ValidationError(format_html(message))
         return reference
