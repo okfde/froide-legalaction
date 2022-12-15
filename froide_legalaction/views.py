@@ -334,28 +334,38 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        docs = form.cleaned_data.get("document_collection").documents.all()
+        docs = form.cleaned_data.get("document_collection").documents.filter(
+            legaldecision__isnull=True
+        )
         foi_court = form.cleaned_data.get("foi_court")
         type = form.cleaned_data.get("type")
         ids = []
-        for doc in docs:
-            data = {"foi_document": doc}
-            if foi_court:
-                data.update({"foi_court": foi_court, "court": foi_court.name})
-            if type:
-                data.update({"type": type})
-            legal_decision = LegalDecision.objects.create(**data)
-            ids.append(str(legal_decision.id))
-            ids_string = ",".join(ids)
-            url = "{}?ids={}".format(self.get_success_url(), ids_string)
-        messages.add_message(
-            self.request, messages.SUCCESS, _("Added new legal decisions")
-        )
-        if ids:
-            url = reverse(
-                "legal-decision-incomplete-update", kwargs={"pk": int(ids[0])}
+        if docs:
+            for doc in docs:
+                data = {"foi_document": doc}
+                if foi_court:
+                    data.update({"foi_court": foi_court, "court": foi_court.name})
+                if type:
+                    data.update({"type": type})
+                legal_decision = LegalDecision.objects.create(**data)
+                ids.append(str(legal_decision.id))
+                ids_string = ",".join(ids)
+                url = "{}?ids={}".format(self.get_success_url(), ids_string)
+            messages.add_message(
+                self.request, messages.SUCCESS, _("Added new legal decisions")
             )
-            return HttpResponseRedirect("{}?ids={}".format(url, ids_string))
+            if ids:
+                url = reverse(
+                    "legal-decision-incomplete-update", kwargs={"pk": int(ids[0])}
+                )
+                return HttpResponseRedirect("{}?ids={}".format(url, ids_string))
+            return HttpResponseRedirect(url)
+        url = reverse("legal-decision-list-incomplete")
+        messages.add_message(
+            self.request,
+            messages.INFO,
+            _("For all documents in collection decisions already exist."),
+        )
         return HttpResponseRedirect(url)
 
 
