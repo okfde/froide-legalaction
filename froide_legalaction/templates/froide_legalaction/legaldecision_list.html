@@ -40,7 +40,7 @@
             <div>
               <h3 class="h5 info-box__title">{% translate 'Refine your query' %}</h3>
               {% if selected_filters %}
-                <div class="info-box__subtitle">{% translate 'You have selected:' %}</div>
+                <div class="info-box__subtitle">{% translate 'Currently selected:' %}</div>
                 {% for name, url in selected_filters %}
                 <div><a href="?{{ url }}"><small>{{ name }} <i class="fa fa-times" aria-hidden="true"></i></small></a></div>
                 {% endfor %}
