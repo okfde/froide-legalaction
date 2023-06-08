@@ -4,18 +4,15 @@ from django.db import migrations
 
 
 def allow_multiple_foi_laws(apps, schema_editor):
-    LegalDecision = apps.get_model('froide_legalaction', 'LegalDecision')
+    LegalDecision = apps.get_model("froide_legalaction", "LegalDecision")
     for ld in LegalDecision.objects.all():
         if ld.foi_law:
             ld.foi_laws.add(ld.foi_law)
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('froide_legalaction', '0015_legaldecision_foi_laws'),
+        ("froide_legalaction", "0015_legaldecision_foi_laws"),
     ]
 
-    operations = [
-        migrations.RunPython(allow_multiple_foi_laws)
-    ]
+    operations = [migrations.RunPython(allow_multiple_foi_laws)]

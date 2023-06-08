@@ -3,44 +3,70 @@
 from __future__ import unicode_literals
 
 import django.db.models.deletion
-import django_fsm
 from django.db import migrations, models
+
+import django_fsm
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('froide_legalaction', '0002_auto_20161130_0130'),
+        ("froide_legalaction", "0002_auto_20161130_0130"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='proposaldocument',
-            options={'verbose_name': 'legalaction document', 'verbose_name_plural': 'legalaction documents'},
+            name="proposaldocument",
+            options={
+                "verbose_name": "legalaction document",
+                "verbose_name_plural": "legalaction documents",
+            },
         ),
         migrations.AlterField(
-            model_name='proposal',
-            name='foirequest',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='foirequest.FoiRequest'),
+            model_name="proposal",
+            name="foirequest",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="foirequest.FoiRequest",
+            ),
         ),
         migrations.AlterField(
-            model_name='proposal',
-            name='publicbody',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='publicbody.PublicBody'),
+            model_name="proposal",
+            name="publicbody",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="publicbody.PublicBody",
+            ),
         ),
         migrations.AlterField(
-            model_name='proposal',
-            name='state',
-            field=django_fsm.FSMField(default='new', max_length=50),
+            model_name="proposal",
+            name="state",
+            field=django_fsm.FSMField(default="new", max_length=50),
         ),
         migrations.AlterField(
-            model_name='proposaldocument',
-            name='foimessage',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='foirequest.FoiMessage'),
+            model_name="proposaldocument",
+            name="foimessage",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="foirequest.FoiMessage",
+            ),
         ),
         migrations.AlterField(
-            model_name='proposaldocument',
-            name='kind',
-            field=models.CharField(choices=[('foirequest', 'FOI request'), ('rejection', 'Rejection'), ('appeal', 'Appeal'), ('final_rejection', 'Final rejection')], max_length=25),
+            model_name="proposaldocument",
+            name="kind",
+            field=models.CharField(
+                choices=[
+                    ("foirequest", "FOI request"),
+                    ("rejection", "Rejection"),
+                    ("appeal", "Appeal"),
+                    ("final_rejection", "Final rejection"),
+                ],
+                max_length=25,
+            ),
         ),
     ]

@@ -6,10 +6,12 @@ from django.db import models
 from django.db.models import Q
 from django.template import defaultfilters
 from django.utils.translation import gettext_lazy as _
-from froide.document.models import Document
-from froide.publicbody.models import FoiLaw, PublicBody
+
 from parler.managers import TranslatableManager
 from parler.models import TranslatableModel, TranslatedFields
+
+from froide.document.models import Document
+from froide.publicbody.models import FoiLaw, PublicBody
 
 
 class LegalDecisionTagManager(TranslatableManager):
@@ -96,7 +98,6 @@ class LegalDecisionManager(TranslatableManager):
 
 
 class LegalDecision(TranslatableModel):
-
     translations = TranslatedFields(
         abstract=models.TextField(blank=True, verbose_name=_("Abstract")),
         fulltext=models.TextField(blank=True),

@@ -2,8 +2,10 @@ import datetime
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from froide.foirequest.models import FoiRequest
+
 from legal_advice_builder.models import LawCase
+
+from froide.foirequest.models import FoiRequest
 
 from .helper.permissions.klageautomat import can_create_answer
 
@@ -27,7 +29,6 @@ class KlageautomatMixin:
         return "{}_{}_FDS{}".format(date, self.get_lawcase(), self.get_foirequest().id)
 
     def get_attachment_list(self, answer):
-
         attachments = [
             {
                 "text": "K1: Ihre Anfrage vom",

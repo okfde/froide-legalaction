@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
+
 from froide.foirequest.auth import can_write_foirequest
 from froide.foirequest.models.request import Status
 

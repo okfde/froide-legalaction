@@ -8,31 +8,58 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('froide_legalaction', '0005_auto_20181018_1618'),
+        ("froide_legalaction", "0005_auto_20181018_1618"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lawsuit',
-            name='plaintiff_user',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="lawsuit",
+            name="plaintiff_user",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='lawsuit',
-            name='public',
+            model_name="lawsuit",
+            name="public",
             field=models.BooleanField(default=False),
         ),
         migrations.AlterField(
-            model_name='lawsuit',
-            name='court_type',
-            field=models.CharField(blank=True, choices=[('VG', 'Verwaltungsgericht'), ('OVG', 'Oberverwaltungsgericht'), ('BVerwG', 'Bundesverwaltungsgericht'), ('BVerfG', 'Bundesverfassungsgericht'), ('LVerfG', 'Landesverfassungsgericht'), ('EUG', 'Gericht der Europäischen Union'), ('EUGH', 'Europäischer Gerichtshof'), ('EMRK', 'European Court of Human Rights')], max_length=25),
+            model_name="lawsuit",
+            name="court_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("VG", "Verwaltungsgericht"),
+                    ("OVG", "Oberverwaltungsgericht"),
+                    ("BVerwG", "Bundesverwaltungsgericht"),
+                    ("BVerfG", "Bundesverfassungsgericht"),
+                    ("LVerfG", "Landesverfassungsgericht"),
+                    ("EUG", "Gericht der Europäischen Union"),
+                    ("EUGH", "Europäischer Gerichtshof"),
+                    ("EMRK", "European Court of Human Rights"),
+                ],
+                max_length=25,
+            ),
         ),
         migrations.AlterField(
-            model_name='lawsuit',
-            name='result',
-            field=models.CharField(blank=True, choices=[('won', 'gewonnen'), ('lost', 'verloren'), ('not_accepted', 'nicht zur Entscheidung angenommen'), ('partially_successful', 'teilweise erfolgreich'), ('settled', 'Erledigung')], max_length=20),
+            model_name="lawsuit",
+            name="result",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("won", "gewonnen"),
+                    ("lost", "verloren"),
+                    ("not_accepted", "nicht zur Entscheidung angenommen"),
+                    ("partially_successful", "teilweise erfolgreich"),
+                    ("settled", "Erledigung"),
+                ],
+                max_length=20,
+            ),
         ),
     ]

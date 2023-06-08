@@ -7,38 +7,95 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('foirequest', '0029_auto_20180924_1107'),
-        ('publicbody', '0022_auto_20180726_1151'),
-        ('froide_legalaction', '0003_auto_20171106_1459'),
+        ("foirequest", "0029_auto_20180924_1107"),
+        ("publicbody", "0022_auto_20180726_1151"),
+        ("froide_legalaction", "0003_auto_20171106_1459"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Lawsuit',
+            name="Lawsuit",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(blank=True, max_length=255)),
-                ('description', models.TextField(blank=True)),
-                ('start_date', models.DateField(blank=True, null=True)),
-                ('last_update', models.DateField(null=True)),
-                ('end_date', models.DateField(blank=True, null=True)),
-                ('costs', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('costs_covered', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('links', models.TextField(blank=True)),
-                ('court_type', models.CharField(blank=True, choices=[('VG', 'Verwaltungsgericht'), ('OVG', 'Oberverwaltungsgericht'), ('BVerwG', 'Bundesverwaltungsgericht'), ('BVerfG', 'Bundesverfassungsgericht'), ('EMRK', 'European Court of Human Rights')], max_length=25)),
-                ('court', models.CharField(blank=True, max_length=255)),
-                ('plaintiff', models.CharField(blank=True, max_length=255)),
-                ('active', models.BooleanField(default=True)),
-                ('result', models.CharField(blank=True, choices=[('won', 'gewonnen'), ('lost', 'verloren'), ('settled', 'Einigung')], max_length=20)),
-                ('publicbody', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='publicbody.PublicBody')),
-                ('request', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='foirequest.FoiRequest')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(blank=True, max_length=255)),
+                ("description", models.TextField(blank=True)),
+                ("start_date", models.DateField(blank=True, null=True)),
+                ("last_update", models.DateField(null=True)),
+                ("end_date", models.DateField(blank=True, null=True)),
+                (
+                    "costs",
+                    models.DecimalField(
+                        blank=True, decimal_places=2, max_digits=10, null=True
+                    ),
+                ),
+                (
+                    "costs_covered",
+                    models.DecimalField(
+                        blank=True, decimal_places=2, max_digits=10, null=True
+                    ),
+                ),
+                ("links", models.TextField(blank=True)),
+                (
+                    "court_type",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("VG", "Verwaltungsgericht"),
+                            ("OVG", "Oberverwaltungsgericht"),
+                            ("BVerwG", "Bundesverwaltungsgericht"),
+                            ("BVerfG", "Bundesverfassungsgericht"),
+                            ("EMRK", "European Court of Human Rights"),
+                        ],
+                        max_length=25,
+                    ),
+                ),
+                ("court", models.CharField(blank=True, max_length=255)),
+                ("plaintiff", models.CharField(blank=True, max_length=255)),
+                ("active", models.BooleanField(default=True)),
+                (
+                    "result",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("won", "gewonnen"),
+                            ("lost", "verloren"),
+                            ("settled", "Einigung"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "publicbody",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="publicbody.PublicBody",
+                    ),
+                ),
+                (
+                    "request",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="foirequest.FoiRequest",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'lawsuit',
-                'verbose_name_plural': 'lawsuits',
-                'ordering': ('-last_update',),
+                "verbose_name": "lawsuit",
+                "verbose_name_plural": "lawsuits",
+                "ordering": ("-last_update",),
             },
         ),
     ]

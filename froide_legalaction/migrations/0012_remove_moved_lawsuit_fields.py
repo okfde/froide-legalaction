@@ -4,26 +4,25 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('froide_legalaction', '0011_populate_instances'),
+        ("froide_legalaction", "0011_populate_instances"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='lawsuit',
-            name='court',
+            model_name="lawsuit",
+            name="court",
         ),
         migrations.RemoveField(
-            model_name='lawsuit',
-            name='court_type',
+            model_name="lawsuit",
+            name="court_type",
         ),
         migrations.RemoveField(
-            model_name='lawsuit',
-            name='end_date',
+            model_name="lawsuit",
+            name="end_date",
         ),
         migrations.RemoveField(
-            model_name='lawsuit',
-            name='start_date',
+            model_name="lawsuit",
+            name="start_date",
         ),
     ]

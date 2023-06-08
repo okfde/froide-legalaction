@@ -6,6 +6,10 @@ from django.urls import reverse, reverse_lazy
 from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+
+from legal_advice_builder.forms import RenderedDocumentForm
+from parler.forms import TranslatableModelForm
+
 from froide.document.models import DocumentCollection
 from froide.foirequest.models import FoiMessage
 from froide.foirequest.validators import validate_upload_document
@@ -17,8 +21,6 @@ from froide.helper.widgets import (
 )
 from froide.publicbody.models import Classification, FoiLaw, PublicBody
 from froide.publicbody.widgets import PublicBodySelect
-from legal_advice_builder.forms import RenderedDocumentForm
-from parler.forms import TranslatableModelForm
 
 from .models import LegalDecision, LegalDecisionType, Proposal, ProposalDocument
 
@@ -253,7 +255,6 @@ class LegalActionRequestForm(LegalActionUserForm):
 
 
 class KlageautomatApprovalForm(forms.Form):
-
     read_faqs = forms.BooleanField(
         required=True,
         label=format_html(

@@ -4,15 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('froide_legalaction', '0008_auto_20181217_1220'),
+        ("froide_legalaction", "0008_auto_20181217_1220"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lawsuit',
-            name='court_type',
-            field=models.CharField(blank=True, choices=[('VG', 'Verwaltungsgericht'), ('OVG', 'Oberverwaltungsgericht'), ('BVerwG', 'Bundesverwaltungsgericht'), ('LG', 'Landgericht'), ('OLG', 'Oberlandesgericht'), ('BVerfG', 'Bundesverfassungsgericht'), ('LVerfG', 'Landesverfassungsgericht'), ('EUG', 'Gericht der Europäischen Union'), ('EUGH', 'Europäischer Gerichtshof'), ('EMRK', 'European Court of Human Rights')], max_length=25),
+            model_name="lawsuit",
+            name="court_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("VG", "Verwaltungsgericht"),
+                    ("OVG", "Oberverwaltungsgericht"),
+                    ("BVerwG", "Bundesverwaltungsgericht"),
+                    ("LG", "Landgericht"),
+                    ("OLG", "Oberlandesgericht"),
+                    ("BVerfG", "Bundesverfassungsgericht"),
+                    ("LVerfG", "Landesverfassungsgericht"),
+                    ("EUG", "Gericht der Europäischen Union"),
+                    ("EUGH", "Europäischer Gerichtshof"),
+                    ("EMRK", "European Court of Human Rights"),
+                ],
+                max_length=25,
+            ),
         ),
     ]

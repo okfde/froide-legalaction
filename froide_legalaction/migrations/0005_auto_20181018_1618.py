@@ -7,35 +7,54 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('froide_legalaction', '0004_lawsuit'),
+        ("froide_legalaction", "0004_lawsuit"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lawsuit',
-            name='cost_detail',
+            model_name="lawsuit",
+            name="cost_detail",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='lawsuit',
-            name='reference',
+            model_name="lawsuit",
+            name="reference",
             field=models.CharField(blank=True, max_length=255),
         ),
         migrations.AlterField(
-            model_name='lawsuit',
-            name='court',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='ruling_over', to='publicbody.PublicBody'),
+            model_name="lawsuit",
+            name="court",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="ruling_over",
+                to="publicbody.PublicBody",
+            ),
         ),
         migrations.AlterField(
-            model_name='lawsuit',
-            name='publicbody',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='defendant_in', to='publicbody.PublicBody'),
+            model_name="lawsuit",
+            name="publicbody",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="defendant_in",
+                to="publicbody.PublicBody",
+            ),
         ),
         migrations.AlterField(
-            model_name='lawsuit',
-            name='result',
-            field=models.CharField(blank=True, choices=[('won', 'gewonnen'), ('lost', 'verloren'), ('settled', 'Erledigung')], max_length=20),
+            model_name="lawsuit",
+            name="result",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("won", "gewonnen"),
+                    ("lost", "verloren"),
+                    ("settled", "Erledigung"),
+                ],
+                max_length=20,
+            ),
         ),
     ]

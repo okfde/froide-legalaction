@@ -5,15 +5,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('publicbody', '0043_merge_20221019_1020'),
-        ('froide_legalaction', '0016_auto_20221103_1239'),
+        ("publicbody", "0043_merge_20221019_1020"),
+        ("froide_legalaction", "0016_auto_20221103_1239"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='legaldecision',
-            name='foi_law',
+            model_name="legaldecision",
+            name="foi_law",
         )
     ]

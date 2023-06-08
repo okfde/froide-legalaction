@@ -5,16 +5,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('publicbody', '0043_merge_20221019_1020'),
-        ('froide_legalaction', '0014_auto_20220128_1942'),
+        ("publicbody", "0043_merge_20221019_1020"),
+        ("froide_legalaction", "0014_auto_20220128_1942"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='legaldecision',
-            name='foi_laws',
-            field=models.ManyToManyField(related_name='legal_decisions', to='publicbody.foilaw'),
+            model_name="legaldecision",
+            name="foi_laws",
+            field=models.ManyToManyField(
+                related_name="legal_decisions", to="publicbody.foilaw"
+            ),
         )
     ]

@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import path
 from django.utils import timezone
+
 from parler.admin import TranslatableAdmin
 
 from .models import (
@@ -90,7 +91,6 @@ class LegalDecisionAdmin(TranslatableAdmin):
         return upload_urls + urls
 
     def export_legal_decisions(self, request, queryset):
-
         all_objects = [
             *queryset,
             *LegalDecisionTranslation.objects.all(),

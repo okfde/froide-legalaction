@@ -6,7 +6,9 @@ from django.db.models.functions import TruncYear
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+
 from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilter
+
 from froide.publicbody.models import FoiLaw, PublicBody
 
 from .models import LegalDecision, LegalDecisionTag, LegalDecisionType

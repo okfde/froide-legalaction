@@ -1,4 +1,5 @@
 from django import template
+
 from legal_advice_builder.models import Answer
 
 from ..helper.permissions.klageautomat import can_create_answer

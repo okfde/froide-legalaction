@@ -1,11 +1,12 @@
 from datetime import date
 
-from cms.plugin_base import CMSPluginBase
-from cms.plugin_pool import plugin_pool
 from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
 
-from .models import COURTS, RESULTS, Lawsuit
+from cms.plugin_base import CMSPluginBase
+from cms.plugin_pool import plugin_pool
+
+from .models import CourtTypes, Lawsuit
 
 
 @plugin_pool.register_plugin
@@ -34,8 +35,8 @@ class LawsuitTablePlugin(CMSPluginBase):
                 "total_costs": costs,
                 "total_costs_not_covered": costs - costs_covered,
                 "total_costs_percentage": costs_percentage,
-                "result_options": RESULTS,
-                "court_options": COURTS,
+                "result_options": Lawsuit.Result.choices,
+                "court_options": CourtTypes.choices,
             }
         )
         return context

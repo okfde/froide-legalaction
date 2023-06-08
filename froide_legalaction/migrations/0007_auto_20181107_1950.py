@@ -6,15 +6,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('froide_legalaction', '0006_auto_20181029_1730'),
+        ("froide_legalaction", "0006_auto_20181029_1730"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lawsuit',
-            name='result',
-            field=models.CharField(blank=True, choices=[('won', 'gewonnen'), ('lost', 'verloren'), ('not_accepted', 'nicht angenommen'), ('partially_successful', 'teilweise erfolgreich'), ('settled', 'Erledigung')], max_length=20),
+            model_name="lawsuit",
+            name="result",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("won", "gewonnen"),
+                    ("lost", "verloren"),
+                    ("not_accepted", "nicht angenommen"),
+                    ("partially_successful", "teilweise erfolgreich"),
+                    ("settled", "Erledigung"),
+                ],
+                max_length=20,
+            ),
         ),
     ]

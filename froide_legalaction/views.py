@@ -8,9 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-from froide.foirequest.auth import can_write_foirequest
-from froide.foirequest.models import FoiRequest
-from froide.publicbody.models import Classification, PublicBody
+
 from legal_advice_builder.models import Answer
 from legal_advice_builder.views import (
     FormWizardView,
@@ -18,6 +16,10 @@ from legal_advice_builder.views import (
     PdfDownloadView,
     WordDownloadView,
 )
+
+from froide.foirequest.auth import can_write_foirequest
+from froide.foirequest.models import FoiRequest
+from froide.publicbody.models import Classification, PublicBody
 
 from .filters import LegalDecisionFilterSet
 from .forms import (
