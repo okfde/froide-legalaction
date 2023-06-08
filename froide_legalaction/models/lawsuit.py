@@ -172,3 +172,6 @@ class Instance(models.Model):
         verbose_name = _("lawsuit")
         verbose_name_plural = _("lawsuits")
         ordering = ("start_date",)
+
+    def __str__(self):
+        return "%s (%s): %s" % (self.lawsuit, self.court_type, self.result)
