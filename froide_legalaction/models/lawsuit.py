@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from froide.foirequest.models import FoiRequest
 from froide.publicbody.models import PublicBody
 
+from .decision import LegalDecision
 
 
 class CourtTypes(models.TextChoices):
@@ -162,6 +163,10 @@ class Instance(models.Model):
 
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    result = models.CharField(max_length=20, blank=True, choices=Lawsuit.Result.choices)
+    decision = models.ForeignKey(
+        LegalDecision, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     class Meta:
         verbose_name = _("lawsuit")
