@@ -9,8 +9,15 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import path
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from parler.admin import TranslatableAdmin
+
+from froide.helper.admin_utils import (
+    ForeignKeyFilter,
+    make_emptyfilter,
+    make_nullfilter,
+)
 
 from .models import (
     Instance,
@@ -67,7 +74,15 @@ class LegalDecisionTagAdmin(TranslatableAdmin):
 
 class LegalDecisionAdmin(TranslatableAdmin):
     model = LegalDecision
-    list_filter = ("decision_type", "foi_court__jurisdiction")
+    list_filter = (
+        "decision_type",
+        "foi_court__jurisdiction",
+        ("foi_court", ForeignKeyFilter),
+        make_nullfilter("ecli", _("Has ECLI")),
+        make_nullfilter("date", _("Has date")),
+        make_emptyfilter("decision_type", _("Has decision type")),
+        make_emptyfilter("translations__abstract", _("Has abstract")),
+    )
     list_display = ("reference", "court")
     search_fields = ["reference", "translations__court", "translations__abstract"]
     raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_laws")
