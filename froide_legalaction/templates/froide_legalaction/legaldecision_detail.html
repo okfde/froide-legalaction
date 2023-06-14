@@ -6,7 +6,7 @@
 {% block title %}{% translate 'Legal Decisions' %}: {{ object.title }}{% endblock %}
 
 {% block body %}
-<div class="bg-gray-100">
+<div class="bg-body-tertiary">
   <div class="container">
     <div class="row justify-content-left">
       <div class="col-md-8">
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div class="bg-gray-100 pt-3">
+<div class="bg-body-tertiary pt-3">
   <div class="container">
     <div class="row">
       <div class="col-md-3 mb-3">
@@ -85,7 +85,7 @@
       </div>
       <div class="col-md-9 mb-3">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item bg-white shadow-gray p-3 mb-4">
+          <li class="list-group-item bg-body shadow-gray p-3 mb-4">
             <ul class="list-unstyled d-flex fw-semibold font-size-sm mb-1">
               <li class="me-2">{{ object.law_name }}</li>
             </ul>
@@ -93,10 +93,10 @@
               {{ object.title }}
             </h3>
             <p><small>{{ object.reference }}</small></p>
-            <p class="text-muted">{{ object.abstract }}</p>
+            <p class="text-body-secondary">{{ object.abstract }}</p>
             <p class="text-end">
               {% for tag in object.tags.all %}
-                <span class="badge rounded-pill bg-dark"><a class="text-white" href="{% url 'legal-decision-list' %}?tags={{ tag.id }}">{{ tag.name }}</a></span>
+                <span class="badge rounded-pill text-bg-secondary"><a href="{% url 'legal-decision-list' %}?tags={{ tag.id }}">{{ tag.name }}</a></span>
               {% endfor %}
             </p>
           </li>
@@ -106,7 +106,7 @@
 
             {% include "_frontend.html" with entry_point="filingcabinet.js" %}
           {% elif object.fulltext %}
-            <li class="list-group-item bg-white shadow-gray p-3 mb-4">
+            <li class="list-group-item bg-body shadow-gray p-3 mb-4">
               <p>{{ object.fulltext|linebreaks }}</p>
             </li>
           {% endif %}

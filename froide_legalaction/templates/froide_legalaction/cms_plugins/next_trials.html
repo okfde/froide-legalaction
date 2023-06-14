@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% if lawsuits|length == 0 %}
-<p class="text-muted">{% trans "There are currently no pending trials." %}</p>
+<p class="text-body-secondary">{% trans "There are currently no pending trials." %}</p>
 {% else %}
 <ul class="row list-unstyled">
   {% for lawsuit in lawsuits %}
