@@ -82,6 +82,7 @@ class LegalDecision(TranslatableModel):
         COURT_NOTICE = "court_notice", _("Court Notice")
         COURT_DECISION = "court_decision", _("Court Decision")
         COURT_RULING = "court_ruling", _("Court Ruling")
+        COURT_ORDER = "court_order", _("Court Order")
 
     slug = models.SlugField(
         max_length=255, blank=True, null=True, unique=True, verbose_name=_("Slug")
