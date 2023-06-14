@@ -5,6 +5,7 @@ from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db.models import Q
 from django.template import defaultfilters
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from parler.managers import TranslatableManager
@@ -160,6 +161,9 @@ class LegalDecision(TranslatableModel):
 
     def __str__(self):
         return "{}".format(self.reference)
+
+    def get_absolute_url(self):
+        return reverse("legal-decision-detail", kwargs={"pk": self.pk})
 
     @property
     def formatted_date(self):
