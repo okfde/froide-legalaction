@@ -22,7 +22,7 @@ from froide.helper.widgets import (
 from froide.publicbody.models import Classification, FoiLaw, PublicBody
 from froide.publicbody.widgets import PublicBodySelect
 
-from .models import LegalDecision, LegalDecisionType, Proposal, ProposalDocument
+from .models import LegalDecision, Proposal, ProposalDocument
 
 
 class PhoneNumberInput(forms.widgets.Input):
@@ -308,9 +308,7 @@ class LegalDecisionCreateForm(forms.Form, FoiCourtFieldMixin):
         ),
         required=False,
     )
-    type = forms.ModelChoiceField(
-        queryset=LegalDecisionType.objects.all(), required=False
-    )
+    decision_type = forms.ChoiceField(choices=LegalDecision.LegalDecisionTypes.choices)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
@@ -351,7 +349,7 @@ class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
         model = LegalDecision
         fields = [
             "reference",
-            "type",
+            "decision_type",
             "date",
             "court",
             "foi_court",

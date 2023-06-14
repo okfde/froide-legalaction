@@ -32,27 +32,6 @@ class LegalDecisionTag(TranslatableModel):
         return self.name
 
 
-class LegalDecisionTypeManager(TranslatableManager):
-    def get_queryset(self):
-        return super().get_queryset().prefetch_related("translations")
-
-
-class LegalDecisionType(TranslatableModel):
-    translations = TranslatedFields(
-        title=models.CharField(_("title"), max_length=255),
-        slug=models.SlugField(_("slug"), unique=False, max_length=255),
-    )
-
-    objects = LegalDecisionTypeManager()
-
-    class Meta:
-        verbose_name = _("Legal Decision Type")
-        verbose_name_plural = _("Legal Decision Types")
-
-    def __str__(self):
-        return self.title
-
-
 class LegalDecisionManager(TranslatableManager):
     def get_queryset(self):
         return super().get_queryset().prefetch_related("translations")
@@ -99,6 +78,11 @@ class LegalDecisionManager(TranslatableManager):
 
 
 class LegalDecision(TranslatableModel):
+    class LegalDecisionTypes(models.TextChoices):
+        COURT_NOTICE = "court_notice", _("Court Notice")
+        COURT_DECISION = "court_decision", _("Court Decision")
+        COURT_RULING = "court_ruling", _("Court Ruling")
+
     slug = models.SlugField(
         max_length=255, blank=True, null=True, unique=True, verbose_name=_("Slug")
     )
@@ -115,12 +99,8 @@ class LegalDecision(TranslatableModel):
     )
 
     tags = models.ManyToManyField(LegalDecisionTag, blank=True)
-    type = models.ForeignKey(
-        LegalDecisionType,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name=_("Legal Decision Type"),
+    decision_type = models.CharField(
+        choices=LegalDecisionTypes.choices, max_length=20, blank=True
     )
 
     date = models.DateField(blank=True, null=True, verbose_name=_("Date"))
@@ -181,12 +161,12 @@ class LegalDecision(TranslatableModel):
 
     @property
     def title(self):
-        if self.type and self.court_name:
+        if self.decision_type and self.court_name:
             if self.date:
                 return _("{} of {} on {}").format(
-                    self.type, self.court_name, str(self.formatted_date)
+                    self.decision_type, self.court_name, str(self.formatted_date)
                 )
-            return _("{} of {}").format(self.type, self.court_name)
+            return _("{} of {}").format(self.decision_type, self.court_name)
         if self.foi_document:
             return self.foi_document.title
         return self.reference
@@ -228,7 +208,7 @@ class LegalDecision(TranslatableModel):
             "date",
             "abstract",
             "foi_court",
-            "type",
+            "decision_type",
         ]
         res = []
 

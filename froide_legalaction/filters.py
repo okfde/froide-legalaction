@@ -11,7 +11,7 @@ from django_filters import CharFilter, ChoiceFilter, FilterSet, ModelChoiceFilte
 
 from froide.publicbody.models import FoiLaw, PublicBody
 
-from .models import LegalDecision, LegalDecisionTag, LegalDecisionType
+from .models import LegalDecision, LegalDecisionTag
 from .widgets import ExcludePageParameterLinkWidget, FilterListWidget
 
 
@@ -45,13 +45,7 @@ def get_years_for_choices():
 
 
 def get_types_for_choices():
-    types = LegalDecisionType.objects.annotate(
-        decision_count=Count("legaldecision")
-    ).order_by("-decision_count")
-    result = []
-    for type in types:
-        result.append((type.id, type.title))
-    return result
+    return LegalDecision.LegalDecisionTypes.choices
 
 
 class LegalDecisionFilterSet(FilterSet):
@@ -102,7 +96,7 @@ class LegalDecisionFilterSet(FilterSet):
             "tags",
             "foi_laws__law_type",
             "foi_court",
-            "type",
+            "decision_type",
             "date",
         )
 

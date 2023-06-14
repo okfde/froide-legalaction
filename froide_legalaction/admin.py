@@ -19,8 +19,6 @@ from .models import (
     LegalDecisionTag,
     LegalDecisionTagTranslation,
     LegalDecisionTranslation,
-    LegalDecisionType,
-    LegalDecisionTypeTranslation,
     Proposal,
     ProposalDocument,
 )
@@ -63,17 +61,13 @@ class ProposalAdmin(admin.ModelAdmin):
     list_display = ("email", "timestamp", "publicbody", "foirequest", "legal_date")
 
 
-class LegalDecisionTypeAdmin(TranslatableAdmin):
-    model = LegalDecisionType
-
-
 class LegalDecisionTagAdmin(TranslatableAdmin):
     model = LegalDecisionTag
 
 
 class LegalDecisionAdmin(TranslatableAdmin):
     model = LegalDecision
-    list_filter = ("type", "tags")
+    list_filter = ("decision_type", "tags")
     list_display = ("reference", "court")
     search_fields = ["reference", "translations__court", "translations__abstract"]
     raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_laws")
@@ -96,8 +90,6 @@ class LegalDecisionAdmin(TranslatableAdmin):
             *LegalDecisionTranslation.objects.all(),
             *LegalDecisionTag.objects.all(),
             *LegalDecisionTagTranslation.objects.all(),
-            *LegalDecisionType.objects.all(),
-            *LegalDecisionTypeTranslation.objects.all(),
         ]
 
         export_json = serializers.serialize("json", all_objects)
@@ -130,5 +122,4 @@ class LegalDecisionAdmin(TranslatableAdmin):
 admin.site.register(Lawsuit, LawsuitAdmin)
 admin.site.register(Proposal, ProposalAdmin)
 admin.site.register(LegalDecisionTag, LegalDecisionTagAdmin)
-admin.site.register(LegalDecisionType, LegalDecisionTypeAdmin)
 admin.site.register(LegalDecision, LegalDecisionAdmin)
