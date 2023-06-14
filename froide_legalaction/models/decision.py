@@ -99,6 +99,9 @@ class LegalDecisionManager(TranslatableManager):
 
 
 class LegalDecision(TranslatableModel):
+    slug = models.SlugField(
+        max_length=255, blank=True, null=True, unique=True, verbose_name=_("Slug")
+    )
     translations = TranslatedFields(
         abstract=models.TextField(blank=True, verbose_name=_("Abstract")),
         fulltext=models.TextField(blank=True),
@@ -124,6 +127,13 @@ class LegalDecision(TranslatableModel):
     outcome = models.CharField(max_length=500, blank=True, verbose_name=_("Outcome"))
     reference = models.CharField(
         max_length=200, blank=True, verbose_name=_("Reference")
+    )
+    ecli = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        unique=True,
+        verbose_name=_("European Case Law Identifier"),
     )
     paragraphs = models.JSONField(
         default=list, blank=True, verbose_name=_("Paragraphs")
