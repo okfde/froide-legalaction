@@ -2,6 +2,7 @@
 {% load form_helper block_helper i18n %}
 {% load static %}
 {% load filingcabinet %}
+{% load markup %}
 
 {% block title %}{% translate 'Legal Decisions' %}: {{ object.title }}{% endblock %}
 
@@ -25,92 +26,70 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3 mb-3">
-        <div id="infobox" class="info-box mb-3 info-box--regular mt-0">
-          <div class="info-box__header d-flex flex-nowrap justify-content-between align-items-center">
-            <div>
-              <h3 class="h5 info-box__title">{% translate 'Information' %}</h3>
-            </div>
-          </div>
-          <div class="info-box__body">
-            {% if not form %}
-            <ul class="info-box__list list-unstyled">
-              {% if object.reference %}
-              <li class="info-box__list-item pb-3">
-                <div class="info-box__list-label fw-bold">{% translate 'reference' %}</div>
-                <div class="info-box__list-value">{{ object.reference }}
-                </div>
-              </li>
-              {% endif %}
-
-              {% if object.date %}
-              <li class="info-box__list-item pb-3">
-                <div class="info-box__list-label fw-bold">{% translate 'date' %}</div>
-                <div class="info-box__list-value">{{ object.date }}
-                </div>
-              </li>
-              {% endif %}
-
-              {% if object.court_name %}
-              <li class="info-box__list-item pb-3">
-                <div class="info-box__list-label fw-bold">{% translate 'court' %}</div>
-                <div class="info-box__list-value">{{ object.court_name }}
-                </div>
-              </li>
-              {% endif %}
-
-              {% if object.law_name %}
-              <li class="info-box__list-item">
-                <div class="info-box__list-label fw-bold">{% translate 'law' %}</div>
-                <div class="info-box__list-value">{{ object.law_name }}
-                </div>
-              </li>
-              {% endif %}
-            </ul>
+        <div class="mb-3 mt-0 sticky-top">
+          <h3 class="h5">{% translate 'Information' %}</h3>
+          {% if not form %}
+          <dl>
+            {% if object.reference %}
+              <dt>{% translate 'reference' %}</dt>
+              <dd class="user-select-all">{{ object.reference }}</dd>
             {% endif %}
 
-            {% if form %}
-            <form method="post">
-              {% csrf_token %}
-              {% for field in form %}
-                {% render_field field horizontal=False %}
-              {% endfor %}
-              <button class="btn btn-primary btn-sm float-end" type="submit">{% translate 'submit' %}</button>
-              {% if has_next %}
-              <button class="btn btn-primary btn-sm float-end me-2" type="submit" name="next">{% translate 'submit and next' %}</button>
-              {% endif %}
-            </form>
+            {% if object.ecli %}
+              <dt><abbr title="{% translate 'European Case Law Identifier' %}">ECLI</abbr></dt>
+              <dd><code class="user-select-all">{{ object.ecli }}</code></dd>
             {% endif %}
-          </div>
+
+
+            {% if object.date %}
+              <dt>{% translate 'date' %}</dt>
+              <dd>{{ object.date }}</dd>
+            {% endif %}
+
+            {% if object.foi_court %}
+              <dt>{% translate 'court' %}</dt>
+              <dd>
+                <a href="{{ object.foi_court.get_absolute_url }}">{{ object.foi_court }}</a>
+              </dd>
+            {% elif object.court_name %}
+              <dt>{% translate 'court' %}</dt>
+              <dd>
+                {{ object.court_name }}
+              </dd>
+            {% endif %}
+
+            {% if object.law_name %}
+              <dt>{% translate 'law' %}</dt>
+              <dd>{{ object.law_name }}</dd>
+            {% endif %}
+          </dl>
+          {% endif %}
+
+          {% if form %}
+          <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+              {% render_field field horizontal=False %}
+            {% endfor %}
+            <button class="btn btn-primary btn-sm float-end" type="submit">{% translate 'submit' %}</button>
+            {% if has_next %}
+            <button class="btn btn-primary btn-sm float-end me-2" type="submit" name="next">{% translate 'submit and next' %}</button>
+            {% endif %}
+          </form>
+          {% endif %}
         </div>
       </div>
       <div class="col-md-9 mb-3">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item bg-body shadow-gray p-3 mb-4">
-            <ul class="list-unstyled d-flex fw-semibold font-size-sm mb-1">
-              <li class="me-2">{{ object.law_name }}</li>
-            </ul>
-            <h3 class="h5 mt-0 mb-1">
-              {{ object.title }}
-            </h3>
-            <p><small>{{ object.reference }}</small></p>
-            <p class="text-body-secondary">{{ object.abstract }}</p>
-            <p class="text-end">
-              {% for tag in object.tags.all %}
-                <span class="badge rounded-pill text-bg-secondary"><a href="{% url 'legal-decision-list' %}?tags={{ tag.id }}">{{ tag.name }}</a></span>
-              {% endfor %}
-            </p>
-          </li>
+        {% include "froide_legalaction/includes/_legal_decision.html" %}
+        {% if object.foi_document %}
+          {% get_pdf_viewer object.foi_document %}
 
-          {% if object.foi_document %}
-            {% get_pdf_viewer object.foi_document %}
-
-            {% include "_frontend.html" with entry_point="filingcabinet.js" %}
-          {% elif object.fulltext %}
-            <li class="list-group-item bg-body shadow-gray p-3 mb-4">
-              <p>{{ object.fulltext|linebreaks }}</p>
-            </li>
-          {% endif %}
-        </ul>
+          {% include "_frontend.html" with entry_point="filingcabinet.js" %}
+        {% elif object.fulltext %}
+          <div class="bg-body shadow-gray p-3 mb-4">
+            {{ object.fulltext|markdown }}
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
