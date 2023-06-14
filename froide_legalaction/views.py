@@ -340,15 +340,15 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
             legaldecision__isnull=True
         )
         foi_court = form.cleaned_data.get("foi_court")
-        type = form.cleaned_data.get("type")
+        decision_type = form.cleaned_data.get("decision_type")
         ids = []
         if docs:
             for doc in docs:
                 data = {"foi_document": doc}
                 if foi_court:
                     data.update({"foi_court": foi_court, "court": foi_court.name})
-                if type:
-                    data.update({"type": type})
+                if decision_type:
+                    data.update({"decision_type": decision_type})
                 legal_decision = LegalDecision.objects.create(**data)
                 ids.append(str(legal_decision.id))
                 ids_string = ",".join(ids)
