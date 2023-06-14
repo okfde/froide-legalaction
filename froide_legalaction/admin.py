@@ -67,7 +67,7 @@ class LegalDecisionTagAdmin(TranslatableAdmin):
 
 class LegalDecisionAdmin(TranslatableAdmin):
     model = LegalDecision
-    list_filter = ("decision_type", "tags")
+    list_filter = ("decision_type", "foi_court__jurisdiction")
     list_display = ("reference", "court")
     search_fields = ["reference", "translations__court", "translations__abstract"]
     raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_laws")
