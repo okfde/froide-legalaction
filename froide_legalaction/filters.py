@@ -77,7 +77,7 @@ class LegalDecisionFilterSet(FilterSet):
         label=_("by Law Type"),
         lookup_expr="iexact",
     )
-    type = ChoiceFilter(
+    decision_type = ChoiceFilter(
         choices=get_types_for_choices,
         widget=ExcludePageParameterLinkWidget,
         label=_("by Type"),

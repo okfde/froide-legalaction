@@ -163,9 +163,13 @@ class LegalDecision(TranslatableModel):
         if self.decision_type and self.court_name:
             if self.date:
                 return _("{} of {} on {}").format(
-                    self.decision_type, self.court_name, str(self.formatted_date)
+                    self.get_decision_type_display(),
+                    self.court_name,
+                    self.formatted_date,
                 )
-            return _("{} of {}").format(self.decision_type, self.court_name)
+            return _("{} of {}").format(
+                self.get_decision_type_display(), self.court_name
+            )
         if self.foi_document:
             return self.foi_document.title
         return self.reference
@@ -178,7 +182,7 @@ class LegalDecision(TranslatableModel):
 
     @property
     def law_name(self):
-        if self.foi_laws:
+        if self.foi_laws.all():
             return ", ".join([foi_law.name for foi_law in self.foi_laws.all()])
         return self.law
 
