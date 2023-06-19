@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="legaldecisiontranslation",
             name="guiding_principle",
-            field=models.TextField(blank=True, verbose_name="Abstract"),
+            field=models.TextField(blank=True, verbose_name="Guiding principle"),
         ),
         migrations.AlterField(
             model_name="legaldecision",
