@@ -89,6 +89,7 @@ class LegalDecision(TranslatableModel):
     )
     translations = TranslatedFields(
         abstract=models.TextField(blank=True, verbose_name=_("Abstract")),
+        guiding_principle=models.TextField(blank=True, verbose_name=_("Abstract")),
         fulltext=models.TextField(blank=True, verbose_name=_("Full text")),
         court=models.CharField(
             max_length=500, blank=True, verbose_name=_("Name of Court")
