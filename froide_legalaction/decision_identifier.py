@@ -33,9 +33,31 @@ def make_german_ecli(date, ref, court, decision_type=None):
 
 
 def make_federal_ecli_reference(date, ref, court, decision_type=None):
+    supported_federal_courts = (
+        "Bundesgerichtshof",
+        "Bundesverwaltungsgericht",
+        "Bundesfinanzhof",
+        "Bundesarbeitsgericht",
+    )
+    # not supported: Bundessozialgericht
+
     formatted_ref = ref.replace("/", ".").replace(" ", "").upper()
-    if court.name not in ("Bundesgerichtshof", "Bundesverwaltungsgericht"):
+    if court.name not in supported_federal_courts:
         raise ValueError("Cannot generate ECLI for this federal court")
+
+    if court.name == "Bundesfinanzhof":
+        """
+        VE: Vorabentscheidungsersuchen an den EuGH
+        VV: Vorlage an das BVerfG
+        BA: Beschluss im Verfahren des einstweiligen Rechtsschutzes:
+            AdV[A1] -Antrag und AdV[A2] -Beschwerde
+        B: Beschluss, soweit nicht „BA“ zu vergeben ist
+        U: Urteil, rechtskräftiger Gerichtsbescheid, Zwischenurteil etc.
+        """
+        # TODO: implement
+        # For now we pretend that all decisions are U or B
+        pass
+
     collision = "0"
     # Abkürzung für den Entscheidungstyp („U“ für Urteil, „B“ für Beschluss, „V“ für Verfügung, „S“ für Sonstige),
     if not decision_type:
@@ -73,7 +95,9 @@ def make_state_ecli_reference(date, ref):
 
 
 def parse_reference(reference):
-    AKTENZEICHEN = re.compile(r"\d+ *[A-Za-z]+ *\d+ *[\/\. _] *\d+")
+    AKTENZEICHEN = re.compile(
+        r"(?:\d+|[IVX]+) *[A-Za-z]+ *\d+ *[\/\. _] *\d+(?:\.[A-Z])?"
+    )
     match = AKTENZEICHEN.search(reference)
     if match:
         return match.group(0).replace(".", "/")
