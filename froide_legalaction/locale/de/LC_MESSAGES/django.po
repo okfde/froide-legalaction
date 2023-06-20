@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-14 13:48+0200\n"
-"PO-Revision-Date: 2023-06-14 13:50+0200\n"
+"POT-Creation-Date: 2023-06-20 14:55+0200\n"
+"PO-Revision-Date: 2023-06-20 14:52+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -17,6 +17,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.3.1\n"
+
+#: admin.py
+msgid "Has ECLI"
+msgstr "Hat ECLI"
+
+#: admin.py
+msgid "Has reference"
+msgstr "Hat Aktenzeichen"
+
+#: admin.py
+msgid "Has date"
+msgstr "Hat Datum"
+
+#: admin.py
+msgid "Has decision type"
+msgstr "Hat Entscheidungsart"
+
+#: admin.py
+msgid "Has abstract"
+msgstr "Hat Orientierungssatz"
 
 #: apps.py
 msgid "Froide Legal Action App"
@@ -187,11 +207,23 @@ msgid "Court Ruling"
 msgstr "Urteil"
 
 #: models/decision.py
+msgid "Court Order"
+msgstr "Beschluss"
+
+#: models/decision.py
 msgid "Slug"
 msgstr "URL-Kürzel"
 
 #: models/decision.py
+msgid "Title"
+msgstr "Titel"
+
+#: models/decision.py
 msgid "Abstract"
+msgstr "Orientierungssatz"
+
+#: models/decision.py
+msgid "Guiding principle"
 msgstr "Leitsatz"
 
 #: models/decision.py
@@ -218,13 +250,17 @@ msgstr "Ergebnis"
 msgid "Reference"
 msgstr "Aktenzeichen"
 
-#: models/decision.py
+#: models/decision.py templates/froide_legalaction/legaldecision_detail.html
 msgid "European Case Law Identifier"
 msgstr "Europäischer Rechtsprechungs-Identifikator"
 
 #: models/decision.py
 msgid "Paragraphs"
 msgstr "Paragraphen"
+
+#: models/decision.py
+msgid "Source URL"
+msgstr "URL der Quelle"
 
 #: models/decision.py
 msgid "Lawsuit"
@@ -414,6 +450,10 @@ msgstr ""
 msgid "Submit"
 msgstr "Abschicken"
 
+#: templates/froide_legalaction/includes/_legal_decision.html
+msgid "Missing Information: "
+msgstr "Fehlende Information: "
+
 #: templates/froide_legalaction/includes/lawcase_questionaire.html
 msgid "Automatic lawsuit check"
 msgstr "Automatische Klageprüfung"
@@ -493,6 +533,11 @@ msgstr "Gericht"
 msgid "law"
 msgstr "Gesetz"
 
+#. Translators: link to source of legal decision
+#: templates/froide_legalaction/legaldecision_detail.html
+msgid "Source"
+msgstr "Quelle"
+
 #: templates/froide_legalaction/legaldecision_detail.html
 msgid "submit"
 msgstr "Abschicken"
@@ -520,10 +565,6 @@ msgstr "Ergebnisse filtern"
 #: templates/froide_legalaction/legaldecision_list.html
 msgid "Currently selected:"
 msgstr "Ausgewählt:"
-
-#: templates/froide_legalaction/legaldecision_list.html
-msgid "Missing Information: "
-msgstr "Fehlende Information: "
 
 #: templates/froide_legalaction/thanks.html
 msgid "Thanks for submitting"
