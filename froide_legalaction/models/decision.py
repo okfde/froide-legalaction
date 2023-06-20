@@ -122,7 +122,7 @@ class LegalDecision(TranslatableModel):
     paragraphs = models.JSONField(
         default=list, blank=True, verbose_name=_("Paragraphs")
     )
-
+    source_url = models.URLField(blank=True, verbose_name=_("Source URL"))
     source_data = models.JSONField(blank=True, null=True)
 
     foi_lawsuit = models.ForeignKey(
