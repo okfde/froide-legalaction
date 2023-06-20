@@ -42,8 +42,7 @@ class LegalDecisionManager(TranslatableManager):
             | Q(date__isnull=True)
             | Q(decision_type="")
             | Q(translations__abstract="")
-            | Q(foi_laws__isnull=True)
-            | Q(foi_court__isnull=True, translations__court="")
+            | Q(foi_court__isnull=True)
         )
 
     def get_search_vector(self, language):
