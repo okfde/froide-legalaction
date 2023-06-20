@@ -4,7 +4,7 @@
 {% load filingcabinet %}
 {% load markup %}
 
-{% block title %}{% translate 'Legal Decisions' %}: {{ object.title }}{% endblock %}
+{% block title %}{{ object.generated_title }}{% endblock %}
 
 {% block body %}
 <div class="bg-body-tertiary">
@@ -26,7 +26,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-3 mb-3">
-        <div class="mb-3 mt-0 sticky-top">
+        <div class="mb-3 mt-0 {% if not form %} sticky-top{% endif %}">
           <h3 class="h5">{% translate 'Information' %}</h3>
           {% if not form %}
           <dl>
@@ -63,6 +63,13 @@
               <dd>{{ object.law_name }}</dd>
             {% endif %}
           </dl>
+          {% endif %}
+
+          {% if object.source_url %}
+            <a href="{{ object.source_url }}" rel="noopener">
+              {# Translators: link to source of legal decision #}
+              {% translate 'Source' %}
+            </a>
           {% endif %}
 
           {% if form %}

@@ -165,8 +165,6 @@ class LegalDecision(TranslatableModel):
 
     @property
     def generated_title(self):
-        if self.title:
-            return self.title
         if self.decision_type and self.court_name:
             if self.date:
                 return _("{} of {} on {}").format(

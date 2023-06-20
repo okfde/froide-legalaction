@@ -11,10 +11,14 @@
   {% endif %}
   <h3 class="h5 mt-0 mb-1">
     <a href="{% if show_incomplete_fields %}{% url 'legal-decision-incomplete-update' decision.id %}?ids={{ request.GET.ids }}{% else %}{% url 'legal-decision-detail' object.id %}{% endif %}">
-      {{ object.title }}
+      {% if object.title %}
+        {{ object.title }}
+      {% else %}
+        {{ object.generated_title }}
+      {% endif %}
     </a>
   </h3>
-  {% if object.reference != object.title %}
+  {% if object.reference != object.generated_title %}
     <p><small>{{ object.reference }}</small></p>
   {% endif %}
   <p class="text-body-secondary">{{ object.abstract }}</p>
