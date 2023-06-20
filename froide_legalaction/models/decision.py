@@ -88,6 +88,7 @@ class LegalDecision(TranslatableModel):
         max_length=255, blank=True, null=True, unique=True, verbose_name=_("Slug")
     )
     translations = TranslatedFields(
+        title=models.CharField(max_length=500, blank=True, verbose_name=_("Title")),
         abstract=models.TextField(blank=True, verbose_name=_("Abstract")),
         guiding_principle=models.TextField(
             blank=True, verbose_name=_("Guiding principle")
@@ -163,7 +164,9 @@ class LegalDecision(TranslatableModel):
         return defaultfilters.date(self.date, "DATE_FORMAT")
 
     @property
-    def title(self):
+    def generated_title(self):
+        if self.title:
+            return self.title
         if self.decision_type and self.court_name:
             if self.date:
                 return _("{} of {} on {}").format(
