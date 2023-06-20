@@ -79,6 +79,7 @@ class LegalDecisionAdmin(TranslatableAdmin):
         "foi_court__jurisdiction",
         ("foi_court", ForeignKeyFilter),
         make_nullfilter("ecli", _("Has ECLI")),
+        make_emptyfilter("reference", _("Has reference")),
         make_nullfilter("date", _("Has date")),
         make_emptyfilter("decision_type", _("Has decision type")),
         make_emptyfilter("translations__abstract", _("Has abstract")),
