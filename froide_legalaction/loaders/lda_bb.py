@@ -71,7 +71,7 @@ class LdaBbLoader(BaseLoader):
             self.add_document(already_maybe, pdf_filepath)
         if not created:
             already_maybe.source_data = already_maybe.source_data.update(meta)
-            already_maybe.source_data.save()
+            already_maybe.save()
             return already_maybe
 
         if pdf_filepath:
