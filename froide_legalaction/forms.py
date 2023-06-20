@@ -349,6 +349,7 @@ class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
         model = LegalDecision
         fields = [
             "reference",
+            "title",
             "decision_type",
             "date",
             "court",
