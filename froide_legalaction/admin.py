@@ -86,7 +86,7 @@ class LegalDecisionAdmin(TranslatableAdmin):
     list_display = ("reference", "court")
     search_fields = ["reference", "translations__court", "translations__abstract"]
     raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_laws")
-    actions = ["export_legal_decisions"]
+    actions = ["export_legal_decisions", "update_search_index"]
 
     def get_urls(self):
         urls = super().get_urls()
@@ -98,6 +98,9 @@ class LegalDecisionAdmin(TranslatableAdmin):
             ),
         ]
         return upload_urls + urls
+
+    def update_search_index(self, request, queryset):
+        LegalDecision.objects.update_search_index(qs=queryset)
 
     def export_legal_decisions(self, request, queryset):
         all_objects = [
