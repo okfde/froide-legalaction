@@ -40,7 +40,7 @@ class LegalDecisionManager(TranslatableManager):
         return self.filter(
             Q(reference="")
             | Q(date__isnull=True)
-            | Q(type__isnull=True)
+            | Q(decision_type="")
             | Q(translations__abstract="")
             | Q(foi_laws__isnull=True)
             | Q(foi_court__isnull=True, translations__court="")
