@@ -1,8 +1,7 @@
 from django import forms
 from django.core import validators
-from django.core.exceptions import ValidationError
 from django.db import transaction
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -18,6 +17,9 @@ from froide.helper.widgets import (
     AutocompleteMultiWidget,
     AutocompleteWidget,
     BootstrapCheckboxInput,
+    BootstrapSelect,
+    BootstrapTextarea,
+    BootstrapTextInput,
 )
 from froide.publicbody.models import Classification, FoiLaw, PublicBody
 from froide.publicbody.widgets import PublicBodySelect
@@ -279,24 +281,14 @@ class KlageautomatRenderedDocumentForm(RenderedDocumentForm):
         self.fields["rendered_document"].label = "Ihr Klageentwurf"
 
 
-class FoiCourtFieldMixin:
-    def get_court_queryset(self):
-        court = Classification.objects.filter(name="Gericht").first()
-        descendants = court.get_descendants().values_list("id", flat=True)
-        court_ids = [court.id] + list(descendants)
-        return PublicBody.objects.filter(classification__id__in=court_ids)
-
-    def set_foi_court_widget_url(self):
-        court = Classification.objects.filter(name="Gericht").first()
-        url = self.fields["foi_court"].widget.autocomplete_url
-        self.fields[
-            "foi_court"
-        ].widget.autocomplete_url = "{}?classification={}".format(url, court.id)
-
-
-class LegalDecisionCreateForm(forms.Form, FoiCourtFieldMixin):
-    document_collection = forms.ModelChoiceField(
-        queryset=DocumentCollection.objects.none()
+class LegalDecisionForm(TranslatableModelForm):
+    date = forms.DateField(
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": _("mm/dd/YYYY")}
+        ),
+        label=_("Send Date"),
+        help_text=_("Please give the date the reply was sent."),
+        localize=True,
     )
     foi_court = forms.ModelChoiceField(
         queryset=PublicBody.objects.none(),
@@ -308,22 +300,6 @@ class LegalDecisionCreateForm(forms.Form, FoiCourtFieldMixin):
         ),
         required=False,
     )
-    decision_type = forms.ChoiceField(choices=LegalDecision.LegalDecisionTypes.choices)
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super().__init__(*args, **kwargs)
-        qs = DocumentCollection.objects.get_authenticated_queryset(
-            self.request
-        ).order_by("-created_at")
-        self.fields["document_collection"].queryset = qs
-        for visible in self.visible_fields():
-            visible.field.widget.attrs["class"] = "form-control"
-        self.set_foi_court_widget_url()
-        self.fields["foi_court"].queryset = self.get_court_queryset()
-
-
-class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
     foi_laws = forms.ModelMultipleChoiceField(
         queryset=FoiLaw.objects.all(),
         label=_("Laws"),
@@ -334,15 +310,8 @@ class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
         ),
         required=False,
     )
-    foi_court = forms.ModelChoiceField(
-        queryset=PublicBody.objects.none(),
-        label=_("Court"),
-        widget=AutocompleteWidget(
-            autocomplete_url=reverse_lazy("api:publicbody-autocomplete"),
-            model=PublicBody,
-            allow_new=False,
-        ),
-        required=False,
+    decision_type = forms.ChoiceField(
+        choices=LegalDecision.LegalDecisionTypes.choices, widget=BootstrapSelect
     )
 
     class Meta:
@@ -357,30 +326,49 @@ class LegalDecisionUpdateForm(TranslatableModelForm, FoiCourtFieldMixin):
             "foi_laws",
             "abstract",
         ]
+        widgets = {
+            "reference": BootstrapTextInput,
+            "title": BootstrapTextInput,
+            "date": BootstrapTextInput,
+            "court": BootstrapTextInput,
+            "abstract": BootstrapTextarea,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs["class"] = "form-control"
-        url = self.fields["foi_laws"].widget.autocomplete_url
-        self.fields["foi_laws"].widget.autocomplete_url = "{}?meta=False".format(url)
-
         self.set_foi_court_widget_url()
+        self.fields[
+            "foi_laws"
+        ].widget.autocomplete_url += "?meta=0"  # exclude meta laws
         self.fields["foi_court"].queryset = self.get_court_queryset()
 
-    def clean_reference(self):
-        reference = self.cleaned_data.get("reference")
-        legal_decision = (
-            LegalDecision.objects.filter(reference=reference)
-            .exclude(id=self.instance.id)
-            .first()
-        )
-        if legal_decision:
-            url = reverse(
-                "legal-decision-incomplete-update", kwargs={"pk": legal_decision.id}
-            )
-            message = _(
-                "This reference already exists <a href='{}' target='_blank'>here.</a>"
-            ).format(url)
-            raise ValidationError(format_html(message))
-        return reference
+    def get_court_queryset(self):
+        court = Classification.objects.filter(name="Gericht").first()
+        descendants = court.get_descendants().values_list("id", flat=True)
+        court_ids = [court.id] + list(descendants)
+        return PublicBody.objects.filter(classification__id__in=court_ids)
+
+    def set_foi_court_widget_url(self):
+        court = Classification.objects.filter(name="Gericht").first()
+        url = self.fields["foi_court"].widget.autocomplete_url
+        self.fields[
+            "foi_court"
+        ].widget.autocomplete_url = "{}?classification={}".format(url, court.id)
+
+
+class LegalDecisionCreateForm(LegalDecisionForm):
+    document_collection = forms.ModelChoiceField(
+        queryset=DocumentCollection.objects.none()
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super().__init__(*args, **kwargs)
+        qs = DocumentCollection.objects.get_authenticated_queryset(
+            self.request
+        ).order_by("-created_at")
+        self.fields["document_collection"].queryset = qs
+
+
+class LegalDecisionUpdateForm(LegalDecisionForm):
+    pass
