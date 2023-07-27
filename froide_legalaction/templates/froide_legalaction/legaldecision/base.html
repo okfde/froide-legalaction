@@ -1,0 +1,13 @@
+{% extends CMS_TEMPLATE %}
+
+{% load cms_tags %}
+
+{% block top_block %}{% endblock %}
+
+{% block body %}
+  {% static_placeholder 'legaldecisions_header' %}
+
+  {% block main %}{% endblock %}
+
+  {% static_placeholder 'legaldecisions_footer' %}
+{% endblock %}

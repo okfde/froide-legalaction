@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{% extends "froide_legalaction/legaldecision/base.html" %}
 {% load form_helper block_helper i18n %}
 
 {% block title %}{% translate 'Legal Decisions' %}{% endblock %}
 
-{% block body %}
+{% block main %}
 <div class="bg-body-tertiary pt-5 pb-2">
   <div class="container">
     <div class="pb-4">
       {% if perms.froide_legalaction.change_legaldecision %}
-        <a class="btn btn-primary float-end ms-2" href="{% url 'legal-decision-list-incomplete' %}">{% translate 'update incomplete decisions' %}</a>
+        <a class="btn btn-primary float-end ms-2" href="{% url 'legaldecision:list-incomplete' %}">{% translate 'update incomplete decisions' %}</a>
       {% endif %}
 
       {% if perms.froide_legalaction.add_legaldecision %}
-        <a class="btn btn-primary float-end" href="{% url 'legal-decision-create' %}">{% translate 'Add decisions' %}</a>
+        <a class="btn btn-primary float-end" href="{% url 'legaldecision:create' %}">{% translate 'Add decisions' %}</a>
       {% endif %}
 
       <h1>{% translate 'Legal Decisions' %}</h1>

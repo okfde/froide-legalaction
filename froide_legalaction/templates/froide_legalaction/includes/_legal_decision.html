@@ -10,7 +10,7 @@
     <span class="fw-semibold font-size-sm mb-1 me-2">{{ object.law_name }}</span>
   {% endif %}
   <h3 class="h5 mt-0 mb-1">
-    <a href="{% if show_incomplete_fields %}{% url 'legal-decision-incomplete-update' decision.id %}?ids={{ request.GET.ids }}{% else %}{% url 'legal-decision-detail' object.id %}{% endif %}">
+    <a href="{% if show_incomplete_fields %}{% url 'legaldecision:incomplete-update' decision.id %}?ids={{ request.GET.ids }}{% else %}{% url 'legaldecision:detail' object.id %}{% endif %}">
       {% if object.title %}
         {{ object.title }}
       {% else %}
@@ -24,7 +24,7 @@
   <p class="text-body-secondary">{{ object.abstract }}</p>
   <p class="text-end">
     {% for tag in object.tags.all %}
-      <a class="text-decoration-none" href="{% url 'legal-decision-list' %}?tags={{ tag.id }}">
+      <a class="text-decoration-none" href="{% url 'legaldecision:list' %}?tags={{ tag.id }}">
         <span class="badge rounded-pill text-bg-secondary">
           {{ tag.name }}
         </span>

@@ -156,7 +156,7 @@ class LegalDecision(TranslatableModel):
         return "{}".format(self.reference)
 
     def get_absolute_url(self):
-        return reverse("legal-decision-detail", kwargs={"pk": self.pk})
+        return reverse("legaldecision:detail", kwargs={"pk": self.pk})
 
     @property
     def formatted_date(self):

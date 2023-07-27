@@ -282,6 +282,7 @@ class KlageautomatAnswerHTMLDownloadView(KlageautomatMixin, HTMLDownloadView):
 class LegalDecisionListView(ListView):
     model = LegalDecision
     paginate_by = 10
+    template_name = "froide_legalaction/legaldecision/list.html"
 
     def get_filter_queryset(self):
         return LegalDecision.objects.all()
@@ -325,7 +326,7 @@ class LegalDecisionIncompleteListView(PermissionRequiredMixin, LegalDecisionList
 class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
     permission_required = "froide_legalaction.add_legaldecision"
     form_class = LegalDecisionCreateForm
-    template_name = "froide_legalaction/legaldecision_create.html"
+    template_name = "froide_legalaction/legaldecision/create.html"
 
     def get_success_url(self):
         return reverse("legal-decision-list-incomplete")
@@ -358,11 +359,11 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
             )
             if ids:
                 url = reverse(
-                    "legal-decision-incomplete-update", kwargs={"pk": int(ids[0])}
+                    "legaldecision:incomplete-update", kwargs={"pk": int(ids[0])}
                 )
                 return HttpResponseRedirect("{}?ids={}".format(url, ids_string))
             return HttpResponseRedirect(url)
-        url = reverse("legal-decision-list-incomplete")
+        url = reverse("legaldecision:list-incomplete")
         messages.add_message(
             self.request,
             messages.INFO,
@@ -373,13 +374,14 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
 
 class LegalDecisionDetailView(DetailView):
     model = LegalDecision
+    template_name = "froide_legalaction/legaldecision/detail.html"
 
 
 class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
     permission_required = "froide_legalaction.change_legaldecision"
     form_class = LegalDecisionUpdateForm
     model = LegalDecision
-    template_name = "froide_legalaction/legaldecision_detail.html"
+    template_name = "froide_legalaction/legaldecision/detail.html"
 
     def get_next_id(self):
         ids = self.request.GET.get("ids")
@@ -400,7 +402,7 @@ class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
             return next.id
 
     def get_success_url(self):
-        return reverse("legal-decision-list-incomplete")
+        return reverse("legaldecision:list-incomplete")
 
     def form_valid(self, form):
         self.object = form.save()
@@ -408,7 +410,7 @@ class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
         if next_id and "next" in self.request.POST:
             ids = self.request.GET.get("ids")
             url = reverse(
-                "legal-decision-incomplete-update", kwargs={"pk": int(next_id)}
+                "legaldecision:incomplete-update", kwargs={"pk": int(next_id)}
             )
             return HttpResponseRedirect("{}?ids={}".format(url, ids))
         return HttpResponseRedirect(self.get_success_url())

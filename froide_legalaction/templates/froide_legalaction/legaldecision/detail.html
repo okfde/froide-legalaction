@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "froide_legalaction/legaldecision/base.html" %}
+
 {% load form_helper block_helper i18n %}
 {% load static %}
 {% load filingcabinet %}
@@ -6,14 +7,14 @@
 
 {% block title %}{{ object.generated_title }}{% endblock %}
 
-{% block body %}
+{% block main %}
 <div class="bg-body-tertiary">
   <div class="container">
     <div class="row justify-content-left">
       <div class="col-md-8">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="{% url 'legal-decision-list' %}">{% translate 'Legal Decisions' %}</a></li>
+            <li class="breadcrumb-item active"><a href="{% url 'legaldecision:list' %}">{% translate 'Legal Decisions' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ object.title|truncatechars:50 }}</li>
           </ol>
         </nav>
