@@ -26,7 +26,6 @@
   }
 
   tr.active {
-    background-color: $gray-100;
 
     td, th {
       border-bottom: none;
@@ -47,8 +46,6 @@
   }
 
   .lawsuit-table-details {
-    background-color: $gray-100;
-
     dl {
       width: 100%;
       
@@ -60,14 +57,14 @@
     
     dt {
       font-weight: normal;
-      color: $body-color;
+      color: var(--#{$prefix}body-color);
       padding-right: 0.75rem;
       hyphens: none;
       white-space: nowrap;
     }
 
     td {
-      color: $secondary;
+      color: var(--#{$prefix}secondary-color);
     }
   }
 } 
