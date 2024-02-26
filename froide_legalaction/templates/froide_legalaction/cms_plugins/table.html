@@ -7,7 +7,7 @@
       <input type="search" placeholder="Suche..." class="form-control" id="lawsuits-search">
     </div>
     <div class="col-md-4">
-      <select class="form-control" id="lawsuits-status">
+      <select class="form-select" id="lawsuits-status">
         <option value="all">Status...</option>
         <option value="active">läuft</option>
         {% for result in result_options %}
@@ -17,7 +17,7 @@
     </div>
 
     <div class="col-md-4">
-      <select class="form-control" id="lawsuits-court">
+      <select class="form-select" id="lawsuits-court">
         <option value="all">Gericht...</option>
         {% for court in court_options %}
           <option value="{{ court.0 }}">{{ court.1 }}</option>
