@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-20 14:55+0200\n"
-"PO-Revision-Date: 2023-06-20 14:52+0200\n"
+"POT-Creation-Date: 2024-05-29 12:06+0200\n"
+"PO-Revision-Date: 2024-05-29 12:09+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -16,7 +16,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.4.4\n"
+
+#: admin.py
+msgid "Has Costs"
+msgstr "Hat Kosten"
 
 #: admin.py
 msgid "Has ECLI"
@@ -174,17 +178,24 @@ msgstr ""
 "eingereicht."
 
 #: forms.py
+msgid "mm/dd/YYYY"
+msgstr "dd.mm.YYYY"
+
+#: forms.py
+msgid "Send Date"
+msgstr "Versanddatum"
+
+#: forms.py
+msgid "Please give the date the reply was sent."
+msgstr "Bitte geben Sie das Antwortdatum an."
+
+#: forms.py
 msgid "Court"
 msgstr "Gericht"
 
 #: forms.py models/decision.py
 msgid "Laws"
 msgstr "Gesetze"
-
-#: forms.py
-msgid "This reference already exists <a href='{}' target='_blank'>here.</a>"
-msgstr ""
-"Dieses Aktenzeichen gibt es schon <a href='{}' target='_blank'>hier.</a>"
 
 #: models/decision.py
 msgid "name"
@@ -250,7 +261,7 @@ msgstr "Ergebnis"
 msgid "Reference"
 msgstr "Aktenzeichen"
 
-#: models/decision.py templates/froide_legalaction/legaldecision_detail.html
+#: models/decision.py templates/froide_legalaction/legaldecision/detail.html
 msgid "European Case Law Identifier"
 msgstr "Europäischer Rechtsprechungs-Identifikator"
 
@@ -446,7 +457,7 @@ msgstr ""
 "      "
 
 #: templates/froide_legalaction/form.html
-#: templates/froide_legalaction/legaldecision_create.html
+#: templates/froide_legalaction/legaldecision/create.html
 msgid "Submit"
 msgstr "Abschicken"
 
@@ -499,70 +510,70 @@ msgstr "Zurück"
 msgid "Next"
 msgstr "Weiter"
 
-#: templates/froide_legalaction/legaldecision_create.html
+#: templates/froide_legalaction/legaldecision/create.html
 msgid "Create legal decision"
 msgstr "Neue Gerichtsentscheidung anlegen"
 
-#: templates/froide_legalaction/legaldecision_create.html
-#: templates/froide_legalaction/legaldecision_detail.html
-#: templates/froide_legalaction/legaldecision_list.html
+#: templates/froide_legalaction/legaldecision/create.html
+#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/list.html
 msgid "Legal Decisions"
 msgstr "Gerichtsentscheidungen"
 
-#: templates/froide_legalaction/legaldecision_create.html
+#: templates/froide_legalaction/legaldecision/create.html
 msgid "Add Legal Decisions"
 msgstr "Gerichtsentscheidungen hinzufügen"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "Information"
 msgstr "Information"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "reference"
 msgstr "Aktenzeichen"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "date"
 msgstr "Datum"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "court"
 msgstr "Gericht"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "law"
 msgstr "Gesetz"
 
 #. Translators: link to source of legal decision
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "Source"
 msgstr "Quelle"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "submit"
 msgstr "Abschicken"
 
-#: templates/froide_legalaction/legaldecision_detail.html
+#: templates/froide_legalaction/legaldecision/detail.html
 msgid "submit and next"
 msgstr "Abschicken und weiter"
 
-#: templates/froide_legalaction/legaldecision_list.html
+#: templates/froide_legalaction/legaldecision/list.html
 msgid "update incomplete decisions"
 msgstr "Unvollständige Gerichtsentscheidungen bearbeiten"
 
-#: templates/froide_legalaction/legaldecision_list.html
+#: templates/froide_legalaction/legaldecision/list.html
 msgid "Add decisions"
 msgstr "Entscheidungen hinzufügen"
 
-#: templates/froide_legalaction/legaldecision_list.html
+#: templates/froide_legalaction/legaldecision/list.html
 msgid "Decisions and judgements in the field of freedom of information"
 msgstr "Entscheidungen und Urteile im Bereich der Informationsfreiheit"
 
-#: templates/froide_legalaction/legaldecision_list.html
+#: templates/froide_legalaction/legaldecision/list.html
 msgid "Refine your query"
 msgstr "Ergebnisse filtern"
 
-#: templates/froide_legalaction/legaldecision_list.html
+#: templates/froide_legalaction/legaldecision/list.html
 msgid "Currently selected:"
 msgstr "Ausgewählt:"
 
@@ -570,80 +581,84 @@ msgstr "Ausgewählt:"
 msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
 
-#: urls.py
-msgctxt "url part"
-msgid "propose/"
-msgstr "vorschlagen/"
-
-#: urls.py
-msgctxt "url part"
-msgid "thanks/"
-msgstr "danke/"
-
-#: urls.py
-msgctxt "url part"
-msgid "request/<int:pk>/"
-msgstr "anfrage/<int:pk>/"
-
-#: urls.py
+#: urls/klageautomat.py
 msgctxt "url part"
 msgid "klageautomat/info/request/<int:pk>/"
 msgstr "klageautomat/info/anfrage/<int:pk>/"
 
-#: urls.py
+#: urls/klageautomat.py
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/"
 msgstr "klageautomat/anfrage/<int:pk>/"
 
-#: urls.py
+#: urls/klageautomat.py
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/"
 
-#: urls.py
+#: urls/klageautomat.py
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/pdf-download/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/pdf-download/"
 
-#: urls.py
+#: urls/klageautomat.py
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/word-download/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/word-download/"
 
-#: urls.py
+#: urls/klageautomat.py
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/html-download/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/pdf-download/"
 
-#: urls.py
+#: urls/lawsuit.py
 msgctxt "url part"
-msgid "legal-decisions/"
-msgstr "gerichtsentscheidungen/"
+msgid "propose/"
+msgstr "vorschlagen/"
 
-#: urls.py
+#: urls/lawsuit.py
 msgctxt "url part"
-msgid "legal-decisions-incomplete/"
-msgstr "unfertige-gerichtsentscheidungen/"
+msgid "thanks/"
+msgstr "danke/"
 
-#: urls.py
+#: urls/lawsuit.py
 msgctxt "url part"
-msgid "legal-decisions-incomplete/<int:pk>/"
-msgstr "unfertige-gerichtsentscheidungen/<int:pk>/"
+msgid "calendar/ical/"
+msgstr "kalender/ical/"
 
-#: urls.py
+#: urls/lawsuit.py
 msgctxt "url part"
-msgid "legal-decisions/create/"
-msgstr "gerichtsentscheidungen/anlegen/"
+msgid "request/<int:pk>/"
+msgstr "anfrage/<int:pk>/"
 
-#: urls.py
+#: urls/legaldecision.py
 msgctxt "url part"
-msgid "legal-decisions/<int:pk>/"
-msgstr "gerichtsentscheidungen/<int:pk>/"
+msgid "incomplete/"
+msgstr "unvollstaendig/"
 
-#: urls.py
+#: urls/legaldecision.py
 msgctxt "url part"
-msgid "legal-decisions/<slug:slug>/"
-msgstr "gerichtsentscheidungen/<slug:slug>/"
+msgid "incomplete/<int:pk>/"
+msgstr "unvollstaendig/<int:pk>/"
+
+#: urls/legaldecision.py
+msgctxt "url part"
+msgid "create/"
+msgstr "erstellen/"
+
+#: urls/legaldecision.py
+msgctxt "url part"
+msgid "<int:pk>/"
+msgstr "<int:pk>/"
+
+#: urls/legaldecision.py
+msgctxt "url part"
+msgid "<slug:slug>/"
+msgstr "<slug:slug>/"
+
+#: utils.py
+msgid "Lawsuit court hearing"
+msgstr "Gerichtstermin"
 
 #: views.py
 msgid "We have received your submission and we will review it. Thank you!"
@@ -668,3 +683,24 @@ msgstr "Alle"
 #: widgets.py
 msgid "search"
 msgstr "Suchbegriff"
+
+#~ msgid ""
+#~ "This reference already exists <a href='{}' target='_blank'>here.</a>"
+#~ msgstr ""
+#~ "Dieses Aktenzeichen gibt es schon <a href='{}' target='_blank'>hier.</a>"
+
+#~ msgctxt "url part"
+#~ msgid "legal-decisions/"
+#~ msgstr "gerichtsentscheidungen/"
+
+#~ msgctxt "url part"
+#~ msgid "legal-decisions-incomplete/"
+#~ msgstr "unfertige-gerichtsentscheidungen/"
+
+#~ msgctxt "url part"
+#~ msgid "legal-decisions/create/"
+#~ msgstr "gerichtsentscheidungen/anlegen/"
+
+#~ msgctxt "url part"
+#~ msgid "legal-decisions/<int:pk>/"
+#~ msgstr "gerichtsentscheidungen/<int:pk>/"
