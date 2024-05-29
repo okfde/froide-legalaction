@@ -49,7 +49,10 @@ class LawsuitAdmin(admin.ModelAdmin):
         "active",
         "public",
         "result",
+        ("publicbody", ForeignKeyFilter),
+        make_nullfilter("costs", _("Has Costs")),
     )
+    search_fields = ["title", "reference"]
     inlines = [InstanceInline]
 
     def save_model(self, request, obj, form, change):
