@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, FormView
 from django.views.generic.edit import UpdateView
@@ -30,7 +33,8 @@ from .forms import (
     LegalDecisionUpdateForm,
 )
 from .mixins import KlageautomatMixin
-from .models import LegalDecision
+from .models import Instance, LegalDecision
+from .utils import make_lawsuit_event_calendar
 
 
 def _get_embed_info(request):
@@ -420,3 +424,16 @@ class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
         if self.get_next_id():
             context.update({"has_next": True})
         return context
+
+
+def lawsuit_event_calendar(request):
+    three_months_ago = timezone.now() - timedelta(days=31 * 3)
+    instances = Instance.objects.filter(
+        end_date__gte=three_months_ago, lawsuit__public=True
+    ).order_by("end_date")
+
+    cal = make_lawsuit_event_calendar(instances)
+
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar; charset=utf-8")
+    response["Content-Disposition"] = "attachment; filename=lawsuit-events.ics"
+    return response
