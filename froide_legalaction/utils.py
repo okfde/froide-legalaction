@@ -49,7 +49,6 @@ def add_ical_events(instance: Instance):
     start = datetime.combine(instance.end_date, datetime.min.time())
     event.add("dtstart", tz(start).date())
     event.add("dtend", tz(start + timedelta(days=1)).date())
-    event.add("summary", title)
     if instance.court:
         event.add("location", instance.court.address)
     event.add("summary", title)
