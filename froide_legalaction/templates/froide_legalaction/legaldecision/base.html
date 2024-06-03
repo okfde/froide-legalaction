@@ -1,13 +1,10 @@
 {% extends CMS_TEMPLATE %}
-
-{% load cms_tags %}
-
-{% block top_block %}{% endblock %}
-
+{% load djangocms_alias_tags %}
+{% block top_block %}
+{% endblock top_block %}
 {% block body %}
-  {% static_placeholder 'legaldecisions_header' %}
-
-  {% block main %}{% endblock %}
-
-  {% static_placeholder 'legaldecisions_footer' %}
-{% endblock %}
+  {% static_alias 'legaldecisions_header' %}
+  {% block main %}
+  {% endblock main %}
+  {% static_alias 'legaldecisions_footer' %}
+{% endblock body %}
