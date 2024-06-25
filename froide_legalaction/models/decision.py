@@ -45,14 +45,15 @@ class LegalDecisionManager(TranslatableManager):
             | Q(foi_court__isnull=True)
         )
 
-    def get_search_vector(self, language):
-        SEARCH_LANG = "simple"
-
+    def get_search_lang(self, language):
         if language == "de":
-            SEARCH_LANG = "german"
+            return "german"
         elif language == "en":
-            SEARCH_LANG = "english"
+            return "english"
+        return "simple"
 
+    def get_search_vector(self, language):
+        SEARCH_LANG = self.get_search_lang(language)
         fields = [
             ("search_text", "A"),
         ]
