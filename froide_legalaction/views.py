@@ -294,7 +294,7 @@ class LegalDecisionListView(ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         f = LegalDecisionFilterSet(
-            self.request.GET, queryset=self.get_filter_queryset()
+            self.request.GET, queryset=self.get_filter_queryset(), request=self.request
         )
 
         paginator = Paginator(f.qs, self.paginate_by)

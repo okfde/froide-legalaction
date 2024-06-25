@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib.postgres.search import SearchQuery, SearchRank
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F
@@ -100,8 +101,17 @@ class LegalDecisionFilterSet(FilterSet):
             "date",
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = kwargs.get("request")
+        if request:
+            self.language = request.LANGUAGE_CODE
+        else:
+            self.language = settings.LANGUAGE_CODE
+
     def get_quick_search(self, queryset, name, value):
-        query = SearchQuery(value)
+        query_language = LegalDecision.objects.get_search_lang(self.language)
+        query = SearchQuery(value, config=query_language)
         return (
             queryset.filter(translations__search_vector=query)
             .annotate(rank=SearchRank(F("translations__search_vector"), query))
