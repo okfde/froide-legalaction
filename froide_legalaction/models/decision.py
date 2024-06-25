@@ -237,12 +237,25 @@ class LegalDecision(TranslatableModel):
         return ", ".join(res)
 
     def generate_search_texts(self):
+        tags = self.tags.all()
         for translation in self.translations.all():
             fulltext = ""
             if translation.fulltext:
                 fulltext = translation.fulltext
-            text = "{} {} {} {}".format(
-                self.reference, translation.law, translation.abstract, fulltext
+            tag_string = " ".join(
+                [
+                    tag.translations.filter(
+                        language_code=translation.language_code
+                    ).values_list("name", flat=True)[0]
+                    for tag in tags
+                ]
+            )
+            text = "{} {} {} {} {}".format(
+                self.reference,
+                translation.law,
+                translation.abstract,
+                fulltext,
+                tag_string,
             )
             translation.search_text = text
             translation.save()
