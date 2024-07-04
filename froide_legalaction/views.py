@@ -335,45 +335,9 @@ class LegalDecisionCreateView(PermissionRequiredMixin, FormView):
     def get_success_url(self):
         return reverse("legal-decision-list-incomplete")
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({"request": self.request})
-        return kwargs
-
     def form_valid(self, form):
-        docs = form.cleaned_data.get("document_collection").documents.filter(
-            legaldecision__isnull=True
-        )
-        foi_court = form.cleaned_data.get("foi_court")
-        decision_type = form.cleaned_data.get("decision_type")
-        ids = []
-        if docs:
-            for doc in docs:
-                data = {"foi_document": doc}
-                if foi_court:
-                    data.update({"foi_court": foi_court, "court": foi_court.name})
-                if decision_type:
-                    data.update({"decision_type": decision_type})
-                legal_decision = LegalDecision.objects.create(**data)
-                ids.append(str(legal_decision.id))
-                ids_string = ",".join(ids)
-                url = "{}?ids={}".format(self.get_success_url(), ids_string)
-            messages.add_message(
-                self.request, messages.SUCCESS, _("Added new legal decisions")
-            )
-            if ids:
-                url = reverse(
-                    "legaldecision:incomplete-update", kwargs={"pk": int(ids[0])}
-                )
-                return HttpResponseRedirect("{}?ids={}".format(url, ids_string))
-            return HttpResponseRedirect(url)
-        url = reverse("legaldecision:list-incomplete")
-        messages.add_message(
-            self.request,
-            messages.INFO,
-            _("For all documents in collection decisions already exist."),
-        )
-        return HttpResponseRedirect(url)
+        self.object = form.save(request=self.request)
+        return redirect(self.object)
 
 
 class LegalDecisionDetailView(DetailView):

@@ -6,10 +6,10 @@ from django.utils import formats, timezone
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from filingcabinet.api import create_document
 from legal_advice_builder.forms import RenderedDocumentForm
 from parler.forms import TranslatableModelForm
 
-from froide.document.models import DocumentCollection
 from froide.foirequest.models import FoiMessage
 from froide.foirequest.validators import validate_upload_document
 from froide.helper.date_utils import calculate_month_range_de
@@ -23,6 +23,8 @@ from froide.helper.widgets import (
 )
 from froide.publicbody.models import Classification, FoiLaw, PublicBody
 from froide.publicbody.widgets import PublicBodySelect
+
+from froide_legalaction.decision_identifier import make_german_ecli
 
 from .models import LegalDecision, Proposal, ProposalDocument
 
@@ -286,29 +288,28 @@ class LegalDecisionForm(TranslatableModelForm):
         widget=forms.TextInput(
             attrs={"class": "form-control", "placeholder": _("mm/dd/YYYY")}
         ),
-        label=_("Send Date"),
-        help_text=_("Please give the date the reply was sent."),
+        label=_("Decision Date"),
         localize=True,
     )
     foi_court = forms.ModelChoiceField(
         queryset=PublicBody.objects.none(),
+        required=True,
         label=_("Court"),
         widget=AutocompleteWidget(
             autocomplete_url=reverse_lazy("api:publicbody-autocomplete"),
             model=PublicBody,
             allow_new=False,
         ),
-        required=False,
     )
     foi_laws = forms.ModelMultipleChoiceField(
         queryset=FoiLaw.objects.all(),
-        label=_("Laws"),
+        required=True,
+        label=_("Laws referenced"),
         widget=AutocompleteMultiWidget(
             autocomplete_url=reverse_lazy("api:law-autocomplete"),
             model=FoiLaw,
             allow_new=False,
         ),
-        required=False,
     )
     decision_type = forms.ChoiceField(
         choices=LegalDecision.LegalDecisionTypes.choices, widget=BootstrapSelect
@@ -317,21 +318,30 @@ class LegalDecisionForm(TranslatableModelForm):
     class Meta:
         model = LegalDecision
         fields = [
-            "reference",
             "title",
+            "reference",
+            "ecli",
             "decision_type",
             "date",
-            "court",
             "foi_court",
             "foi_laws",
             "abstract",
+            "source_url",
         ]
         widgets = {
             "reference": BootstrapTextInput,
+            "ecli": BootstrapTextInput,
             "title": BootstrapTextInput,
             "date": BootstrapTextInput,
             "court": BootstrapTextInput,
+            "source_url": BootstrapTextInput,
             "abstract": BootstrapTextarea,
+        }
+        help_texts = {
+            "ecli": _(
+                "Provide ECLI if available. Otherwise it will be inferred if possible."
+            ),
+            "reference": _("Provider either reference or ECLI."),
         }
 
     def __init__(self, *args, **kwargs):
@@ -355,19 +365,77 @@ class LegalDecisionForm(TranslatableModelForm):
             "foi_court"
         ].widget.autocomplete_url = "{}?classification={}".format(url, court.id)
 
+    def clean_date(self):
+        date = self.cleaned_data["date"]
+        if date > timezone.now().date():
+            raise forms.ValidationError(_("Date cannot be in the future."))
+        return date
+
 
 class LegalDecisionCreateForm(LegalDecisionForm):
-    document_collection = forms.ModelChoiceField(
-        queryset=DocumentCollection.objects.none()
+    doc = forms.FileField(
+        label=_("Document"),
+        required=False,
+        help_text=_("Please upload a PDF if available."),
+        validators=[validate_upload_document],
+        widget=forms.FileInput(
+            attrs={"class": "form-control", "accept": "application/pdf"}
+        ),
     )
 
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super().__init__(*args, **kwargs)
-        qs = DocumentCollection.objects.get_authenticated_queryset(
-            self.request
-        ).order_by("-created_at")
-        self.fields["document_collection"].queryset = qs
+    def clean(self):
+        if (
+            self.cleaned_data["reference"]
+            and self.cleaned_data["date"]
+            and self.cleaned_data["foi_court"]
+            and self.cleaned_data["decision_type"]
+        ):
+            if not self.cleaned_data["ecli"]:
+                try:
+                    self.cleaned_data["ecli"] = make_german_ecli(
+                        self.cleaned_data["date"],
+                        self.cleaned_data["reference"],
+                        self.cleaned_data["foi_court"],
+                        decision_type=self.cleaned_data["decision_type"],
+                    )
+                except ValueError:
+                    pass
+            if LegalDecision.objects.filter(
+                foi_court=self.cleaned_data["foi_court"],
+                date=self.cleaned_data["date"],
+                reference=self.cleaned_data["reference"],
+            ).exists():
+                raise forms.ValidationError(
+                    _("A decision with this reference on that date already exists.")
+                )
+
+        if self.cleaned_data["ecli"]:
+            if LegalDecision.objects.filter(ecli=self.cleaned_data["ecli"]).exists():
+                raise forms.ValidationError(
+                    _("A decision with this ECLI/reference already exists.")
+                )
+
+    def save(self, request=None, **kwargs):
+        import ipdb
+
+        ipdb.set_trace()
+        if self.cleaned_data["doc"]:
+            doc_title = (
+                self.cleaned_data["title"]
+                or self.cleaned_data["reference"]
+                or self.cleaned_data["doc"].name
+            )
+            document = create_document(
+                self.cleaned_data["doc"],
+                {
+                    "title": doc_title,
+                    "description": self.cleaned_data["abstract"],
+                    "published_at": self.cleaned_data["date"],
+                },
+            )
+            self.instance.foi_document = document
+        self.instance.created_by = request.user
+        return super().save(**kwargs)
 
 
 class LegalDecisionUpdateForm(LegalDecisionForm):
