@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-29 12:06+0200\n"
-"PO-Revision-Date: 2024-05-29 12:09+0200\n"
+"POT-Creation-Date: 2024-07-04 17:04+0200\n"
+"PO-Revision-Date: 2024-07-04 17:05+0200\n"
 "Last-Translator: Stefan Wehrmeyer <stefan.wehrmeyer@okfn.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,128 +18,128 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.4\n"
 
-#: admin.py
+#: admin.py:53
 msgid "Has Costs"
 msgstr "Hat Kosten"
 
-#: admin.py
+#: admin.py:84
 msgid "Has ECLI"
 msgstr "Hat ECLI"
 
-#: admin.py
+#: admin.py:85
 msgid "Has reference"
 msgstr "Hat Aktenzeichen"
 
-#: admin.py
+#: admin.py:86
 msgid "Has date"
 msgstr "Hat Datum"
 
-#: admin.py
+#: admin.py:87
 msgid "Has decision type"
 msgstr "Hat Entscheidungsart"
 
-#: admin.py
+#: admin.py:88
 msgid "Has abstract"
 msgstr "Hat Orientierungssatz"
 
-#: apps.py
+#: apps.py:11
 msgid "Froide Legal Action App"
 msgstr "Froide VerklageDenStaat-App"
 
-#: cms_plugins.py
+#: cms_plugins.py:14 cms_plugins.py:47
 msgid "Lawsuits"
 msgstr "Klagen"
 
-#: cms_plugins.py
+#: cms_plugins.py:15
 msgid "Lawsuit table"
 msgstr "Klagentabelle"
 
-#: cms_plugins.py
+#: cms_plugins.py:48
 msgid "Next trials"
 msgstr "Nächste Verhandlungen"
 
-#: filters.py
+#: filters.py:59
 msgid "Quicksearch"
 msgstr "Schnellsuche"
 
-#: filters.py
+#: filters.py:67
 msgid "by tags"
 msgstr "nach Schlagwort"
 
-#: filters.py
+#: filters.py:73
 msgid "by Court"
 msgstr "nach Gericht"
 
-#: filters.py
+#: filters.py:78
 msgid "by Law Type"
 msgstr "nach Gesetzestyp"
 
-#: filters.py
+#: filters.py:84
 msgid "by Type"
 msgstr "nach Entscheidungsart"
 
-#: filters.py
+#: filters.py:90
 msgid "by Year"
 msgstr "nach Jahr"
 
-#: forms.py
+#: forms.py:48
 #, python-brace-format
 msgid "{date} from {publicbody}: {subject}"
 msgstr "{date} von {publicbody}: {subject}"
 
-#: forms.py
+#: forms.py:57
 msgid "First name"
 msgstr "Vorname"
 
-#: forms.py
+#: forms.py:59
 msgid "First Name"
 msgstr "Vorname"
 
-#: forms.py
+#: forms.py:64
 msgid "Last name"
 msgstr "Nachname"
 
-#: forms.py
+#: forms.py:66
 msgid "Last Name"
 msgstr "Nachname"
 
-#: forms.py
+#: forms.py:72
 msgid "Mailing Address"
 msgstr "Postadresse"
 
-#: forms.py
+#: forms.py:73
 msgid "Your real address is required."
 msgstr "Wir benötigen Ihre echte Adresse."
 
-#: forms.py
+#: forms.py:78
 msgid "Street, Post Code, City"
 msgstr "Straße, Postleitzahl, Stadt"
 
-#: forms.py
+#: forms.py:83
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: forms.py
+#: forms.py:85
 msgid "Required"
 msgstr "Pflichtfeld"
 
-#: forms.py
+#: forms.py:87
 msgid "mail@ddress.net"
 msgstr "email@dresse.net"
 
-#: forms.py
+#: forms.py:91
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: forms.py
+#: forms.py:93
 msgid "Required. We will need to talk you."
 msgstr "Wird für Rücksprachen benötigt."
 
-#: forms.py
+#: forms.py:98
 msgid "Public body"
 msgstr "Behörde"
 
-#: forms.py
+#: forms.py:106
 msgid ""
 "You agree to our <a href=\"/datenschutzerklaerung/\" "
 "target=\"_blank\">Privacy Terms</a>"
@@ -147,304 +147,335 @@ msgstr ""
 "Sie stimmen unserer <a href=\"/datenschutzerklaerung/\" "
 "target=\"_blank\">Datenschutzerklärung</a> zu."
 
-#: forms.py
+#: forms.py:119
 msgid "Anything we should know?"
 msgstr "Noch etwas, was wir wissen sollten?"
 
-#: forms.py
+#: forms.py:161
 msgid "Document for {}"
 msgstr "Dokument für {}"
 
-#: forms.py
+#: forms.py:172
 msgid "Date of {}"
 msgstr "Datum von {}"
 
-#: forms.py
+#: forms.py:178
 msgid "Upload document for {}"
 msgstr "Dokument für {} hochladen"
 
-#: forms.py
+#: forms.py:194
 msgid "You already submitted a suit proposal for this request."
 msgstr "Du hast schon einen Klagevorschlag für diese Anfrage eingereicht."
 
-#: forms.py
+#: forms.py:206
 msgid "You have not submitted enough document kinds."
 msgstr "Sie haben nicht alle Dokumentenkategorien eingereicht."
 
-#: forms.py
+#: forms.py:211
 msgid "You have submitted the same message for different document kinds."
 msgstr ""
 "Sie haben die gleiche Nachricht für unterschiedliche Dokumentenkategorien "
 "eingereicht."
 
-#: forms.py
+#: forms.py:289
 msgid "mm/dd/YYYY"
 msgstr "dd.mm.YYYY"
 
-#: forms.py
-msgid "Send Date"
-msgstr "Versanddatum"
+#: forms.py:291
+msgid "Decision Date"
+msgstr "Entscheidungsdatum"
 
-#: forms.py
-msgid "Please give the date the reply was sent."
-msgstr "Bitte geben Sie das Antwortdatum an."
-
-#: forms.py
+#: forms.py:297
 msgid "Court"
 msgstr "Gericht"
 
-#: forms.py models/decision.py
-msgid "Laws"
-msgstr "Gesetze"
+#: forms.py:307
+msgid "Laws referenced"
+msgstr "Angewendete Gesetze"
 
-#: models/decision.py
-msgid "name"
-msgstr "Name"
+#: forms.py:342
+msgid "Provide ECLI if available. Otherwise it will be inferred if possible."
+msgstr ""
+"Falls ECLI vorhanden, bitte angeben. Ansonsten wird versucht, die ECLI "
+"abzuleiten."
 
-#: models/decision.py
-msgid "slug"
-msgstr "slug"
+#: forms.py:344
+msgid "Provider either reference or ECLI."
+msgstr "Bitte geben Sie entweder ein Aktenzeichen oder ECLI an."
 
-#: models/decision.py
-msgid "Court Notice"
-msgstr "Gerichtsbescheid"
+#: forms.py:371
+msgid "Date cannot be in the future."
+msgstr "Datum kann nicht in der Zukunft liege."
 
-#: models/decision.py
-msgid "Court Decision"
-msgstr "Beschluss"
-
-#: models/decision.py
-msgid "Court Ruling"
-msgstr "Urteil"
-
-#: models/decision.py
-msgid "Court Order"
-msgstr "Beschluss"
-
-#: models/decision.py
-msgid "Slug"
-msgstr "URL-Kürzel"
-
-#: models/decision.py
-msgid "Title"
-msgstr "Titel"
-
-#: models/decision.py
-msgid "Abstract"
-msgstr "Orientierungssatz"
-
-#: models/decision.py
-msgid "Guiding principle"
-msgstr "Leitsatz"
-
-#: models/decision.py
-msgid "Full text"
-msgstr "Volltext"
-
-#: models/decision.py
-msgid "Name of Court"
-msgstr "Name des Gerichts"
-
-#: models/decision.py
-msgid "Law"
-msgstr "Gesetz"
-
-#: models/decision.py
-msgid "Date"
-msgstr "Datum"
-
-#: models/decision.py
-msgid "Outcome"
-msgstr "Ergebnis"
-
-#: models/decision.py
-msgid "Reference"
-msgstr "Aktenzeichen"
-
-#: models/decision.py templates/froide_legalaction/legaldecision/detail.html
-msgid "European Case Law Identifier"
-msgstr "Europäischer Rechtsprechungs-Identifikator"
-
-#: models/decision.py
-msgid "Paragraphs"
-msgstr "Paragraphen"
-
-#: models/decision.py
-msgid "Source URL"
-msgstr "URL der Quelle"
-
-#: models/decision.py
-msgid "Lawsuit"
-msgstr "Klage"
-
-#: models/decision.py
+#: forms.py:377 models/decision.py:143
 msgid "Document"
 msgstr "Dokument"
 
-#: models/decision.py
+#: forms.py:379
+msgid "Please upload a PDF if available."
+msgstr "Laden Sie ein PDF hoch, falls verfügbar."
+
+#: forms.py:409
+msgid "A decision with this reference on that date already exists."
+msgstr "Eine Entscheidung mit diesem Aktenzeichen existiert bereits."
+
+#: forms.py:415
+msgid "A decision with this ECLI/reference already exists."
+msgstr "Eine Entscheidung mit diesem Aktenzeichen/ECLI existiert bereits."
+
+#: models/decision.py:25
+msgid "name"
+msgstr "Name"
+
+#: models/decision.py:26
+msgid "slug"
+msgstr "slug"
+
+#: models/decision.py:82
+msgid "Court Decision"
+msgstr "Beschluss"
+
+#: models/decision.py:83
+msgid "Court Ruling"
+msgstr "Urteil"
+
+#: models/decision.py:84
+msgid "Court Order"
+msgstr "Verfügung"
+
+#: models/decision.py:85
+msgid "Court Notice"
+msgstr "Gerichtsbescheid"
+
+#: models/decision.py:88
+msgid "Slug"
+msgstr "URL-Kürzel"
+
+#: models/decision.py:91
+msgid "Title"
+msgstr "Titel"
+
+#: models/decision.py:92
+msgid "Abstract"
+msgstr "Orientierungssatz"
+
+#: models/decision.py:94
+msgid "Guiding principle"
+msgstr "Leitsatz"
+
+#: models/decision.py:96
+msgid "Full text"
+msgstr "Volltext"
+
+#: models/decision.py:98
+msgid "Name of Court"
+msgstr "Name des Gerichts"
+
+#: models/decision.py:100
+msgid "Law"
+msgstr "Gesetz"
+
+#: models/decision.py:107
+msgid "Decision Type"
+msgstr "Entscheidungsart"
+
+#: models/decision.py:113
+msgid "Date"
+msgstr "Datum"
+
+#: models/decision.py:114
+msgid "Outcome"
+msgstr "Ergebnis"
+
+#: models/decision.py:116
+msgid "docket number"
+msgstr "Aktenzeichen"
+
+#: models/decision.py:123
+#: templates/froide_legalaction/legaldecision/detail.html:40
+msgid "European Case Law Identifier"
+msgstr "Europäischer Rechtsprechungs-Identifikator"
+
+#: models/decision.py:126
+msgid "Paragraphs"
+msgstr "Paragraphen"
+
+#: models/decision.py:128
+msgid "Source URL"
+msgstr "URL der Quelle"
+
+#: models/decision.py:136
+msgid "Lawsuit"
+msgstr "Klage"
+
+#: models/decision.py:151
 msgid "Link to Court"
 msgstr "Verknüpfung zum Gericht"
 
-#: models/decision.py
+#: models/decision.py:154 models/decision.py:248
+msgid "Laws"
+msgstr "Gesetze"
+
+#: models/decision.py:182
 msgid "{} of {} on {}"
 msgstr "{}: {} am {}"
 
-#: models/decision.py
+#: models/decision.py:187
 msgid "{} of {}"
 msgstr "{}: {}"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:12
 msgid "Administrative Court"
 msgstr "Verwaltungsgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:13
 msgid "Higher Administrative Court"
 msgstr "Oberverwaltungsgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:14
 msgid "Federal Administrative Court"
 msgstr "Bundesverwaltungsgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:15
 msgid "Regional Court"
 msgstr "Landgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:16
 msgid "Higher Regional Court"
 msgstr "Oberlandesgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:17
 msgid "Federal Constitutional Court"
 msgstr "Bundesverfassungsgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:18
 msgid "State Constitutional Court"
 msgstr "Landesverfassungsgericht"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:19
 msgid "European General Court"
 msgstr "Gericht der Europäischen Union"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:20
 msgid "European Court of Justice"
 msgstr "Europäischer Gerichtshof"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:21
 msgid "European Court of Human Rights"
 msgstr "Europäischer Gerichtshof für Menschenrechte"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:26
 msgid "won"
 msgstr "gewonnen"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:27
 msgid "lost"
 msgstr "verloren"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:28
 msgid "not accepted"
 msgstr "nicht angenommen"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:29
 msgid "partially successful"
 msgstr "teilweise erfolgreich"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:30
 msgid "settled"
 msgstr "Erledigung"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:68 models/lawsuit.py:172
 msgid "lawsuit"
 msgstr "Klage"
 
-#: models/lawsuit.py
+#: models/lawsuit.py:69 models/lawsuit.py:173
 msgid "lawsuits"
 msgstr "Klagen"
 
-#: models/proposal.py
+#: models/proposal.py:36
 msgid "proposal for legal action"
 msgstr "Vorschlag für VerklagDenStaat"
 
-#: models/proposal.py
+#: models/proposal.py:37
 msgid "proposals for legal action"
 msgstr "Vorschläge für VerklagDenStaat"
 
-#: models/proposal.py
+#: models/proposal.py:55
 msgid "FOI request"
 msgstr "IFG-Anfrage"
 
-#: models/proposal.py
+#: models/proposal.py:56
 msgid "Please upload your original FOI request."
 msgstr "Bitte laden Sie Ihre ursprüngliche IFG-Anfrage hoch."
 
-#: models/proposal.py
+#: models/proposal.py:57
 msgid "The original FOI request you made."
 msgstr "Ihre ursprüngliche IFG-Anfrage."
 
-#: models/proposal.py
+#: models/proposal.py:67
 msgid "Rejection"
 msgstr "Ablehnung"
 
-#: models/proposal.py
+#: models/proposal.py:68
 msgid "Please upload your first rejection letter."
 msgstr "Bitte laden Sie den Ablehnungsbescheid hoch."
 
-#: models/proposal.py
+#: models/proposal.py:69
 msgid "Please select the rejection response."
 msgstr "Bitte wählen Sie die Ablehnungsantwort aus."
 
-#: models/proposal.py
+#: models/proposal.py:78
 msgid "Appeal"
 msgstr "Widerspruch"
 
-#: models/proposal.py
+#: models/proposal.py:80
 msgid "Please choose the message representing your appeal."
 msgstr "Bitte wählen Sie Ihren Widerspruch aus."
 
-#: models/proposal.py
+#: models/proposal.py:83
 msgid "Please upload your appeal to the rejection of your FOI request."
 msgstr ""
 "Bitte laden Sie Ihren Widerspruch zur Ablehnung Ihrer IFG-Anfrage hoch."
 
-#: models/proposal.py
+#: models/proposal.py:95
 msgid "Final rejection"
 msgstr "Ablehnung des Widerspruchs"
 
-#: models/proposal.py
+#: models/proposal.py:97
 msgid ""
 "Please choose the message representing the final rejection of your appeal."
 msgstr "Bitte wählen Sie die finale Ablehnung auf Ihren Widerspruch aus."
 
-#: models/proposal.py
+#: models/proposal.py:101
 msgid "Please upload the final rejection of your appeal."
 msgstr "Bitte laden Sie die Ablehnung auf Ihren Widerspruch hoch."
 
-#: models/proposal.py
+#: models/proposal.py:122
 msgid "legalaction document"
 msgstr "VerklagDenStaat-Dokument"
 
-#: models/proposal.py
+#: models/proposal.py:123
 msgid "legalaction documents"
 msgstr "VerklagDenStaat-Dokumente"
 
-#: signals.py
+#: signals.py:13
 msgid "New legal action proposal submitted"
 msgstr "Neuer Klagevorschlag wurde eingereicht"
 
-#: templates/admin/froide_legalaction/legaldecision/change_list.html
+#: templates/admin/froide_legalaction/legaldecision/change_list.html:10
 msgid "Upload Legal Decisions as JSON"
 msgstr "Gerichtsentscheidungen als JSON hochladen"
 
-#: templates/froide_legalaction/base.html
-#: templates/froide_legalaction/form.html
+#: templates/froide_legalaction/base.html:5
+#: templates/froide_legalaction/form.html:7
 msgid "Propose a FOI law suit"
 msgstr "Jetzt klagen"
 
-#: templates/froide_legalaction/cms_plugins/next_trials.html
+#: templates/froide_legalaction/cms_plugins/next_trials.html:4
 msgid "There are currently no pending trials."
 msgstr "Aktuell stehen keine Verhandlungen an."
 
-#: templates/froide_legalaction/form.html
+#: templates/froide_legalaction/form.html:9
 msgid ""
 "\n"
 "    Please fill out the form below to propose a law suit for your FOI "
@@ -456,36 +487,35 @@ msgstr ""
 "einzureichen.\n"
 "      "
 
-#: templates/froide_legalaction/form.html
-#: templates/froide_legalaction/legaldecision/create.html
+#: templates/froide_legalaction/form.html:19
 msgid "Submit"
 msgstr "Abschicken"
 
-#: templates/froide_legalaction/includes/_legal_decision.html
+#: templates/froide_legalaction/includes/_legal_decision.html:5
 msgid "Missing Information: "
 msgstr "Fehlende Information: "
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:6
 msgid "Automatic lawsuit check"
 msgstr "Automatische Klageprüfung"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:25
 msgid "Restart lawsuit check"
 msgstr "Klageprüfung erneut starten"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:27
 msgid "Start lawsuit check now"
 msgstr "Jetzt Klageprüfung starten"
 
-#: templates/froide_legalaction/includes/lawcase_questionaire.html
+#: templates/froide_legalaction/includes/lawcase_questionaire.html:32
 msgid "Edit lawsuit"
 msgstr "Klageentwurf bearbeiten"
 
-#: templates/froide_legalaction/includes/lawsuit_propoposal.html
+#: templates/froide_legalaction/includes/lawsuit_propoposal.html:6
 msgid "Propose a law suit to our legal professionals"
 msgstr "Klage Jurist:innen vorschlagen"
 
-#: templates/froide_legalaction/includes/lawsuit_propoposal.html
+#: templates/froide_legalaction/includes/lawsuit_propoposal.html:11
 #, python-format
 msgid ""
 "\n"
@@ -498,191 +528,206 @@ msgstr ""
 "diesen in Kürze bewerten.\n"
 "      "
 
-#: templates/froide_legalaction/includes/lawsuit_propoposal.html
+#: templates/froide_legalaction/includes/lawsuit_propoposal.html:41
 msgid "Click here to propose a law suit"
 msgstr "Jetzt Klagevorschlag einreichen"
 
-#: templates/froide_legalaction/includes/pagination.html
+#: templates/froide_legalaction/includes/pagination.html:11
 msgid "Previous"
 msgstr "Zurück"
 
-#: templates/froide_legalaction/includes/pagination.html
+#: templates/froide_legalaction/includes/pagination.html:28
 msgid "Next"
 msgstr "Weiter"
 
-#: templates/froide_legalaction/legaldecision/create.html
+#: templates/froide_legalaction/legaldecision/create.html:4
 msgid "Create legal decision"
 msgstr "Neue Gerichtsentscheidung anlegen"
 
-#: templates/froide_legalaction/legaldecision/create.html
-#: templates/froide_legalaction/legaldecision/detail.html
-#: templates/froide_legalaction/legaldecision/list.html
+#: templates/froide_legalaction/legaldecision/create.html:14
+#: templates/froide_legalaction/legaldecision/detail.html:17
+#: templates/froide_legalaction/legaldecision/list.html:4
+#: templates/froide_legalaction/legaldecision/list.html:18
 msgid "Legal Decisions"
 msgstr "Gerichtsentscheidungen"
 
-#: templates/froide_legalaction/legaldecision/create.html
+#: templates/froide_legalaction/legaldecision/create.html:16
+#: templates/froide_legalaction/legaldecision/create.html:23
 msgid "Add Legal Decisions"
 msgstr "Gerichtsentscheidungen hinzufügen"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/create.html:29
+msgid "Add decision"
+msgstr "Entscheidung hinzufügen"
+
+#: templates/froide_legalaction/legaldecision/detail.html:31
 msgid "Information"
 msgstr "Information"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:35
 msgid "reference"
 msgstr "Aktenzeichen"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:46
 msgid "date"
 msgstr "Datum"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:51
+#: templates/froide_legalaction/legaldecision/detail.html:56
 msgid "court"
 msgstr "Gericht"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:63
 msgid "law"
 msgstr "Gesetz"
 
 #. Translators: link to source of legal decision
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:72
 msgid "Source"
 msgstr "Quelle"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:82
 msgid "submit"
 msgstr "Abschicken"
 
-#: templates/froide_legalaction/legaldecision/detail.html
+#: templates/froide_legalaction/legaldecision/detail.html:84
 msgid "submit and next"
 msgstr "Abschicken und weiter"
 
-#: templates/froide_legalaction/legaldecision/list.html
+#: templates/froide_legalaction/legaldecision/list.html:11
 msgid "update incomplete decisions"
 msgstr "Unvollständige Gerichtsentscheidungen bearbeiten"
 
-#: templates/froide_legalaction/legaldecision/list.html
+#: templates/froide_legalaction/legaldecision/list.html:15
 msgid "Add decisions"
 msgstr "Entscheidungen hinzufügen"
 
-#: templates/froide_legalaction/legaldecision/list.html
+#: templates/froide_legalaction/legaldecision/list.html:19
 msgid "Decisions and judgements in the field of freedom of information"
 msgstr "Entscheidungen und Urteile im Bereich der Informationsfreiheit"
 
-#: templates/froide_legalaction/legaldecision/list.html
+#: templates/froide_legalaction/legaldecision/list.html:39
 msgid "Refine your query"
 msgstr "Ergebnisse filtern"
 
-#: templates/froide_legalaction/legaldecision/list.html
+#: templates/froide_legalaction/legaldecision/list.html:41
 msgid "Currently selected:"
 msgstr "Ausgewählt:"
 
-#: templates/froide_legalaction/thanks.html
+#: templates/froide_legalaction/thanks.html:6
 msgid "Thanks for submitting"
 msgstr "Vielen Dank für die Einreichung"
 
-#: urls/klageautomat.py
+#: urls/klageautomat.py:15
 msgctxt "url part"
 msgid "klageautomat/info/request/<int:pk>/"
 msgstr "klageautomat/info/anfrage/<int:pk>/"
 
-#: urls/klageautomat.py
+#: urls/klageautomat.py:20
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/"
 msgstr "klageautomat/anfrage/<int:pk>/"
 
-#: urls/klageautomat.py
+#: urls/klageautomat.py:25
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/"
 
-#: urls/klageautomat.py
+#: urls/klageautomat.py:30
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/pdf-download/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/pdf-download/"
 
-#: urls/klageautomat.py
+#: urls/klageautomat.py:36
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/word-download/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/word-download/"
 
-#: urls/klageautomat.py
+#: urls/klageautomat.py:43
 msgctxt "url part"
 msgid "klageautomat/request/<int:pk>/answer/html-download/"
 msgstr "klageautomat/anfrage/<int:pk>/antwort/pdf-download/"
 
-#: urls/lawsuit.py
+#: urls/lawsuit.py:8
 msgctxt "url part"
 msgid "propose/"
 msgstr "vorschlagen/"
 
-#: urls/lawsuit.py
+#: urls/lawsuit.py:13
 msgctxt "url part"
 msgid "thanks/"
 msgstr "danke/"
 
-#: urls/lawsuit.py
+#: urls/lawsuit.py:18
 msgctxt "url part"
 msgid "calendar/ical/"
 msgstr "kalender/ical/"
 
-#: urls/lawsuit.py
+#: urls/lawsuit.py:23
 msgctxt "url part"
 msgid "request/<int:pk>/"
 msgstr "anfrage/<int:pk>/"
 
-#: urls/legaldecision.py
+#: urls/legaldecision.py:21
 msgctxt "url part"
 msgid "incomplete/"
 msgstr "unvollstaendig/"
 
-#: urls/legaldecision.py
+#: urls/legaldecision.py:26
 msgctxt "url part"
 msgid "incomplete/<int:pk>/"
 msgstr "unvollstaendig/<int:pk>/"
 
-#: urls/legaldecision.py
+#: urls/legaldecision.py:31
 msgctxt "url part"
 msgid "create/"
 msgstr "erstellen/"
 
-#: urls/legaldecision.py
+#: urls/legaldecision.py:36
 msgctxt "url part"
 msgid "<int:pk>/"
 msgstr "<int:pk>/"
 
-#: urls/legaldecision.py
+#: urls/legaldecision.py:41
 msgctxt "url part"
 msgid "<slug:slug>/"
 msgstr "<slug:slug>/"
 
-#: utils.py
+#: utils.py:18
 msgid "Lawsuit court hearing"
 msgstr "Gerichtstermin"
 
-#: views.py
+#: views.py:72
 msgid "We have received your submission and we will review it. Thank you!"
 msgstr "Wir haben Ihre Einreichung erhalten. Vielen Dank!"
 
-#: views.py
+#: views.py:82
 msgid "Please check for errors in your form."
 msgstr "Bitte überprüfen Sie die Fehler bei Ihrer Eingabe."
 
-#: views.py
-msgid "Added new legal decisions"
-msgstr "Neue Gerichtsentscheidung angelegt"
-
-#: views.py
-msgid "For all documents in collection decisions already exist."
-msgstr "Alle Dokumente der Sammlung haben bereits zugehörige Entscheidungen."
-
-#: widgets.py
+#: widgets.py:14
 msgid "All"
 msgstr "Alle"
 
-#: widgets.py
+#: widgets.py:40
 msgid "search"
 msgstr "Suchbegriff"
+
+#~ msgid "Added new legal decisions"
+#~ msgstr "Neue Gerichtsentscheidung angelegt"
+
+#~ msgid "For all documents in collection decisions already exist."
+#~ msgstr ""
+#~ "Alle Dokumente der Sammlung haben bereits zugehörige Entscheidungen."
+
+#~ msgid "Send Date"
+#~ msgstr "Versanddatum"
+
+#~ msgid "Please give the date the reply was sent."
+#~ msgstr "Bitte geben Sie das Antwortdatum an."
+
+#~ msgid "Reference"
+#~ msgstr "Aktenzeichen"
 
 #~ msgid ""
 #~ "This reference already exists <a href='{}' target='_blank'>here.</a>"
