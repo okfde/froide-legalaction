@@ -79,10 +79,10 @@ class LegalDecisionManager(TranslatableManager):
 
 class LegalDecision(TranslatableModel):
     class LegalDecisionTypes(models.TextChoices):
-        COURT_NOTICE = "court_notice", _("Court Notice")
         COURT_DECISION = "court_decision", _("Court Decision")
         COURT_RULING = "court_ruling", _("Court Ruling")
         COURT_ORDER = "court_order", _("Court Order")
+        COURT_NOTICE = "court_notice", _("Court Notice")
 
     slug = models.SlugField(
         max_length=255, blank=True, null=True, unique=True, verbose_name=_("Slug")
@@ -104,13 +104,16 @@ class LegalDecision(TranslatableModel):
 
     tags = models.ManyToManyField(LegalDecisionTag, blank=True)
     decision_type = models.CharField(
-        choices=LegalDecisionTypes.choices, max_length=20, blank=True
+        verbose_name=_("Decision Type"),
+        choices=LegalDecisionTypes.choices,
+        max_length=20,
+        blank=True,
     )
 
     date = models.DateField(blank=True, null=True, verbose_name=_("Date"))
     outcome = models.CharField(max_length=500, blank=True, verbose_name=_("Outcome"))
     reference = models.CharField(
-        max_length=200, blank=True, verbose_name=_("Reference")
+        max_length=200, blank=True, verbose_name=_("docket number")
     )
     ecli = models.CharField(
         max_length=100,
@@ -149,6 +152,15 @@ class LegalDecision(TranslatableModel):
     )
     foi_laws = models.ManyToManyField(
         FoiLaw, related_name="legal_decisions", blank=True, verbose_name=_("Laws")
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="created_legaldecisions",
     )
 
     objects = LegalDecisionManager()
