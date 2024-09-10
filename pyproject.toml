@@ -16,7 +16,7 @@ classifiers = [
   "Topic :: Utilities",
 ]
 dynamic = ["version"]
-dependencies = ["froide"]
+dependencies = ["froide", "django-fsm"]
 
 [build-system]
 requires = ["setuptools"]
