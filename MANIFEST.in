@@ -2,5 +2,4 @@ include README.md LICENSE package.json
 recursive-include froide_legalaction/templates *
 recursive-include froide_legalaction/static *
 recursive-include froide_legalaction/locale *.po
-recursive-include froide_legalaction/locale *.mo
 recursive-include frontend *
