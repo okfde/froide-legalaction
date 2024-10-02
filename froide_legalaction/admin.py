@@ -10,14 +10,12 @@ from django.shortcuts import redirect
 from django.urls import path
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
-from parler.admin import TranslatableAdmin
-
 from froide.helper.admin_utils import (
     ForeignKeyFilter,
     make_emptyfilter,
     make_nullfilter,
 )
+from parler.admin import TranslatableAdmin
 
 from .models import (
     Instance,
@@ -89,7 +87,13 @@ class LegalDecisionAdmin(TranslatableAdmin):
     )
     list_display = ("reference", "court")
     search_fields = ["reference", "translations__court", "translations__abstract"]
-    raw_id_fields = ("foi_lawsuit", "foi_document", "foi_court", "foi_laws")
+    raw_id_fields = (
+        "foi_lawsuit",
+        "foi_document",
+        "foi_court",
+        "foi_laws",
+        "created_by",
+    )
     actions = ["export_legal_decisions", "update_search_index"]
 
     def get_urls(self):
