@@ -1,5 +1,7 @@
+from datetime import date, timedelta
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from froide.foirequest.models import FoiRequest
@@ -19,6 +21,18 @@ class CourtTypes(models.TextChoices):
     EUG = "EUG", _("European General Court")
     EUGH = "EUGH", _("European Court of Justice")
     EMRK = "EMRK", _("European Court of Human Rights")
+
+
+class UpcomingTrialsManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(public=True)
+            .annotate(next_end_date=models.Max("instance__end_date"))
+            .filter(next_end_date__gte=date.today())
+            .order_by("next_end_date")
+        )
 
 
 class Lawsuit(models.Model):
@@ -63,6 +77,9 @@ class Lawsuit(models.Model):
     public = models.BooleanField(default=False)
 
     result = models.CharField(max_length=20, blank=True, choices=Result.choices)
+
+    objects = models.Manager()
+    upcoming = UpcomingTrialsManager()
 
     class Meta:
         verbose_name = _("lawsuit")
@@ -149,6 +166,16 @@ class Lawsuit(models.Model):
         return "clock-o"
 
 
+class InstanceManager(models.Manager):
+    def get_last_three_months(self):
+        three_months_ago = timezone.now() - timedelta(days=31 * 3)
+        return (
+            self.get_queryset()
+            .filter(end_date__gte=three_months_ago, lawsuit__public=True)
+            .order_by("end_date")
+        )
+
+
 class Instance(models.Model):
     lawsuit = models.ForeignKey(Lawsuit, on_delete=models.CASCADE)
 
@@ -167,6 +194,8 @@ class Instance(models.Model):
     decision = models.ForeignKey(
         LegalDecision, null=True, blank=True, on_delete=models.SET_NULL
     )
+
+    objects = InstanceManager()
 
     class Meta:
         verbose_name = _("lawsuit")

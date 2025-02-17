@@ -1,6 +1,3 @@
-from datetime import date
-
-from django.db.models import Max
 from django.utils.translation import gettext_lazy as _
 
 from cms.plugin_base import CMSPluginBase
@@ -51,13 +48,7 @@ class LawsuitNextTrialsPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
 
-        today = date.today()
-        lawsuits = (
-            Lawsuit.objects.filter(public=True)
-            .annotate(next_end_date=Max("instance__end_date"))
-            .filter(next_end_date__gte=today)
-            .order_by("next_end_date")
-        )
+        lawsuits = Lawsuit.upcoming.all()
 
         context.update({"lawsuits": lawsuits})
         return context
