@@ -1,12 +1,9 @@
-from datetime import timedelta
-
 from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import Http404, get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, FormView
 from django.views.generic.edit import UpdateView
@@ -391,10 +388,7 @@ class LegalDecisionIncompleteUpdateView(PermissionRequiredMixin, UpdateView):
 
 
 def lawsuit_event_calendar(request):
-    three_months_ago = timezone.now() - timedelta(days=31 * 3)
-    instances = Instance.objects.filter(
-        end_date__gte=three_months_ago, lawsuit__public=True
-    ).order_by("end_date")
+    instances = Instance.objects.get_last_three_months()
 
     cal = make_lawsuit_event_calendar(instances)
 
