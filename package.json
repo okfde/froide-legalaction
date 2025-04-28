@@ -4,7 +4,8 @@
   "description": "Froide Legalaction",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/okfde/froide-legalaction/issues"
   },
-  "homepage": "https://github.com/okfde/froide-legalaction#readme"
+  "homepage": "https://github.com/okfde/froide-legalaction#readme",
+  "devDependencies": {
+    "@okfde/eslint-config-froide": "^1.2.1",
+    "eslint": "^9.25.1",
+    "prettier": "^3.5.3",
+    "prettier-config-standard": "^7.0.0"
+  }
 }
