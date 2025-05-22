@@ -3,13 +3,9 @@ from django.core import validators
 from django.db import transaction
 from django.urls import reverse_lazy
 from django.utils import formats, timezone
-from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
 from filingcabinet.api import create_document
-from legal_advice_builder.forms import RenderedDocumentForm
-from parler.forms import TranslatableModelForm
-
 from froide.foirequest.models import FoiMessage
 from froide.foirequest.validators import validate_upload_document
 from froide.helper.date_utils import calculate_month_range_de
@@ -23,6 +19,8 @@ from froide.helper.widgets import (
 )
 from froide.publicbody.models import Classification, FoiLaw, PublicBody
 from froide.publicbody.widgets import PublicBodySelect
+from legal_advice_builder.forms import RenderedDocumentForm
+from parler.forms import TranslatableModelForm
 
 from froide_legalaction.decision_identifier import make_german_ecli
 
@@ -101,7 +99,7 @@ class LegalActionUserForm(forms.Form):
     )
 
     terms = forms.BooleanField(
-        label=format_html(
+        label=mark_safe(
             _(
                 "You agree "
                 'to our <a href="'
@@ -191,7 +189,7 @@ class LegalActionRequestForm(LegalActionUserForm):
 
         if Proposal.objects.filter(foirequest=self.foirequest).exists():
             raise forms.ValidationError(
-                _("You already submitted a suit " "proposal for this request.")
+                _("You already submitted a suit proposal for this request.")
             )
 
         DK = ProposalDocument.DOCUMENT_KINDS
@@ -207,10 +205,7 @@ class LegalActionRequestForm(LegalActionUserForm):
             )
         if len(message_set) != len(messages):
             raise forms.ValidationError(
-                _(
-                    "You have submitted the same message for "
-                    "different document kinds."
-                )
+                _("You have submitted the same message for different document kinds.")
             )
 
     def save(self):
@@ -261,7 +256,7 @@ class LegalActionRequestForm(LegalActionUserForm):
 class KlageautomatApprovalForm(forms.Form):
     read_faqs = forms.BooleanField(
         required=True,
-        label=format_html(
+        label=mark_safe(
             'Ich habe die <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/">Informationen zur Untätigkeitsklage</a> gelesen.'
         ),
     )
@@ -271,7 +266,7 @@ class KlageautomatApprovalForm(forms.Form):
     )
     no_payment_of_costs = forms.BooleanField(
         required=True,
-        label=format_html(
+        label=mark_safe(
             'Ich habe verstanden, dass FragDenStaat für evtl. <a target="_blank" href="/hilfe/tipps-fur-den-anfrageprozess/klagen/untatigkeitsklage/kosten/">anfallende Kosten</a> nach dem Einreichen einer Klage nicht aufkommt.'
         ),
     )
