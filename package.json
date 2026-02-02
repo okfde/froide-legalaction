@@ -2,7 +2,9 @@
   "name": "froide_legalaction",
   "version": "1.0.0",
   "description": "Froide Legalaction",
-  "main": "index.js",
+  "files": [
+    "frontend"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint"
@@ -12,7 +14,7 @@
     "url": "git+https://github.com/okfde/froide-legalaction.git"
   },
   "author": "Stefan Wehrmeyer",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/okfde/froide-legalaction/issues"
   },
@@ -22,5 +24,6 @@
     "eslint": "^9.25.1",
     "prettier": "^3.5.3",
     "prettier-config-standard": "^7.0.0"
-  }
+  },
+  "prettier": "prettier-config-standard"
 }
