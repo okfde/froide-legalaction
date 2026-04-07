@@ -293,8 +293,11 @@ class LegalDecisionListView(ListView):
         f = LegalDecisionFilterSet(
             self.request.GET, queryset=self.get_filter_queryset(), request=self.request
         )
+        qs = f.qs
+        qs = qs.select_related("foi_lawsuit")
+        qs = qs.prefetch_related("foi_laws", "foi_court", "translations")
 
-        paginator = Paginator(f.qs, self.paginate_by)
+        paginator = Paginator(qs, self.paginate_by)
         page = self.request.GET.get("page")
         paginated = paginator.get_page(page)
         ctx.update(
