@@ -1,10 +1,14 @@
 {% extends CMS_TEMPLATE %}
 {% load djangocms_alias_tags %}
+{% block meta %}
+    {{ block.super }}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock meta %}
 {% block top_block %}
 {% endblock top_block %}
 {% block body %}
-  {% static_alias 'legaldecisions_header' %}
-  {% block main %}
-  {% endblock main %}
-  {% static_alias 'legaldecisions_footer' %}
+    {% static_alias 'legaldecisions_header' %}
+    {% block main %}
+    {% endblock main %}
+    {% static_alias 'legaldecisions_footer' %}
 {% endblock body %}
