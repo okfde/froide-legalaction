@@ -4,8 +4,6 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from django_fsm import FSMField
-
 from froide.foirequest.models import FoiMessage, FoiRequest
 from froide.publicbody.models import PublicBody
 
@@ -14,7 +12,7 @@ class Proposal(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, editable=False)
     timestamp = models.DateTimeField(default=timezone.now)
     decision_date = models.DateTimeField(null=True, blank=True)
-    state = FSMField(default="new")
+    state = models.CharField(default="new", max_length=50)
 
     first_name = models.CharField(max_length=255, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
@@ -65,7 +63,7 @@ class ProposalDocument(models.Model):
             "rejection",
             {
                 "label": _("Rejection"),
-                "help_text_upload": _("Please upload your first " "rejection letter."),
+                "help_text_upload": _("Please upload your first rejection letter."),
                 "help_text": _("Please select the rejection response."),
                 "select": lambda qs, first: qs.filter(is_response=True),
                 "initial": None,
@@ -76,11 +74,9 @@ class ProposalDocument(models.Model):
             "appeal",
             {
                 "label": _("Appeal"),
-                "help_text": _(
-                    "Please choose the message representing " "your appeal."
-                ),
+                "help_text": _("Please choose the message representing your appeal."),
                 "help_text_upload": _(
-                    "Please upload your appeal to the " "rejection of your FOI request."
+                    "Please upload your appeal to the rejection of your FOI request."
                 ),
                 "select": lambda qs, first: qs.filter(
                     is_response=False, timestamp__gt=first.timestamp
@@ -98,7 +94,7 @@ class ProposalDocument(models.Model):
                     "final rejection of your appeal."
                 ),
                 "help_text_upload": _(
-                    "Please upload the final rejection " "of your appeal."
+                    "Please upload the final rejection of your appeal."
                 ),
                 "select": lambda qs, first: qs.filter(is_response=True),
                 "initial": None,

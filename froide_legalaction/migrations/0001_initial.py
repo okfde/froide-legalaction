@@ -8,8 +8,6 @@ import django.db.models.deletion
 import django.utils.timezone
 from django.db import migrations, models
 
-import django_fsm
-
 import froide_legalaction.models
 
 
@@ -37,7 +35,7 @@ class Migration(migrations.Migration):
                 ("uid", models.UUIDField(default=uuid.uuid4, editable=False)),
                 ("timestamp", models.DateTimeField(default=django.utils.timezone.now)),
                 ("decision_date", models.DateTimeField(blank=True, null=True)),
-                ("state", django_fsm.FSMField(default=b"new", max_length=50)),
+                ("state", models.CharField(default=b"new", max_length=50)),
                 ("first_name", models.CharField(blank=True, max_length=255)),
                 ("last_name", models.CharField(blank=True, max_length=255)),
                 ("address", models.TextField(blank=True)),
