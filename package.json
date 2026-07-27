@@ -21,7 +21,7 @@
   "homepage": "https://github.com/okfde/froide-legalaction#readme",
   "devDependencies": {
     "@okfde/eslint-config-froide": "^1.2.1",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "prettier": "^3.5.3",
     "prettier-config-standard": "^7.0.0"
   },
